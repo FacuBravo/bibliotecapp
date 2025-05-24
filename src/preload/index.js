@@ -8,14 +8,58 @@ const sessionApi = {
     checkSessionToken: (check) => ipcRenderer.invoke('check-session-token', check)
 }
 
+const booksApi = {
+    addBook: async (bookInfo, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke('add-book', bookInfo)
+        }
+
+        return null
+    },
+    updateBook: async (bookInfo, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            const { ok } = await ipcRenderer.invoke('update-book', bookInfo)
+
+            return ok
+        } else {
+            return null
+        }
+    },
+    getBooks: async () => ipcRenderer.invoke('get-books'),
+    deleteBook: async (callback, id, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke('get-book', id)
+        }
+
+        return null
+    },
+    updateBookState: async (callback, id, borrowed, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke('set-book-state', id, borrowed)
+        }
+
+        return null
+    }
+}
+
 if (process.contextIsolated) {
     try {
         contextBridge.exposeInMainWorld('electron', electronAPI)
         contextBridge.exposeInMainWorld('sessionApi', sessionApi)
+        contextBridge.exposeInMainWorld('booksApi', booksApi)
     } catch (error) {
         console.error(error)
     }
 } else {
     window.electron = electronAPI
     window.sessionApi = sessionApi
+    window.booksApi = booksApi
 }

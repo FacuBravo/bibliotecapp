@@ -5,10 +5,20 @@ import Database from 'better-sqlite3'
 
 import iconPng from '../../resources/icon.png'
 import iconIco from '../../resources/icon.ico'
-import { checkSessionToken, login, logout, register } from './handlers'
+import {
+    addBook,
+    checkSessionToken,
+    deleteBook,
+    getBook,
+    getBooks,
+    login,
+    logout,
+    register,
+    setBookState,
+    updateBook
+} from './handlers'
 
 let db
-let session = null
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -68,6 +78,7 @@ function createDb() {
     createTables()
 
     setSessionHandlers()
+    setBooksHandlers()
 }
 
 function createTables() {
@@ -123,10 +134,21 @@ function createTables() {
 function setSessionHandlers() {
     ipcMain.handle('register', (_, { username, password }) => register(db, username, password))
     ipcMain.handle('login', (_, { username, password }) => login(db, username, password))
-    ipcMain.handle('check-session-token', (_, { sessionToken }) =>
-        checkSessionToken(session, sessionToken)
-    )
-    ipcMain.handle('logout', () => logout(session))
+    ipcMain.handle('check-session-token', (_, { sessionToken }) => checkSessionToken(sessionToken))
+    ipcMain.handle('logout', () => logout())
+}
+
+function setBooksHandlers() {
+    ipcMain.handle('add-book', (_, bookInfo) => addBook(db, bookInfo))
+
+    ipcMain.handle('set-book-state', (_, { id, borrowed }) => setBookState(db, { id, borrowed }))
+
+    ipcMain.handle('update-book', (_, bookInfo) => updateBook(db, bookInfo))
+    ipcMain.handle('get-books', () => getBooks(db))
+
+    ipcMain.handle('get-book', (_, { id }) => getBook(db, { id }))
+
+    ipcMain.handle('delete-book', (_, { id }) => deleteBook(db, { id }))
 }
 
 app.on('window-all-closed', () => {

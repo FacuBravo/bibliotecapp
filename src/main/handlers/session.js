@@ -1,19 +1,25 @@
 import bcrypt from 'bcrypt'
 import { getRandomToken } from '../../helpers/getRandomToken'
+let session = null
 
 export const register = (db, username, password) => {
     const hash = bcrypt.hashSync(password, 10)
 
     try {
         const data = db
-            .prepare(`INSERT INTO users (username, password) VALUES (?, ?) RETURNING *`)
+            .prepare(`INSERT INTO users (username, password) VALUES (?, ?)`)
             .run(username, hash)
 
         if (data.changes !== 1) throw new Error()
 
+        session = {
+            username,
+            token: getRandomToken()
+        }
+
         return {
             ok: true,
-            sessionToken: getRandomToken()
+            sessionToken: session.token
         }
     } catch (error) {
         return {
@@ -32,13 +38,18 @@ export const login = (db, username, password) => {
 
     if (!validPassword) return { ok: false, msg: 'Credenciales incorrectas' }
 
+    session = {
+        username,
+        token: getRandomToken()
+    }
+
     return {
         ok: true,
-        sessionToken: getRandomToken()
+        sessionToken: session.token
     }
 }
 
-export const checkSessionToken = (session, sessionToken) => {
+export const checkSessionToken = (sessionToken) => {
     if (session === null) return { ok: false, username: null }
 
     return {
@@ -47,6 +58,6 @@ export const checkSessionToken = (session, sessionToken) => {
     }
 }
 
-export const logout = (session) => {
+export const logout = () => {
     session = null
 }
