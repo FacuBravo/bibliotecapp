@@ -5,7 +5,7 @@ import { CloseButton, PrimaryButton, PrimaryInput } from './'
 
 Modal.setAppElement('#root')
 
-const initialForm = { username: '', password: '' }
+const loginForm = { username: '', password: '' }
 const formValidations = {
     username: [(value) => value.length > 0, 'El nombre de usuario es requerido'],
     password: [(value) => value.length > 0, 'La contraseña es requerida']
@@ -15,7 +15,7 @@ export const LoginModal = () => {
     const { startLogin, status } = useAuthStore()
     const { isLoginModalOpen, closeLoginModal, onShowAlert } = useUiStore()
     const { username, password, onInputChange, isFormValid, onResetForm } = useForm(
-        initialForm,
+        loginForm,
         formValidations
     )
 

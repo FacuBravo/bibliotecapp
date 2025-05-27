@@ -32,9 +32,11 @@ export const useBooksStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add book')
 
             dispatch(addBook({ book: response.book }))
+            return true
         } catch (error) {
             console.error('Error adding book:', error)
             dispatch(setNotLoading({ error: 'Error al agregar el libro' }))
+            return false
         }
     }
 
