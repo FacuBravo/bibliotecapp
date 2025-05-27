@@ -1,12 +1,43 @@
+import { useEffect, useMemo } from 'react'
+
+import { SearchInput } from '../components/commons'
+import { useAuthStore, useBooksStore } from '../hooks'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
 import excelIcon from '../assets/images/icons/excel.png'
 import arrowIcon from '../assets/images/icons/Arrow.svg'
-import { SearchInput } from '../components/commons'
+import infoIcon from '../assets/images/icons/Info.svg'
+import trashIcon from '../assets/images/icons/Trash.svg'
 
 export const BooksPage = () => {
+    const { books, isLoading, startLoadingBooks, startAddingBook } = useBooksStore()
+    const { user } = useAuthStore()
+
+    const actions = useMemo(() => {
+        return (
+            user.sessionToken && (
+                <>
+                    <button className="btn_delete_book">
+                        <img id="btn_delete_book_${book.id}" src={trashIcon} alt="Delete" />
+                    </button>
+
+                    <button
+                        id="btn_loan_book_${book.id}"
+                        className="btn_loan_book ${book.borrowed == 1 ? 'hidden' : ''}"
+                    >
+                        Prestar
+                    </button>
+                </>
+            )
+        )
+    }, [user])
+
+    useEffect(() => {
+        startLoadingBooks()
+    }, [])
+
     return (
-        <main className="flex h-[calc(100vh-98px)] w-full flex-col bg-catalog bg-cover bg-center bg-no-repeat px-8">
-            <section className="flex h-[82px] w-full justify-between pb-4 pt-6">
+        <main className="flex h-[calc(100vh-98px)] w-full flex-col items-center bg-catalog bg-cover bg-center bg-no-repeat px-8">
+            <section className="flex h-[82px] w-4/5 justify-between pb-4 pt-6">
                 <div className="flex w-fit items-center gap-1 font-supermercado text-2xl text-pink_600">
                     <h1>Catálogo</h1>
 
@@ -22,7 +53,7 @@ export const BooksPage = () => {
                 <SearchInput />
             </section>
 
-            <table className="flex h-full w-full flex-col gap-6">
+            <table className="flex h-full w-4/5 flex-col gap-6">
                 <thead className="font-supermercado text-xl">
                     <tr className="flex items-center rounded-2xl bg-yellow_500 px-6 py-4 text-yellow_600 shadow-md transition-all">
                         <td className="flex w-[5%] cursor-pointer items-center">
@@ -34,6 +65,7 @@ export const BooksPage = () => {
                                 alt="Arrow"
                             />
                         </td>
+
                         <td className="flex w-[27%] cursor-pointer items-center">
                             Título
                             <img
@@ -43,6 +75,7 @@ export const BooksPage = () => {
                                 alt="Arrow"
                             />
                         </td>
+
                         <td className="flex w-[27%] cursor-pointer items-center">
                             Autor
                             <img
@@ -52,6 +85,7 @@ export const BooksPage = () => {
                                 alt="Arrow"
                             />
                         </td>
+
                         <td className="flex w-[27%] cursor-pointer items-center">
                             Tema
                             <img
@@ -61,11 +95,44 @@ export const BooksPage = () => {
                                 alt="Arrow"
                             />
                         </td>
+
                         <td className="w-[14%] items-center justify-end text-end">Acciones</td>
                     </tr>
                 </thead>
 
-                <tbody className="flex flex-col gap-6 font-assistant text-lg"></tbody>
+                <tbody className="flex flex-col gap-6 font-assistant text-lg">
+                    {books.map((book, index) => (
+                        <tr
+                            key={book.id}
+                            className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl px-6 py-4 text-yellow_600 shadow-md transition-all`}
+                        >
+                            <td className="w-[5%]">{book.inventory}</td>
+                            <td className="w-[27%]">{book.title}</td>
+                            <td className="w-[27%]">{book.author}</td>
+                            <td className="w-[27%]">{book.theme}</td>
+                            <td className="flex w-[14%] items-center justify-end gap-2 text-end">
+                                <button className="cursor-pointer bg-transparent">
+                                    <img src={infoIcon} alt="See more" />
+                                </button>
+
+                                {user.sessionToken && (
+                                    <>
+                                        <button className="cursor-pointer bg-transparent">
+                                            <img src={trashIcon} alt="Delete" />
+                                        </button>
+
+                                        {book.borrowed === 0 && (
+                                            <button className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white">
+                                                Prestar
+                                            </button>
+                                        )}
+                                    </>
+                                )}
+                                {book.borrowed == 1 && <p>Prestado</p>}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </main>
     )

@@ -5,7 +5,7 @@ export const addBook = (
     try {
         const book = db
             .prepare(
-                'INSERT INTO book (inventory, title, author, edition, place, editorial, year, theme, borrowed, collection) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)'
+                'INSERT INTO book (inventory, title, author, edition, place, editorial, year, theme, borrowed, collection) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?) RETURNING *'
             )
             .get(inventory, title, author, edition, place, editorial, year, theme, collection)
 
@@ -14,6 +14,7 @@ export const addBook = (
             book
         }
     } catch (error) {
+        console.error('Error al agregar el libro:', error)
         return {
             ok: false,
             msg: 'Error al agregar el libro'

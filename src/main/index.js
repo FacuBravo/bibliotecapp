@@ -28,7 +28,7 @@ function createWindow() {
         autoHideMenuBar: true,
         icon: process.platform === 'linux' ? { iconPng } : { iconIco },
         webPreferences: {
-            preload: join(__dirname, '../preload/index.js'),
+            preload: join(__dirname, '../preload/preload.js'),
             sandbox: false
         }
     })

@@ -64,7 +64,7 @@ export const Header = () => {
                         <Link
                             onClick={closeAll}
                             className="flex items-center gap-3 bg-transparent font-supermercado text-xl text-pink_500 decoration-0"
-                            to="/"
+                            to="/catalog"
                         >
                             <img src={bookIcon} alt="Book Icon" />
                             Catálogo

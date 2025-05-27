@@ -20,7 +20,7 @@ export const PrimaryInput = ({
 
             <label
                 htmlFor={name}
-                className="absolute left-2 top-0 z-[2] font-assistant text-base text-grey transition-all"
+                className="absolute left-2 top-0 z-[2] cursor-text font-assistant text-base text-grey transition-all"
             >
                 {label}
             </label>
