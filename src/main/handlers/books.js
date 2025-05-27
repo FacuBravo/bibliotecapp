@@ -44,16 +44,15 @@ export const updateBook = (
     { id, inventory, title, author, edition, place, editorial, year, theme, collection }
 ) => {
     try {
-        const data = db
+        const book = db
             .prepare(
-                'UPDATE book SET inventory = ?, title = ?, author = ?, edition = ?, place = ?, editorial = ?, year = ?, theme = ?, collection = ? WHERE id = ?'
+                'UPDATE book SET inventory = ?, title = ?, author = ?, edition = ?, place = ?, editorial = ?, year = ?, theme = ?, collection = ? WHERE id = ? RETURNING *'
             )
-            .run(inventory, title, author, edition, place, editorial, year, theme, collection, id)
-
-        if (data.changes === 0) throw new Error()
+            .get(inventory, title, author, edition, place, editorial, year, theme, collection, id)
 
         return {
-            ok: true
+            ok: true,
+            book
         }
     } catch (error) {
         return {

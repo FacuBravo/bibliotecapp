@@ -1,10 +1,11 @@
 import Modal from 'react-modal'
-import { useUiStore } from '../../hooks'
+import { useAuthStore, useUiStore } from '../../hooks'
 import { CloseButton } from '../commons'
 import pencilIcon from '../../assets/images/icons/Pencil.svg'
 
 export const BookModal = () => {
-    const { isBookModalOpen, closeBookModal, book } = useUiStore()
+    const { user } = useAuthStore()
+    const { isBookModalOpen, closeBookModal, book, openAddBookModal } = useUiStore()
 
     if (!book) {
         return null
@@ -19,23 +20,59 @@ export const BookModal = () => {
         >
             <section className="flex flex-col items-end">
                 <div className="flex gap-2">
-                    <button className="transition-transform hover:scale-90">
-                        <img src={pencilIcon} alt="Edit Icon" />
-                    </button>
+                    {user.sessionToken && (
+                        <button
+                            onClick={() => {
+                                closeBookModal()
+                                openAddBookModal(book)
+                            }}
+                            className="transition-transform hover:scale-90"
+                        >
+                            <img src={pencilIcon} alt="Edit Icon" />
+                        </button>
+                    )}
 
                     <CloseButton close={closeBookModal} />
                 </div>
 
-                <article className="flex w-[30vw] min-w-64 flex-col gap-2 font-assistant text-2xl text-black">
+                <article className="flex w-[30vw] min-w-80 flex-col gap-2 font-assistant text-2xl text-black">
+                    <h3 className="mb-2">
+                        Ficha de libro{' '}
+                        <strong>
+                            #{book.inventory} - "{book.title}"
+                        </strong>
+                    </h3>
                     <p>
-                        {book.author}. "{book.title}"
+                        <strong>Autor:</strong> {book.author}
                     </p>
+                    {book.edition && (
+                        <p>
+                            <strong>Edición:</strong> {book.edition}
+                        </p>
+                    )}
+                    {book.place && (
+                        <p>
+                            <strong>Lugar:</strong> {book.place}
+                        </p>
+                    )}
+                    {book.editorial && (
+                        <p>
+                            <strong>Editorial:</strong> {book.editorial}
+                        </p>
+                    )}
+                    {book.year && (
+                        <p>
+                            <strong>Año:</strong> {book.year}
+                        </p>
+                    )}
                     <p>
-                        {book.edition} {book.place} : {book.editorial},
+                        <strong>Tema:</strong> {book.theme}
                     </p>
-                    <p>{book.year}</p>
-                    <p>{book.theme}</p>
-                    <p>{book.collection}</p>
+                    {book.collection && (
+                        <p>
+                            <strong>Colección:</strong> {book.collection}
+                        </p>
+                    )}
                 </article>
                 <div className="absolute -bottom-12 -right-5 -z-10 h-32 w-32 rounded-full bg-blue_500"></div>
                 <div className="absolute -bottom-10 right-14 -z-10 h-20 w-20 rounded-full bg-pink_400"></div>

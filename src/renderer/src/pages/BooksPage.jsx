@@ -22,7 +22,7 @@ export const BooksPage = () => {
 
                         {user.sessionToken && (
                             <button
-                                onClick={openAddBookModal}
+                                onClick={() => openAddBookModal()}
                                 className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90"
                             >
                                 <img src={plusIcon} alt="Add Book" />

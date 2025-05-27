@@ -9,6 +9,7 @@ export const uiSlice = createSlice({
         isAddBookModalOpen: false,
         isBookModalOpen: false,
         book: null,
+        editBook: null,
         alert: {
             show: false,
             message: null,
@@ -22,24 +23,31 @@ export const uiSlice = createSlice({
         onCloseLoginModal: (state) => {
             state.isLoginModalOpen = false
         },
+
         onOpenRegisterModal: (state) => {
             state.isRegisterModalOpen = true
         },
         onCloseRegisterModal: (state) => {
             state.isRegisterModalOpen = false
         },
+
         onOpenLoanModal: (state) => {
             state.isLoanModalOpen = true
         },
         onCloseLoanModal: (state) => {
             state.isLoanModalOpen = false
         },
-        onOpenAddBookModal: (state) => {
+
+        onOpenAddBookModal: (state, { payload }) => {
             state.isAddBookModalOpen = true
+
+            if (payload.editBook) state.editBook = payload.editBook
         },
         onCloseAddBookModal: (state) => {
             state.isAddBookModalOpen = false
+            state.editBook = null
         },
+
         onOpenBookModal: (state, { payload }) => {
             state.isBookModalOpen = true
             state.book = payload.book
@@ -48,6 +56,7 @@ export const uiSlice = createSlice({
             state.isBookModalOpen = false
             state.book = null
         },
+
         onShowAlert: (state, { payload }) => {
             state.alert.show = true
             state.alert.message = payload.message

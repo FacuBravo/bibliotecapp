@@ -22,9 +22,7 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            const { ok } = await ipcRenderer.invoke('update-book', bookInfo)
-
-            return ok
+            return await ipcRenderer.invoke('update-book', bookInfo)
         } else {
             return null
         }

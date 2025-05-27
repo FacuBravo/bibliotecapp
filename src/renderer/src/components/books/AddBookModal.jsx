@@ -2,6 +2,7 @@ import Modal from 'react-modal'
 
 import { useBooksStore, useForm, useUiStore } from '../../hooks'
 import { CloseButton, PrimaryButton, SecondaryInput } from '../commons'
+import { useEffect, useState } from 'react'
 
 const addBookForm = {
     inventory: '',
@@ -14,6 +15,7 @@ const addBookForm = {
     theme: '',
     collection: ''
 }
+
 const formValidations = {
     inventory: [(value) => value.length > 0, 'El nombre de usuario es requerido'],
     title: [(value) => value.length > 0, 'El título es requerido'],
@@ -22,7 +24,9 @@ const formValidations = {
 }
 
 export const AddBookModal = () => {
-    const { isAddBookModalOpen, closeAddBookModal } = useUiStore()
+    const { isAddBookModalOpen, closeAddBookModal, editBook } = useUiStore()
+    const { startAddingBook, startUpdatingBook } = useBooksStore()
+
     const {
         inventory,
         title,
@@ -35,26 +39,52 @@ export const AddBookModal = () => {
         collection,
         onInputChange,
         isFormValid,
-        onResetForm
+        onResetForm,
+        setFormState
     } = useForm(addBookForm, formValidations)
-    const { startAddingBook } = useBooksStore()
+
+    useEffect(() => {
+        if (editBook !== null) {
+            setFormState({ ...editBook })
+        }
+
+        return () => {
+            setFormState(addBookForm)
+        }
+    }, [editBook])
 
     const onSubmit = async (event) => {
         event.preventDefault()
 
         if (!isFormValid) return
+        let res = false
 
-        const res = await startAddingBook({
-            inventory,
-            title,
-            author,
-            edition,
-            place,
-            editorial,
-            year,
-            theme,
-            collection
-        })
+        if (editBook === null) {
+            res = await startAddingBook({
+                inventory,
+                title,
+                author,
+                edition,
+                place,
+                editorial,
+                year,
+                theme,
+                collection
+            })
+        } else {
+            res = await startUpdatingBook({
+                id: editBook.id,
+                inventory,
+                title,
+                author,
+                edition,
+                place,
+                editorial,
+                year,
+                theme,
+                collection
+            })
+        }
 
         if (res) {
             onResetForm()
@@ -73,42 +103,54 @@ export const AddBookModal = () => {
                 <CloseButton close={closeAddBookModal} />
 
                 <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-12 px-6">
-                    <div className="grid grid-cols-2 gap-7">
-                        <SecondaryInput
-                            name="inventory"
-                            placeholder="Número #"
-                            isRequired
-                            onInputChange={onInputChange}
-                            value={inventory}
-                            type="number"
-                            label="Inventario"
-                        />
-                        <SecondaryInput
-                            name="title"
-                            placeholder="Rayuela"
-                            isRequired
-                            onInputChange={onInputChange}
-                            value={title}
-                            type="text"
-                            label="Título"
-                        />
-                        <SecondaryInput
-                            name="author"
-                            placeholder="Julio Cortázar"
-                            isRequired
-                            onInputChange={onInputChange}
-                            value={author}
-                            type="text"
-                            label="Autor"
-                        />
-                        <SecondaryInput
-                            name="edition"
-                            placeholder="Primera"
-                            onInputChange={onInputChange}
-                            value={edition}
-                            type="text"
-                            label="Edición"
-                        />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="col-span-2">
+                            <SecondaryInput
+                                name="inventory"
+                                placeholder="#"
+                                isRequired
+                                onInputChange={onInputChange}
+                                value={inventory}
+                                type="number"
+                                label="Número de inventario"
+                            />
+                        </div>
+
+                        <div className="col-span-2">
+                            <SecondaryInput
+                                name="title"
+                                placeholder="Rayuela"
+                                isRequired
+                                onInputChange={onInputChange}
+                                value={title}
+                                type="text"
+                                label="Título"
+                            />
+                        </div>
+
+                        <div className="col-span-2">
+                            <SecondaryInput
+                                name="author"
+                                placeholder="Julio Cortázar"
+                                isRequired
+                                onInputChange={onInputChange}
+                                value={author}
+                                type="text"
+                                label="Autor"
+                            />
+                        </div>
+
+                        <div className="col-span-2">
+                            <SecondaryInput
+                                name="edition"
+                                placeholder="Primera"
+                                onInputChange={onInputChange}
+                                value={edition}
+                                type="text"
+                                label="Edición"
+                            />
+                        </div>
+
                         <SecondaryInput
                             name="place"
                             placeholder="Buenos Aires"
@@ -117,14 +159,7 @@ export const AddBookModal = () => {
                             type="text"
                             label="Lugar de publicación"
                         />
-                        <SecondaryInput
-                            name="editorial"
-                            placeholder="Siglo XXI Editores"
-                            onInputChange={onInputChange}
-                            value={editorial}
-                            type="text"
-                            label="Editorial"
-                        />
+
                         <SecondaryInput
                             name="year"
                             placeholder="1963"
@@ -133,6 +168,18 @@ export const AddBookModal = () => {
                             type="number"
                             label="Año de publicación"
                         />
+
+                        <div className="col-span-2">
+                            <SecondaryInput
+                                name="editorial"
+                                placeholder="Siglo XXI Editores"
+                                onInputChange={onInputChange}
+                                value={editorial}
+                                type="text"
+                                label="Editorial"
+                            />
+                        </div>
+
                         <SecondaryInput
                             name="theme"
                             placeholder="Literatura"
@@ -142,6 +189,7 @@ export const AddBookModal = () => {
                             isRequired
                             label="Tema"
                         />
+
                         <SecondaryInput
                             name="collection"
                             placeholder="Literatura Universal"

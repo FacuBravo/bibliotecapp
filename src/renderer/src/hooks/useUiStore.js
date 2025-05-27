@@ -24,6 +24,7 @@ export const useUiStore = () => {
         isAddBookModalOpen,
         isBookModalOpen,
         book,
+        editBook,
         alert
     } = useSelector((state) => state.ui)
 
@@ -33,18 +34,25 @@ export const useUiStore = () => {
         isRegisterModalOpen,
         isAddBookModalOpen,
         isBookModalOpen,
-        ...alert,
+        alert,
         book,
+        editBook,
+
         openLoginModal: () => dispatch(onOpenLoginModal()),
         closeLoginModal: () => dispatch(onCloseLoginModal()),
+
         openRegisterModal: () => dispatch(onOpenRegisterModal()),
         closeRegisterModal: () => dispatch(onCloseRegisterModal()),
+
         openLoanModal: () => dispatch(onOpenLoanModal()),
         closeLoanModal: () => dispatch(onCloseLoanModal()),
-        openAddBookModal: () => dispatch(onOpenAddBookModal()),
+
+        openAddBookModal: (editBook = null) => dispatch(onOpenAddBookModal({ editBook })),
         closeAddBookModal: () => dispatch(onCloseAddBookModal()),
+
         openBookModal: (book) => dispatch(onOpenBookModal({ book })),
         closeBookModal: () => dispatch(onCloseBookModal()),
+
         onShowAlert: (message, type) => dispatch(onShowAlert({ message, type })),
         onHideAlert: () => dispatch(onHideAlert())
     }

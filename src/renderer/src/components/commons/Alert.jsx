@@ -6,7 +6,8 @@ import warningIcon from '../../assets/images/icons/Warning.svg'
 import errorIcon from '../../assets/images/icons/Error.svg'
 
 export const Alert = () => {
-    const { onHideAlert, show, type, message } = useUiStore()
+    const { alert, onHideAlert } = useUiStore()
+    const { show, type, message } = alert
 
     useEffect(() => {
         if (show) {

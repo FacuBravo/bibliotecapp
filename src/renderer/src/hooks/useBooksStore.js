@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { addBook, setBooks, setLoading, setNotLoading } from '../store/books/booksSlice'
+import { addBook, setBooks, setLoading, setNotLoading, updateBook } from '../store/books/booksSlice'
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
@@ -40,12 +40,33 @@ export const useBooksStore = () => {
         }
     }
 
+    const startUpdatingBook = async (book) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.booksApi.updateBook(book, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to update book')
+
+            dispatch(updateBook({ book: response.book }))
+            return true
+        } catch (error) {
+            console.error('Error adding book:', error)
+            dispatch(setNotLoading({ error: 'Error al actualizar el libro' }))
+            return false
+        }
+    }
+
     return {
         books,
         isLoading,
         error,
         counter,
+
         startLoadingBooks,
-        startAddingBook
+        startAddingBook,
+        startUpdatingBook
     }
 }

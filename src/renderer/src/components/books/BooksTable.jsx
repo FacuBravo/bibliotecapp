@@ -93,13 +93,13 @@ export const BooksTable = ({ filter }) => {
                                     onClick={() => openBookModal(book)}
                                     className="cursor-pointer bg-transparent"
                                 >
-                                    <img src={infoIcon} alt="See more" />
+                                    <img className="h-8 w-8" src={infoIcon} alt="See more" />
                                 </button>
 
                                 {user.sessionToken && (
                                     <>
                                         <button className="cursor-pointer bg-transparent">
-                                            <img src={trashIcon} alt="Delete" />
+                                            <img className="h-8 w-8" src={trashIcon} alt="Delete" />
                                         </button>
 
                                         {book.borrowed === 0 && (
