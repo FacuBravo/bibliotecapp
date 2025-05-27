@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom'
 
 import stackOfBooks from '../../assets/images/icons/Stack.svg'
 import reportIcon from '../../assets/images/icons/Report.svg'
+import { useBooksStore } from '../../hooks'
 
 export const BentoGrid = () => {
+    const { counter: booksCount } = useBooksStore()
+
     return (
         <section className="grid h-full max-h-[616px] w-full max-w-[616px] grid-cols-3 grid-rows-6 gap-4">
             <Link
@@ -41,7 +44,7 @@ export const BentoGrid = () => {
             </Link>
 
             <div className="col-span-1 row-span-1 flex flex-col justify-between rounded-3xl bg-gradient-to-l from-pink_500 to-pink_400 p-4 font-supermercado text-lg text-pink_600 shadow-lg">
-                <span className="font-barrio text-[32px]">0</span>
+                <span className="font-barrio text-[32px]">{booksCount}</span>
                 <h4>Libros cargados</h4>
             </div>
 

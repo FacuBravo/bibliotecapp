@@ -6,9 +6,9 @@ import infoIcon from '../../assets/images/icons/Info.svg'
 import trashIcon from '../../assets/images/icons/Trash.svg'
 
 export const BooksTable = ({ filter }) => {
-    const { books, startLoadingBooks } = useBooksStore()
+    const { books } = useBooksStore()
     const { user } = useAuthStore()
-    const [filteredBooks, setFilteredBooks] = useState()
+    const [filteredBooks, setFilteredBooks] = useState(books)
 
     useEffect(() => {
         if (filter !== '') {
@@ -25,11 +25,7 @@ export const BooksTable = ({ filter }) => {
         } else {
             setFilteredBooks(books)
         }
-    }, [filter])
-
-    useEffect(() => {
-        startLoadingBooks()
-    }, [])
+    }, [filter, books])
 
     return (
         <table className="flex h-full w-4/5 flex-col gap-6">
