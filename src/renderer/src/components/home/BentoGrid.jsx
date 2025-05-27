@@ -49,7 +49,7 @@ export const BentoGrid = () => {
             </div>
 
             <Link
-                to="/"
+                to="/users"
                 className="col-span-1 row-span-2 flex items-end rounded-3xl bg-gradient-to-b from-yellow_500 to-yellow_400 p-4 font-barrio text-xl text-yellow_600 shadow-lg"
             >
                 <h2>Usuarios</h2>

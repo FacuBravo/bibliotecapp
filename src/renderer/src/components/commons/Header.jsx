@@ -53,7 +53,7 @@ export const Header = () => {
                         <Link
                             onClick={closeAll}
                             className="flex items-center gap-3 bg-transparent font-supermercado text-xl text-blue_600 decoration-0"
-                            to="/"
+                            to="/users"
                         >
                             <img src={userIcon} alt="User Icon" />
                             Usuarios
