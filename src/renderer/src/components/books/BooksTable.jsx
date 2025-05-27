@@ -1,13 +1,31 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAuthStore, useBooksStore } from '../../hooks'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import infoIcon from '../../assets/images/icons/Info.svg'
 import trashIcon from '../../assets/images/icons/Trash.svg'
 
-export const BooksTable = () => {
+export const BooksTable = ({ filter }) => {
     const { books, startLoadingBooks } = useBooksStore()
     const { user } = useAuthStore()
+    const [filteredBooks, setFilteredBooks] = useState()
+
+    useEffect(() => {
+        if (filter !== '') {
+            setFilteredBooks(
+                books.filter((book) => {
+                    return (
+                        book.title.toLowerCase().includes(filter.toLowerCase()) ||
+                        book.author.toLowerCase().includes(filter.toLowerCase()) ||
+                        book.theme.toLowerCase().includes(filter.toLowerCase()) ||
+                        book.inventory.toString().toLowerCase().includes(filter.toLowerCase())
+                    )
+                })
+            )
+        } else {
+            setFilteredBooks(books)
+        }
+    }, [filter])
 
     useEffect(() => {
         startLoadingBooks()
@@ -62,7 +80,7 @@ export const BooksTable = () => {
             </thead>
 
             <tbody className="flex flex-col gap-6 font-assistant text-lg">
-                {books.map((book, index) => (
+                {filteredBooks.map((book, index) => (
                     <tr
                         key={book.id}
                         className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl px-6 py-4 text-yellow_600 shadow-md transition-all`}

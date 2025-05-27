@@ -2,8 +2,15 @@ import { SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
 import excelIcon from '../assets/images/icons/excel.png'
 import { BooksTable } from '../components/books/BooksTable'
+import { useForm } from '../hooks'
+
+const searchForm = {
+    filter: ''
+}
 
 export const BooksPage = () => {
+    const { filter, onInputChange } = useForm(searchForm)
+
     return (
         <main className="flex h-[calc(100vh-98px)] w-full flex-col items-center bg-catalog bg-cover bg-center bg-no-repeat px-8">
             <section className="flex h-[82px] w-4/5 justify-between pb-4 pt-6">
@@ -19,10 +26,10 @@ export const BooksPage = () => {
                     </button>
                 </div>
 
-                <SearchInput />
+                <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
             </section>
 
-            <BooksTable />
+            <BooksTable filter={filter} />
         </main>
     )
 }
