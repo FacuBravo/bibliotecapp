@@ -7,6 +7,8 @@ export const uiSlice = createSlice({
         isRegisterModalOpen: false,
         isLoanModalOpen: false,
         isAddBookModalOpen: false,
+        isBookModalOpen: false,
+        book: null,
         alert: {
             show: false,
             message: null,
@@ -38,6 +40,14 @@ export const uiSlice = createSlice({
         onCloseAddBookModal: (state) => {
             state.isAddBookModalOpen = false
         },
+        onOpenBookModal: (state, { payload }) => {
+            state.isBookModalOpen = true
+            state.book = payload.book
+        },
+        onCloseBookModal: (state) => {
+            state.isBookModalOpen = false
+            state.book = null
+        },
         onShowAlert: (state, { payload }) => {
             state.alert.show = true
             state.alert.message = payload.message
@@ -60,6 +70,8 @@ export const {
     onCloseRegisterModal,
     onOpenAddBookModal,
     onCloseAddBookModal,
+    onOpenBookModal,
+    onCloseBookModal,
     onShowAlert,
     onHideAlert
 } = uiSlice.actions
