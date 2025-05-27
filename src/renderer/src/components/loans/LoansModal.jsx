@@ -38,7 +38,7 @@ export const LoansModal = () => {
                             isRequired={true}
                             onInputChange={onInputChange}
                             value={date_end}
-                            type="text"
+                            type="date"
                         />
 
                         <div className="input_background"></div>

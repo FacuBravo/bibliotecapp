@@ -28,8 +28,8 @@ body {
     background-attachment: fixed;
 }
 
-.primary_input input:focus ~ span,
-.primary_input input:valid ~ span {
+.primary_input input:focus ~ label,
+.primary_input input:valid ~ label {
     transform: translateY(-100%);
     left: 0;
     font-size: 14px;

@@ -15,11 +15,15 @@ export const PrimaryInput = ({
                 value={value}
                 onChange={onInputChange}
                 required={isRequired}
+                id={name}
             />
 
-            <span className="absolute left-2 top-0 font-assistant text-base text-grey transition-all">
+            <label
+                htmlFor={name}
+                className="absolute left-2 top-0 z-[2] font-assistant text-base text-grey transition-all"
+            >
                 {label}
-            </span>
+            </label>
             <div className="input_background absolute bottom-0 h-full max-h-0.5 w-full rounded-lg bg-blue_500 transition-all"></div>
         </div>
     )
