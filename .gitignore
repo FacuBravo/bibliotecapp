@@ -7,3 +7,5 @@ out
 .vscode
 build
 mydb.db
+mydb.db-shm
+mydb.db-wal

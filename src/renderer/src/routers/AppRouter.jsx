@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { HomePage, LoansPage } from '../pages'
+import { BooksPage, HomePage, LoansPage } from '../pages'
 import { useAuthStore } from '../hooks'
 import { useEffect } from 'react'
 
@@ -14,6 +14,7 @@ export const AppRouter = () => {
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/loans" element={<LoansPage />} />
+            <Route path="/catalog" element={<BooksPage />} />
             <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
     )
