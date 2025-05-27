@@ -46,18 +46,18 @@ export const LoginModal = () => {
                 <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-12 px-6">
                     <div className="flex flex-col gap-7">
                         <PrimaryInput
-                            name={'username'}
-                            label={'Nombre de usuario'}
-                            isRequired={true}
+                            name="username"
+                            label="Nombre de usuario"
+                            isRequired
                             onInputChange={onInputChange}
                             value={username}
                             type="text"
                         />
 
                         <PrimaryInput
-                            name={'password'}
-                            label={'Contraseña'}
-                            isRequired={true}
+                            name="password"
+                            label="Contraseña"
+                            isRequired
                             onInputChange={onInputChange}
                             value={password}
                             type="password"
