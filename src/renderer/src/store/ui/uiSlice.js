@@ -7,13 +7,19 @@ export const uiSlice = createSlice({
         isRegisterModalOpen: false,
         isLoanModalOpen: false,
         isAddBookModalOpen: false,
+        editBook: null,
         isBookModalOpen: false,
         book: null,
-        editBook: null,
         alert: {
             show: false,
             message: null,
             type: null
+        },
+        confirmModal: {
+            show: false,
+            title: null,
+            message: null,
+            onConfirm: null
         }
     },
     reducers: {
@@ -66,6 +72,19 @@ export const uiSlice = createSlice({
             state.alert.show = false
             state.alert.message = null
             state.alert.type = null
+        },
+
+        onOpenConfirmModal: (state, { payload }) => {
+            state.confirmModal.show = true
+            state.confirmModal.title = payload.title
+            state.confirmModal.message = payload.message
+            state.confirmModal.onConfirm = payload.onConfirm
+        },
+        onCloseConfirmModal: (state) => {
+            state.confirmModal.show = false
+            state.confirmModal.title = null
+            state.confirmModal.message = null
+            state.confirmModal.onConfirm = null
         }
     }
 })
@@ -73,14 +92,22 @@ export const uiSlice = createSlice({
 export const {
     onOpenLoginModal,
     onCloseLoginModal,
+
     onOpenLoanModal,
     onCloseLoanModal,
+
     onOpenRegisterModal,
     onCloseRegisterModal,
+
     onOpenAddBookModal,
     onCloseAddBookModal,
+
     onOpenBookModal,
     onCloseBookModal,
+
     onShowAlert,
-    onHideAlert
+    onHideAlert,
+
+    onOpenConfirmModal,
+    onCloseConfirmModal
 } = uiSlice.actions

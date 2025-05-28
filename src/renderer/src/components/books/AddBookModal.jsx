@@ -2,7 +2,7 @@ import Modal from 'react-modal'
 
 import { useBooksStore, useForm, useUiStore } from '../../hooks'
 import { CloseButton, PrimaryButton, SecondaryInput } from '../commons'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const addBookForm = {
     inventory: '',

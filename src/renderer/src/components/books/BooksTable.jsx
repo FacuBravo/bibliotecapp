@@ -7,10 +7,10 @@ import trashIcon from '../../assets/images/icons/Trash.svg'
 import { BookModal } from './BookModal'
 
 export const BooksTable = ({ filter }) => {
-    const { books } = useBooksStore()
+    const { books, startDeletingBook } = useBooksStore()
     const { user } = useAuthStore()
     const [filteredBooks, setFilteredBooks] = useState(books)
-    const { openBookModal } = useUiStore()
+    const { openBookModal, openConfirmModal } = useUiStore()
 
     useEffect(() => {
         if (filter !== '') {
@@ -28,6 +28,10 @@ export const BooksTable = ({ filter }) => {
             setFilteredBooks(books)
         }
     }, [filter, books])
+
+    const deleteBook = (id) => {
+        startDeletingBook({ id })
+    }
 
     return (
         <>
@@ -98,7 +102,16 @@ export const BooksTable = ({ filter }) => {
 
                                 {user.sessionToken && (
                                     <>
-                                        <button className="cursor-pointer bg-transparent">
+                                        <button
+                                            onClick={() =>
+                                                openConfirmModal({
+                                                    title: '¿Eliminar libro?',
+                                                    message: 'Esta acción no se puede deshacer',
+                                                    onConfirm: () => deleteBook(book.id)
+                                                })
+                                            }
+                                            className="cursor-pointer bg-transparent"
+                                        >
                                             <img className="h-8 w-8" src={trashIcon} alt="Delete" />
                                         </button>
 

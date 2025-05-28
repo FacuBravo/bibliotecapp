@@ -2,12 +2,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     onCloseAddBookModal,
     onCloseBookModal,
+    onCloseConfirmModal,
     onCloseLoanModal,
     onCloseLoginModal,
     onCloseRegisterModal,
     onHideAlert,
     onOpenAddBookModal,
     onOpenBookModal,
+    onOpenConfirmModal,
     onOpenLoanModal,
     onOpenLoginModal,
     onOpenRegisterModal,
@@ -25,7 +27,8 @@ export const useUiStore = () => {
         isBookModalOpen,
         book,
         editBook,
-        alert
+        alert,
+        confirmModal
     } = useSelector((state) => state.ui)
 
     return {
@@ -37,6 +40,7 @@ export const useUiStore = () => {
         alert,
         book,
         editBook,
+        confirmModal,
 
         openLoginModal: () => dispatch(onOpenLoginModal()),
         closeLoginModal: () => dispatch(onCloseLoginModal()),
@@ -54,6 +58,9 @@ export const useUiStore = () => {
         closeBookModal: () => dispatch(onCloseBookModal()),
 
         onShowAlert: (message, type) => dispatch(onShowAlert({ message, type })),
-        onHideAlert: () => dispatch(onHideAlert())
+        onHideAlert: () => dispatch(onHideAlert()),
+
+        openConfirmModal: (payload) => dispatch(onOpenConfirmModal(payload)),
+        closeConfirmModal: () => dispatch(onCloseConfirmModal())
     }
 }

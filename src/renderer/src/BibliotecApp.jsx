@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Header, LoginModal, RegisterModal, Alert } from './components/commons'
+import { Header, LoginModal, RegisterModal, Alert, ConfirmModal } from './components/commons'
 import { AppRouter } from './routers/AppRouter'
 import { useAuthStore, useUiStore } from './hooks'
 
@@ -18,6 +18,7 @@ export const BibliotecApp = () => {
             <LoginModal />
             <RegisterModal />
             <Alert />
+            <ConfirmModal />
         </>
     )
 }

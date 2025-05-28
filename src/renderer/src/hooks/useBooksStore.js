@@ -1,5 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { addBook, setBooks, setLoading, setNotLoading, updateBook } from '../store/books/booksSlice'
+import {
+    addBook,
+    deleteBook,
+    setBooks,
+    setLoading,
+    setNotLoading,
+    updateBook
+} from '../store/books/booksSlice'
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
@@ -53,8 +60,27 @@ export const useBooksStore = () => {
             dispatch(updateBook({ book: response.book }))
             return true
         } catch (error) {
-            console.error('Error adding book:', error)
+            console.error('Error updating book:', error)
             dispatch(setNotLoading({ error: 'Error al actualizar el libro' }))
+            return false
+        }
+    }
+
+    const startDeletingBook = async ({ id }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.booksApi.deleteBook(id, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to delete book')
+
+            dispatch(deleteBook({ id }))
+            return true
+        } catch (error) {
+            console.error('Error deleting book:', error)
+            dispatch(setNotLoading({ error: 'Error al eliminar el libro' }))
             return false
         }
     }
@@ -67,6 +93,7 @@ export const useBooksStore = () => {
 
         startLoadingBooks,
         startAddingBook,
-        startUpdatingBook
+        startUpdatingBook,
+        startDeletingBook
     }
 }

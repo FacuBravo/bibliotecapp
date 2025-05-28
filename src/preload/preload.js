@@ -28,11 +28,11 @@ const booksApi = {
         }
     },
     getBooks: async () => ipcRenderer.invoke('get-books'),
-    deleteBook: async (callback, id, token) => {
+    deleteBook: async (id, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('get-book', id)
+            return ipcRenderer.invoke('delete-book', { id })
         }
 
         return null
