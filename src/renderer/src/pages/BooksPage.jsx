@@ -1,8 +1,11 @@
 import { SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
+// import exportIcon from '../assets/images/icons/Export.svg'
+// import importIcon from '../assets/images/icons/Import.svg'
 import excelIcon from '../assets/images/icons/excel.png'
-import { BooksTable, AddBookModal } from '../components/books'
-import { useAuthStore, useForm, useUiStore } from '../hooks'
+import { BooksTable, AddBookModal, BooksFileFunctions } from '../components/books'
+import { useAuthStore, useBooksStore, useForm, useUiStore } from '../hooks'
+import { exportToJSON } from '../helpers'
 
 const searchForm = {
     filter: ''
@@ -33,6 +36,8 @@ export const BooksPage = () => {
                             <img src={excelIcon} alt="To Excel" />
                         </button>
                     </div>
+
+                    <BooksFileFunctions />
 
                     <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
                 </section>

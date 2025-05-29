@@ -85,6 +85,49 @@ export const useBooksStore = () => {
         }
     }
 
+    const multipleAddBooks = async (books) => {
+        const isBooksArray = checkIfIsBooksArray(books)
+
+        if (!isBooksArray) return
+
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            if (counter > 0) {
+                const deleteResponse = await window.booksApi.deleteAllBooks(user.sessionToken)
+
+                if (!deleteResponse.ok)
+                    throw new Error(deleteResponse.msg || 'Failed to delete books')
+            }
+
+            const response = await window.booksApi.addMultipleBooks(books, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to add books')
+
+            dispatch(setBooks({ books: response.books }))
+
+            return true
+        } catch (error) {
+            console.error('Error adding books:', error)
+            dispatch(setNotLoading({ error: 'Error al agregar los libros' }))
+            return false
+        }
+    }
+
+    const checkIfIsBooksArray = (books) => {
+        if (!Array.isArray(books)) return false
+
+        for (const book of books) {
+            if (typeof book !== 'object') return false
+
+            if (!book.inventory || !book.title || !book.author || !book.theme) return false
+        }
+
+        return true
+    }
+
     return {
         books,
         isLoading,
@@ -94,6 +137,7 @@ export const useBooksStore = () => {
         startLoadingBooks,
         startAddingBook,
         startUpdatingBook,
-        startDeletingBook
+        startDeletingBook,
+        multipleAddBooks
     }
 }

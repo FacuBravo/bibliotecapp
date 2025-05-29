@@ -45,6 +45,24 @@ const booksApi = {
         }
 
         return null
+    },
+    addMultipleBooks: async (books, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke('add-multiple-books', books)
+        }
+
+        return null
+    },
+    deleteAllBooks: async (token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke('delete-all-books')
+        }
+
+        return null
     }
 }
 

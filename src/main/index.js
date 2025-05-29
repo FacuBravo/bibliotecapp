@@ -7,7 +7,9 @@ import iconPng from '../../resources/icon.png'
 import iconIco from '../../resources/icon.ico'
 import {
     addBook,
+    addMultipleBooks,
     checkSessionToken,
+    deleteAllBooks,
     deleteBook,
     getBook,
     getBooks,
@@ -149,6 +151,10 @@ function setBooksHandlers() {
     ipcMain.handle('get-book', (_, { id }) => getBook(db, { id }))
 
     ipcMain.handle('delete-book', (_, { id }) => deleteBook(db, { id }))
+
+    ipcMain.handle('add-multiple-books', (_, books) => addMultipleBooks(db, books))
+
+    ipcMain.handle('delete-all-books', () => deleteAllBooks(db))
 }
 
 app.on('window-all-closed', () => {

@@ -110,3 +110,58 @@ export const deleteBook = (db, { id }) => {
         }
     }
 }
+
+export const addMultipleBooks = (db, books) => {
+    try {
+        const insert = db.prepare(
+            'INSERT INTO book (inventory, title, author, edition, place, editorial, year, theme, borrowed, collection) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *'
+        )
+
+        let booksResponse = []
+
+        for (const book of books) {
+            booksResponse.push(
+                insert.get(
+                    book.inventory,
+                    book.title,
+                    book.author,
+                    book.edition,
+                    book.place,
+                    book.editorial,
+                    book.year,
+                    book.theme,
+                    book.borrowed,
+                    book.collection
+                )
+            )
+        }
+
+        return {
+            ok: true,
+            books: booksResponse
+        }
+    } catch (error) {
+        console.error('Error al agregar libros:', error)
+        return {
+            ok: false,
+            msg: 'Error al agregar libros'
+        }
+    }
+}
+
+export const deleteAllBooks = (db) => {
+    try {
+        const data = db.prepare('DELETE FROM book').run()
+
+        if (data.changes === 0) throw new Error()
+
+        return {
+            ok: true
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al eliminar libros'
+        }
+    }
+}
