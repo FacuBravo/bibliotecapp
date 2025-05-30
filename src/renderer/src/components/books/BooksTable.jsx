@@ -7,7 +7,7 @@ import trashIcon from '../../assets/images/icons/Trash.svg'
 import { BookModal } from './BookModal'
 
 export const BooksTable = ({ filter }) => {
-    const { books, startDeletingBook } = useBooksStore()
+    const { books, startDeletingBook, orderBy, sortBy } = useBooksStore()
     const { user } = useAuthStore()
     const [filteredBooks, setFilteredBooks] = useState(books)
     const { openBookModal, openConfirmModal } = useUiStore()
@@ -37,44 +37,68 @@ export const BooksTable = ({ filter }) => {
         <>
             <table className="flex h-full w-4/5 flex-col gap-6">
                 <thead className="font-supermercado text-xl">
-                    <tr className="flex items-center rounded-2xl bg-yellow_500 px-6 py-4 text-yellow_600 shadow-md transition-all">
-                        <td className="flex w-[5%] cursor-pointer items-center">
+                    <tr className="flex items-center rounded-2xl bg-yellow_500 px-6 py-4 text-yellow_600 shadow-md">
+                        <td
+                            onClick={() => sortBy('inventory')}
+                            className="flex w-[5%] cursor-pointer items-center"
+                        >
                             #
                             <img
-                                className="sort_img"
-                                id="arrow_order_by_n"
+                                className={
+                                    (orderBy.field === 'inventory'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        : 'hidden') + ' transition-transform'
+                                }
                                 src={arrowIcon}
-                                alt="Arrow"
+                                alt="Arrow Icon"
                             />
                         </td>
 
-                        <td className="flex w-[27%] cursor-pointer items-center">
+                        <td
+                            onClick={() => sortBy('title')}
+                            className="flex w-[27%] cursor-pointer items-center"
+                        >
                             Título
                             <img
-                                className="sort_img hidden"
-                                id="arrow_order_by_title"
+                                className={
+                                    (orderBy.field === 'title'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        : 'hidden') + ' transition-transform'
+                                }
                                 src={arrowIcon}
-                                alt="Arrow"
+                                alt="Arrow Icon"
                             />
                         </td>
 
-                        <td className="flex w-[27%] cursor-pointer items-center">
+                        <td
+                            onClick={() => sortBy('author')}
+                            className="flex w-[27%] cursor-pointer items-center"
+                        >
                             Autor
                             <img
-                                className="sort_img hidden"
-                                id="arrow_order_by_author"
+                                className={
+                                    (orderBy.field === 'author'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        : 'hidden') + ' transition-transform'
+                                }
                                 src={arrowIcon}
-                                alt="Arrow"
+                                alt="Arrow Icon"
                             />
                         </td>
 
-                        <td className="flex w-[27%] cursor-pointer items-center">
+                        <td
+                            onClick={() => sortBy('theme')}
+                            className="flex w-[27%] cursor-pointer items-center"
+                        >
                             Tema
                             <img
-                                className="sort_img hidden"
-                                id="arrow_order_by_theme"
+                                className={
+                                    (orderBy.field === 'theme'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        : 'hidden') + ' transition-transform'
+                                }
                                 src={arrowIcon}
-                                alt="Arrow"
+                                alt="Arrow Icon"
                             />
                         </td>
 
@@ -86,7 +110,7 @@ export const BooksTable = ({ filter }) => {
                     {filteredBooks.map((book, index) => (
                         <tr
                             key={book.id}
-                            className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl px-6 py-4 text-yellow_600 shadow-md transition-all`}
+                            className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl px-6 py-4 text-yellow_600 shadow-md`}
                         >
                             <td className="w-[5%]">{book.inventory}</td>
                             <td className="w-[27%]">{book.title}</td>

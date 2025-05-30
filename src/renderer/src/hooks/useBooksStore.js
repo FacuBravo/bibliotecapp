@@ -7,11 +7,16 @@ import {
     setNotLoading,
     updateBook
 } from '../store/books/booksSlice'
+import { useState } from 'react'
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
     const { books, isLoading, error, counter } = useSelector((state) => state.books)
     const { user } = useSelector((state) => state.auth)
+    const [orderBy, setOrderBy] = useState({
+        field: 'inventory',
+        order: 'asc'
+    })
 
     const startLoadingBooks = async () => {
         dispatch(setLoading())
@@ -128,16 +133,36 @@ export const useBooksStore = () => {
         return true
     }
 
+    const sortBy = (field) => {
+        if (field !== 'inventory' && field !== 'title' && field !== 'author' && field !== 'theme')
+            return
+
+        setOrderBy({
+            field,
+            order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+        })
+
+        const sortedBooks = [...books].sort((a, b) => {
+            if (a[field] < b[field]) return orderBy.order === 'asc' ? -1 : 1
+            if (a[field] > b[field]) return orderBy.order === 'asc' ? 1 : -1
+            return 0
+        })
+
+        dispatch(setBooks({ books: sortedBooks }))
+    }
+
     return {
         books,
         isLoading,
         error,
         counter,
+        orderBy,
 
         startLoadingBooks,
         startAddingBook,
         startUpdatingBook,
         startDeletingBook,
-        multipleAddBooks
+        multipleAddBooks,
+        sortBy
     }
 }

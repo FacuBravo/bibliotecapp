@@ -64,7 +64,7 @@ export const updateBook = (
 
 export const getBooks = (db) => {
     try {
-        const books = db.prepare('SELECT * FROM book').all()
+        const books = db.prepare('SELECT * FROM book ORDER BY inventory').all()
 
         return {
             ok: true,

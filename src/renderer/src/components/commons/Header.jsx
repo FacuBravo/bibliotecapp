@@ -17,6 +17,7 @@ export const Header = () => {
     const [showUserNav, setShowUserNav] = useState(false)
 
     const toggleMainNav = () => setShowMainNav(!showMainNav)
+
     const toggleUserNav = () => setShowUserNav(!showUserNav)
 
     const closeAll = () => {
@@ -31,7 +32,7 @@ export const Header = () => {
             </button>
 
             <nav
-                className={`${showMainNav ? 'opacity-100' : 'opacity-0'} absolute left-0 top-[98px] z-20 overflow-hidden rounded-br-3xl border-b-[3px] border-r-[3px] border-solid border-green_600 bg-green_400 px-6 py-4 pl-6 transition-opacity`}
+                className={`${!showMainNav && 'hidden'} absolute left-0 top-[98px] z-20 overflow-hidden rounded-br-3xl border-b-[3px] border-r-[3px] border-solid border-green_600 bg-green_400 px-6 py-4 pl-6 transition-opacity`}
             >
                 <ul className="flex list-none flex-col gap-4">
                     <li>
@@ -106,7 +107,7 @@ export const Header = () => {
             </button>
 
             <nav
-                className={`${showUserNav ? 'opacity-100' : 'opacity-0'} absolute right-0 top-[98px] z-20 overflow-hidden rounded-bl-3xl border-0 border-b-[3px] border-l-[3px] border-solid border-green_600 bg-green_400 px-6 py-4 transition-opacity`}
+                className={`${!showUserNav && 'hidden'} absolute right-0 top-[98px] z-20 overflow-hidden rounded-bl-3xl border-0 border-b-[3px] border-l-[3px] border-solid border-green_600 bg-green_400 px-6 py-4 transition-opacity`}
             >
                 <ul className="flex list-none flex-col gap-4">
                     {status === 'authenticated' ? (
