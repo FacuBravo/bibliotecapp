@@ -6,7 +6,11 @@ export const booksSlice = createSlice({
         books: [],
         isLoading: true,
         error: null,
-        counter: 0
+        counter: 0,
+        orderBy: {
+            field: 'inventory',
+            order: 'asc'
+        }
     },
     reducers: {
         setLoading: (state) => {
@@ -35,9 +39,13 @@ export const booksSlice = createSlice({
         deleteBook: (state, { payload }) => {
             state.books = state.books.filter((book) => book.id !== payload.id)
             state.counter -= 1
+        },
+        setOrderBy: (state, { payload }) => {
+            state.orderBy.field = payload.field
+            state.orderBy.order = payload.order
         }
     }
 })
 
-export const { setBooks, setLoading, setNotLoading, addBook, updateBook, deleteBook } =
+export const { setBooks, setLoading, setNotLoading, addBook, updateBook, deleteBook, setOrderBy } =
     booksSlice.actions

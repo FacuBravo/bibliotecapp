@@ -5,20 +5,18 @@ import {
     setBooks,
     setLoading,
     setNotLoading,
+    setOrderBy,
     updateBook
 } from '../store/books/booksSlice'
 import { useState } from 'react'
+import { orderObjectsArray } from '../helpers'
 
 const validFields = ['inventory', 'title', 'author', 'theme']
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
-    const { books, isLoading, error, counter } = useSelector((state) => state.books)
+    const { books, isLoading, error, counter, orderBy } = useSelector((state) => state.books)
     const { user } = useSelector((state) => state.auth)
-    const [orderBy, setOrderBy] = useState({
-        field: 'inventory',
-        order: 'desc'
-    })
 
     const startLoadingBooks = async () => {
         dispatch(setLoading())
@@ -138,16 +136,17 @@ export const useBooksStore = () => {
     const sortBy = (field) => {
         if (!validFields.includes(field)) return
 
-        setOrderBy({
-            field,
-            order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
-        })
+        const newOrder =
+            orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
 
-        const sortedBooks = [...books].sort((a, b) => {
-            if (a[field] < b[field]) return orderBy.order === 'asc' ? -1 : 1
-            if (a[field] > b[field]) return orderBy.order === 'asc' ? 1 : -1
-            return 0
-        })
+        dispatch(
+            setOrderBy({
+                field,
+                order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+            })
+        )
+
+        const sortedBooks = orderObjectsArray([...books], field, newOrder)
 
         dispatch(setBooks({ books: sortedBooks }))
     }

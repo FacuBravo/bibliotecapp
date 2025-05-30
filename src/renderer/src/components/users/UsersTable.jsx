@@ -38,7 +38,7 @@ export const UsersTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'id'
-                                        ? orderBy.order === 'desc' && 'rotate-180'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}
@@ -53,7 +53,7 @@ export const UsersTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'surname'
-                                        ? orderBy.order === 'desc' && 'rotate-180'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}
@@ -68,7 +68,7 @@ export const UsersTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'type'
-                                        ? orderBy.order === 'desc' && 'rotate-180'
+                                        ? orderBy.order === 'asc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}

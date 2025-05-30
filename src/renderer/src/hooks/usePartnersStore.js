@@ -5,20 +5,17 @@ import {
     setPartners,
     setLoading,
     setNotLoading,
-    updatePartner
+    updatePartner,
+    setOrderBy
 } from '../store/partners/partnersSlice'
-import { useState } from 'react'
+import { orderObjectsArray } from '../helpers'
 
 const validFields = ['id', 'surname', 'type']
 
 export const usePartnersStore = () => {
     const dispatch = useDispatch()
-    const { partners, isLoading, error, counter } = useSelector((state) => state.partners)
+    const { partners, isLoading, error, counter, orderBy } = useSelector((state) => state.partners)
     const { user } = useSelector((state) => state.auth)
-    const [orderBy, setOrderBy] = useState({
-        field: 'id',
-        order: 'desc'
-    })
 
     const startLoadingPartners = async () => {
         dispatch(setLoading())
@@ -141,16 +138,17 @@ export const usePartnersStore = () => {
     const sortBy = (field) => {
         if (!validFields.includes(field)) return
 
-        setOrderBy({
-            field,
-            order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
-        })
+        const newOrder =
+            orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
 
-        const sortedPartners = [...partners].sort((a, b) => {
-            if (a[field] < b[field]) return orderBy.order === 'asc' ? -1 : 1
-            if (a[field] > b[field]) return orderBy.order === 'asc' ? 1 : -1
-            return 0
-        })
+        dispatch(
+            setOrderBy({
+                field,
+                order: newOrder
+            })
+        )
+
+        const sortedPartners = orderObjectsArray([...partners], field, newOrder)
 
         dispatch(setPartners({ partners: sortedPartners }))
     }

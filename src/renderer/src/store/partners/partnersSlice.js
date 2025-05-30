@@ -6,7 +6,11 @@ export const partnersSlice = createSlice({
         partners: [],
         isLoading: true,
         error: null,
-        counter: 0
+        counter: 0,
+        orderBy: {
+            field: 'id',
+            order: 'asc'
+        }
     },
     reducers: {
         setLoading: (state) => {
@@ -35,9 +39,20 @@ export const partnersSlice = createSlice({
         deletePartner: (state, { payload }) => {
             state.partners = state.partners.filter((partner) => partner.id !== payload.id)
             state.counter -= 1
+        },
+        setOrderBy: (state, { payload }) => {
+            state.orderBy.field = payload.field
+            state.orderBy.order = payload.order
         }
     }
 })
 
-export const { setPartners, setLoading, setNotLoading, addPartner, updatePartner, deletePartner } =
-    partnersSlice.actions
+export const {
+    setPartners,
+    setLoading,
+    setNotLoading,
+    addPartner,
+    updatePartner,
+    deletePartner,
+    setOrderBy
+} = partnersSlice.actions
