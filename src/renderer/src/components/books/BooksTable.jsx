@@ -7,8 +7,8 @@ import trashIcon from '../../assets/images/icons/Trash.svg'
 import { BookModal } from './BookModal'
 
 export const BooksTable = ({ filter }) => {
-    const { books, startDeletingBook, orderBy, sortBy } = useBooksStore()
     const { user } = useAuthStore()
+    const { books, startDeletingBook, orderBy, sortBy } = useBooksStore()
     const [filteredBooks, setFilteredBooks] = useState(books)
     const { openBookModal, openConfirmModal } = useUiStore()
 
@@ -107,6 +107,20 @@ export const BooksTable = ({ filter }) => {
                 </thead>
 
                 <tbody className="flex flex-col gap-6 font-assistant text-lg">
+                    {filteredBooks.length === 0 ? (
+                        filter !== '' ? (
+                            <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
+                                <td className="w-full text-center">No hay resultados</td>
+                            </tr>
+                        ) : (
+                            <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
+                                <td className="w-full text-center">No hay libros</td>
+                            </tr>
+                        )
+                    ) : (
+                        <></>
+                    )}
+
                     {filteredBooks.map((book, index) => (
                         <tr
                             key={book.id}
