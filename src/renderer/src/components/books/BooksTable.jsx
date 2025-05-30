@@ -46,7 +46,7 @@ export const BooksTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'inventory'
-                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        ? orderBy.order === 'desc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}
@@ -62,7 +62,7 @@ export const BooksTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'title'
-                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        ? orderBy.order === 'desc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}
@@ -78,7 +78,7 @@ export const BooksTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'author'
-                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        ? orderBy.order === 'desc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}
@@ -94,7 +94,7 @@ export const BooksTable = ({ filter }) => {
                             <img
                                 className={
                                     (orderBy.field === 'theme'
-                                        ? orderBy.order === 'asc' && 'rotate-180'
+                                        ? orderBy.order === 'desc' && 'rotate-180'
                                         : 'hidden') + ' transition-transform'
                                 }
                                 src={arrowIcon}

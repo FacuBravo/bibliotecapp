@@ -9,13 +9,15 @@ import {
 } from '../store/books/booksSlice'
 import { useState } from 'react'
 
+const validFields = ['inventory', 'title', 'author', 'theme']
+
 export const useBooksStore = () => {
     const dispatch = useDispatch()
     const { books, isLoading, error, counter } = useSelector((state) => state.books)
     const { user } = useSelector((state) => state.auth)
     const [orderBy, setOrderBy] = useState({
         field: 'inventory',
-        order: 'asc'
+        order: 'desc'
     })
 
     const startLoadingBooks = async () => {
@@ -134,9 +136,9 @@ export const useBooksStore = () => {
     }
 
     const sortBy = (field) => {
-        if (field !== 'inventory' && field !== 'title' && field !== 'author' && field !== 'theme')
-            return
+        if (!validFields.includes(field)) return
 
+        console.log(orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc')
         setOrderBy({
             field,
             order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
