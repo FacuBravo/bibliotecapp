@@ -9,7 +9,7 @@ import {
 } from '../store/partners/partnersSlice'
 import { useState } from 'react'
 
-const validFields = ['id', 'name', 'type', 'state']
+const validFields = ['id', 'surname', 'type']
 
 export const usePartnersStore = () => {
     const dispatch = useDispatch()

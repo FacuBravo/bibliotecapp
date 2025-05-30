@@ -1,0 +1,52 @@
+import infoIcon from '../../assets/images/icons/Info.svg'
+import trashIcon from '../../assets/images/icons/Trash.svg'
+import { useAuthStore, usePartnersStore, useUiStore } from '../../hooks'
+
+export const UserRow = ({ partner, index }) => {
+    const { user } = useAuthStore()
+    const { openConfirmModal } = useUiStore()
+    const { startDeletingPartner } = usePartnersStore()
+
+    const deletePartner = () => {
+        startDeletingPartner({ id: partner.id })
+    }
+
+    return (
+        <tr
+            className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md`}
+        >
+            <td className="w-[5%]">{partner.id}</td>
+            <td className="w-[27%]">
+                {partner.surname}, {partner.name}
+            </td>
+            <td className="w-[27%]">{partner.type}</td>
+            <td className="w-[27%]">Activo</td>
+            <td className="flex w-[14%] items-center justify-end gap-2 text-end">
+                <button className="cursor-pointer bg-transparent">
+                    <img src={infoIcon} alt="See more Icon" />
+                </button>
+
+                {user.sessionToken && (
+                    <>
+                        <button
+                            onClick={() =>
+                                openConfirmModal({
+                                    title: '¿Eliminar usuario?',
+                                    message: 'Esta acción no se puede deshacer',
+                                    onConfirm: deletePartner
+                                })
+                            }
+                            className="cursor-pointer bg-transparent"
+                        >
+                            <img src={trashIcon} alt="Delete Icon" />
+                        </button>
+
+                        <button className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white">
+                            Prestar
+                        </button>
+                    </>
+                )}
+            </td>
+        </tr>
+    )
+}

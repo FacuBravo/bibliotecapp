@@ -1,4 +1,5 @@
 export * from './BooksTable'
+export * from './BookRow'
 export * from './AddBookModal'
 export * from './BookModal'
 export * from './BooksFileFunctions'
