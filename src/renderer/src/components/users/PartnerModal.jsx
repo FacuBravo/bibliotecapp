@@ -3,11 +3,11 @@ import { useAuthStore, useUiStore } from '../../hooks'
 import { CloseButton } from '../commons'
 import pencilIcon from '../../assets/images/icons/Pencil.svg'
 
-export const BookModal = () => {
+export const PartnerModal = () => {
     const { user } = useAuthStore()
-    const { isBookModalOpen, closeBookModal, book, openAddBookModal } = useUiStore()
+    const { isPartnerModalOpen, closePartnerModal, partner, openAddPartnerModal } = useUiStore()
 
-    if (!book) {
+    if (!partner) {
         return null
     }
 
@@ -15,16 +15,16 @@ export const BookModal = () => {
         <Modal
             className="absolute bottom-auto left-1/2 right-auto top-1/2 z-50 -mr-[50%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl bg-white p-4 shadow-lg"
             overlayClassName="fixed bottom-0 left-0 right-0 top-0 z-40 bg-black/30"
-            isOpen={isBookModalOpen}
-            onRequestClose={closeBookModal}
+            isOpen={isPartnerModalOpen}
+            onRequestClose={closePartnerModal}
         >
             <section className="flex flex-col items-end">
                 <div className="flex gap-2">
                     {user.sessionToken && (
                         <button
                             onClick={() => {
-                                closeBookModal()
-                                openAddBookModal(book)
+                                closePartnerModal()
+                                openAddPartnerModal(partner)
                             }}
                             className="transition-transform hover:scale-90"
                         >
@@ -32,43 +32,27 @@ export const BookModal = () => {
                         </button>
                     )}
 
-                    <CloseButton close={closeBookModal} />
+                    <CloseButton close={closePartnerModal} />
                 </div>
 
                 <article className="flex w-[30vw] min-w-80 flex-col gap-2 font-assistant text-2xl text-black">
-                    <h3 className="mb-2">
-                        <strong>Ficha de libro:</strong>
-                        <br />#{book.inventory} - "{book.title}"
+                    <h3>
+                        <strong>Usuario #{partner.id}:</strong> {partner.surname}, {partner.name}
                     </h3>
-                    <p>
-                        <strong>Autor:</strong> {book.author}
-                    </p>
-                    {book.edition && (
+                    {partner.grade && (
                         <p>
-                            <strong>Edición:</strong> {book.edition}
+                            <strong>Grado:</strong> {partner.grade}
                         </p>
                     )}
-                    {book.place && (
+                    {partner.section && (
                         <p>
-                            <strong>Lugar:</strong> {book.place}
+                            <strong>Sección:</strong> {partner.section}
                         </p>
                     )}
-                    {book.editorial && (
+
+                    {partner.type && (
                         <p>
-                            <strong>Editorial:</strong> {book.editorial}
-                        </p>
-                    )}
-                    {book.year && (
-                        <p>
-                            <strong>Año:</strong> {book.year}
-                        </p>
-                    )}
-                    <p>
-                        <strong>Tema:</strong> {book.theme}
-                    </p>
-                    {book.collection && (
-                        <p>
-                            <strong>Colección:</strong> {book.collection}
+                            <strong>Tipo:</strong> {partner.type}
                         </p>
                     )}
                 </article>

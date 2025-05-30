@@ -10,6 +10,10 @@ export const uiSlice = createSlice({
         editBook: null,
         isBookModalOpen: false,
         book: null,
+        isAddPartnerModalOpen: false,
+        editPartner: null,
+        isPartnerModalOpen: false,
+        partner: null,
         alert: {
             show: false,
             message: null,
@@ -63,6 +67,25 @@ export const uiSlice = createSlice({
             state.book = null
         },
 
+        onOpenAddPartnerModal: (state, { payload }) => {
+            state.isAddPartnerModalOpen = true
+
+            if (payload.editPartner) state.editPartner = payload.editPartner
+        },
+        onCloseAddPartnerModal: (state) => {
+            state.isAddPartnerModalOpen = false
+            state.editPartner = null
+        },
+
+        onOpenPartnerModal: (state, { payload }) => {
+            state.isPartnerModalOpen = true
+            state.partner = payload.partner
+        },
+        onClosePartnerModal: (state) => {
+            state.isPartnerModalOpen = false
+            state.partner = null
+        },
+
         onShowAlert: (state, { payload }) => {
             state.alert.show = true
             state.alert.message = payload.message
@@ -104,6 +127,12 @@ export const {
 
     onOpenBookModal,
     onCloseBookModal,
+
+    onOpenAddPartnerModal,
+    onCloseAddPartnerModal,
+
+    onOpenPartnerModal,
+    onClosePartnerModal,
 
     onShowAlert,
     onHideAlert,

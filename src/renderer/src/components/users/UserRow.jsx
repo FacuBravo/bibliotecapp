@@ -4,8 +4,8 @@ import { useAuthStore, usePartnersStore, useUiStore } from '../../hooks'
 
 export const UserRow = ({ partner, index }) => {
     const { user } = useAuthStore()
-    const { openConfirmModal } = useUiStore()
     const { startDeletingPartner } = usePartnersStore()
+    const { openPartnerModal, openConfirmModal } = useUiStore()
 
     const deletePartner = () => {
         startDeletingPartner({ id: partner.id })
@@ -22,7 +22,10 @@ export const UserRow = ({ partner, index }) => {
             <td className="w-[27%]">{partner.type}</td>
             <td className="w-[27%]">Activo</td>
             <td className="flex w-[14%] items-center justify-end gap-2 text-end">
-                <button className="cursor-pointer bg-transparent">
+                <button
+                    onClick={() => openPartnerModal(partner)}
+                    className="cursor-pointer bg-transparent"
+                >
                     <img src={infoIcon} alt="See more Icon" />
                 </button>
 
