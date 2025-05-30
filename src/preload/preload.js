@@ -1,12 +1,12 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcMain, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { IpcKeys } from '../helpers'
 
 const sessionApi = {
-    register: (user) => ipcRenderer.invoke('register', user),
-    login: (user) => ipcRenderer.invoke('login', user),
-    logout: () => ipcRenderer.invoke('logout'),
-    checkSessionToken: (check) => ipcRenderer.invoke('check-session-token', check)
+    register: (user) => ipcRenderer.invoke(IpcKeys.SESSION.REGISTER, user),
+    login: (user) => ipcRenderer.invoke(IpcKeys.SESSION.LOGIN, user),
+    logout: () => ipcRenderer.invoke(IpcKeys.SESSION.LOGOUT),
+    checkSessionToken: (check) => ipcRenderer.invoke(IpcKeys.SESSION.CHECK_SESSION, check)
 }
 
 const booksApi = {
@@ -14,7 +14,7 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('add-book', bookInfo)
+            return ipcRenderer.invoke(IpcKeys.BOOK.ADD, bookInfo)
         }
 
         return null
@@ -23,17 +23,17 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return await ipcRenderer.invoke('update-book', bookInfo)
+            return await ipcRenderer.invoke(IpcKeys.BOOK.UPDATE, bookInfo)
         } else {
             return null
         }
     },
-    getBooks: async () => ipcRenderer.invoke('get-books'),
+    getBooks: async () => ipcRenderer.invoke(IpcKeys.BOOK.GET_ALL),
     deleteBook: async (id, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('delete-book', { id })
+            return ipcRenderer.invoke(IpcKeys.BOOK.DELETE, { id })
         }
 
         return null
@@ -42,7 +42,7 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('set-book-state', id, borrowed)
+            return ipcRenderer.invoke(IpcKeys.BOOK.SET_STATE, id, borrowed)
         }
 
         return null
@@ -51,7 +51,7 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('add-multiple-books', books)
+            return ipcRenderer.invoke(IpcKeys.BOOK.ADD_MULTIPLE, books)
         }
 
         return null
@@ -60,7 +60,7 @@ const booksApi = {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke('delete-all-books')
+            return ipcRenderer.invoke(IpcKeys.BOOK.DELETE_ALL)
         }
 
         return null

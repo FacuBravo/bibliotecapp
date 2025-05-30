@@ -141,27 +141,29 @@ function createTables() {
 }
 
 function setSessionHandlers() {
-    ipcMain.handle('register', (_, { username, password }) => register(db, username, password))
-    ipcMain.handle('login', (_, { username, password }) => login(db, username, password))
-    ipcMain.handle('check-session-token', (_, { sessionToken }) => checkSessionToken(sessionToken))
-    ipcMain.handle('logout', () => logout())
+    ipcMain.handle(IpcKeys.SESSION.REGISTER, (_, { username, password }) => register(db, username, password))
+    ipcMain.handle(IpcKeys.SESSION.LOGIN, (_, { username, password }) => login(db, username, password))
+    ipcMain.handle(IpcKeys.SESSION.CHECK_SESSION, (_, { sessionToken }) => checkSessionToken(sessionToken))
+    ipcMain.handle(IpcKeys.SESSION.LOGOUT, () => logout())
 }
 
 function setBooksHandlers() {
-    ipcMain.handle('add-book', (_, bookInfo) => addBook(db, bookInfo))
+    ipcMain.handle(IpcKeys.BOOK.ADD, (_, bookInfo) => addBook(db, bookInfo))
 
-    ipcMain.handle('set-book-state', (_, { id, borrowed }) => setBookState(db, { id, borrowed }))
+    ipcMain.handle(IpcKeys.BOOK.SET_STATE, (_, { id, borrowed }) =>
+        setBookState(db, { id, borrowed })
+    )
 
-    ipcMain.handle('update-book', (_, bookInfo) => updateBook(db, bookInfo))
-    ipcMain.handle('get-books', () => getBooks(db))
+    ipcMain.handle(IpcKeys.BOOK.UPDATE, (_, bookInfo) => updateBook(db, bookInfo))
+    ipcMain.handle(IpcKeys.BOOK.GET_ALL, () => getBooks(db))
 
-    ipcMain.handle('get-book', (_, { id }) => getBook(db, { id }))
+    ipcMain.handle(IpcKeys.BOOK.GET, (_, { id }) => getBook(db, { id }))
 
-    ipcMain.handle('delete-book', (_, { id }) => deleteBook(db, { id }))
+    ipcMain.handle(IpcKeys.BOOK.DELETE, (_, { id }) => deleteBook(db, { id }))
 
-    ipcMain.handle('add-multiple-books', (_, books) => addMultipleBooks(db, books))
+    ipcMain.handle(IpcKeys.BOOK.ADD_MULTIPLE, (_, books) => addMultipleBooks(db, books))
 
-    ipcMain.handle('delete-all-books', () => deleteAllBooks(db))
+    ipcMain.handle(IpcKeys.BOOK.DELETE_ALL, () => deleteAllBooks(db))
 }
 
 function setPartnersHandlers() {
