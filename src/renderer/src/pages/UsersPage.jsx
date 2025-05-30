@@ -1,14 +1,15 @@
 import { SearchInput } from '../components/commons'
-import { useForm } from '../hooks'
+import { useAuthStore, useForm } from '../hooks'
 import plusPinkIcon from '../assets/images/icons/Plus_pink.svg'
 import excelIcon from '../assets/images/icons/excel.png'
-import { UsersTable } from '../components/users/UsersTable'
+import { UsersTable, PartnersFileFunctions } from '../components/users'
 
 const searchForm = {
     filter: ''
 }
 
 export const UsersPage = () => {
+    const { user } = useAuthStore()
     const { filter, onInputChange } = useForm(searchForm)
 
     return (
@@ -17,14 +18,18 @@ export const UsersPage = () => {
                 <div className="flex w-fit items-center gap-1 font-supermercado text-2xl text-pink_600">
                     <h1>Usuarios</h1>
 
-                    <button className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90">
-                        <img src={plusPinkIcon} alt="Add User Icon" />
-                    </button>
+                    {user.sessionToken && (
+                        <button className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90">
+                            <img src={plusPinkIcon} alt="Add User Icon" />
+                        </button>
+                    )}
 
                     <button className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90">
                         <img src={excelIcon} alt="To Excel Icon" />
                     </button>
                 </div>
+
+                <PartnersFileFunctions />
 
                 <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
             </section>

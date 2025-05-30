@@ -2,26 +2,26 @@ import { useEffect, useRef } from 'react'
 import exportIcon from '../../assets/images/icons/Export.svg'
 import importIcon from '../../assets/images/icons/Import.svg'
 import { exportToJSON } from '../../helpers'
-import { useAuthStore, useBooksStore, useImports, useUiStore } from '../../hooks'
+import { useAuthStore, useImports, usePartnersStore, useUiStore } from '../../hooks'
 
-export const BooksFileFunctions = () => {
+export const PartnersFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
-    const { books, multipleAddBooks } = useBooksStore()
-    const { startImportingCatalog, file: importedBooks, resetFile } = useImports()
+    const { partners, multipleAddPartners } = usePartnersStore()
+    const { startImportingPartners, file: importedPartners, resetFile } = useImports()
     const { openConfirmModal } = useUiStore()
 
     useEffect(() => {
-        if (importedBooks) {
-            multipleAddBooks(importedBooks)
+        if (importedPartners) {
+            multipleAddPartners(importedPartners)
             resetFile()
         }
-    }, [importedBooks])
+    }, [importedPartners])
 
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return
 
-        startImportingCatalog(target.files[0])
+        startImportingPartners(target.files[0])
         target.value = ''
     }
 
@@ -30,7 +30,7 @@ export const BooksFileFunctions = () => {
     return (
         <div className="flex gap-4">
             <button
-                onClick={() => exportToJSON(books, 'catalogo.json')}
+                onClick={() => exportToJSON(partners, 'usuarios.json')}
                 className="flex cursor-pointer items-center gap-2 bg-transparent font-supermercado text-2xl text-pink_600 transition-transform hover:scale-95"
             >
                 <img className="h-6 w-6" src={exportIcon} alt="Export JSON Icon" />
@@ -41,8 +41,9 @@ export const BooksFileFunctions = () => {
                 <button
                     onClick={() =>
                         openConfirmModal({
-                            title: 'Importar Catálogo',
-                            message: 'Está acción borrará todos los libros actuales',
+                            title: 'Importar Usuarios',
+                            message:
+                                'Está acción borrará todos los usuarios actuales y los préstamos',
                             onConfirm: openLoadImportFile
                         })
                     }

@@ -1,15 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BooksPage, HomePage, LoansPage, UsersPage } from '../pages'
-import { useAuthStore, useBooksStore } from '../hooks'
+import { useAuthStore, useBooksStore, usePartnersStore } from '../hooks'
 import { useEffect } from 'react'
 
 export const AppRouter = () => {
     const { checkAuthToken } = useAuthStore()
     const { startLoadingBooks } = useBooksStore()
+    const { startLoadingPartners } = usePartnersStore()
 
     useEffect(() => {
         checkAuthToken()
         startLoadingBooks()
+        startLoadingPartners()
     }, [])
 
     return (

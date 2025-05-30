@@ -138,7 +138,6 @@ export const useBooksStore = () => {
     const sortBy = (field) => {
         if (!validFields.includes(field)) return
 
-        console.log(orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc')
         setOrderBy({
             field,
             order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'

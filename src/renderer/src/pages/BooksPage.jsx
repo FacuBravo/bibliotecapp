@@ -1,11 +1,8 @@
 import { SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
-// import exportIcon from '../assets/images/icons/Export.svg'
-// import importIcon from '../assets/images/icons/Import.svg'
 import excelIcon from '../assets/images/icons/excel.png'
 import { BooksTable, AddBookModal, BooksFileFunctions } from '../components/books'
-import { useAuthStore, useBooksStore, useForm, useUiStore } from '../hooks'
-import { exportToJSON } from '../helpers'
+import { useAuthStore, useForm, useUiStore } from '../hooks'
 
 const searchForm = {
     filter: ''
