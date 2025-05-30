@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { getRandomToken } from '../../helpers/getRandomToken'
+import { getRandomToken } from '../../helpers'
 let session = null
 
 export const register = (db, username, password) => {

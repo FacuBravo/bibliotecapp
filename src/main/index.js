@@ -8,17 +8,25 @@ import iconIco from '../../resources/icon.ico'
 import {
     addBook,
     addMultipleBooks,
+    addMultiplePartners,
+    addPartner,
     checkSessionToken,
     deleteAllBooks,
+    deleteAllPartners,
     deleteBook,
+    deletePartner,
     getBook,
     getBooks,
+    getPartner,
+    getPartners,
     login,
     logout,
     register,
     setBookState,
-    updateBook
+    updateBook,
+    updatePartner
 } from './handlers'
+import { IpcKeys } from '../helpers'
 
 let db
 
@@ -60,8 +68,6 @@ app.whenReady().then(() => {
         optimizer.watchWindowShortcuts(window)
     })
 
-    ipcMain.on('ping', () => console.log('pong'))
-
     createWindow()
 
     app.on('activate', function () {
@@ -81,6 +87,7 @@ function createDb() {
 
     setSessionHandlers()
     setBooksHandlers()
+    setPartnersHandlers()
 }
 
 function createTables() {
@@ -155,6 +162,21 @@ function setBooksHandlers() {
     ipcMain.handle('add-multiple-books', (_, books) => addMultipleBooks(db, books))
 
     ipcMain.handle('delete-all-books', () => deleteAllBooks(db))
+}
+
+function setPartnersHandlers() {
+    ipcMain.handle(IpcKeys.PARTNER.ADD, (_, partnerInfo) => addPartner(db, partnerInfo))
+
+    ipcMain.handle(IpcKeys.PARTNER.UPDATE, (_, partnerInfo) => updatePartner(db, partnerInfo))
+    ipcMain.handle(IpcKeys.PARTNER.GET_ALL, () => getPartners(db))
+
+    ipcMain.handle(IpcKeys.PARTNER.GET, (_, { id }) => getPartner(db, { id }))
+
+    ipcMain.handle(IpcKeys.PARTNER.DELETE, (_, { id }) => deletePartner(db, { id }))
+
+    ipcMain.handle(IpcKeys.PARTNER.ADD_MULTIPLE, (_, partners) => addMultiplePartners(db, partners))
+
+    ipcMain.handle(IpcKeys.PARTNER.DELETE_ALL, () => deleteAllPartners(db))
 }
 
 app.on('window-all-closed', () => {
