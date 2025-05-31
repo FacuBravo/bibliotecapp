@@ -1,10 +1,12 @@
+import { v4 as uuidv4 } from 'uuid'
+
 export const addPartner = (db, { name, surname, grade, section, type }) => {
     try {
         const partner = db
             .prepare(
-                'INSERT INTO partner (name, surname, grade, section, type) VALUES (?, ?, ?, ?, ?) RETURNING *'
+                'INSERT INTO partner (id_card, name, surname, grade, section, type) VALUES (?, ?, ?, ?, ?, ?) RETURNING *'
             )
-            .get(name, surname, grade, section, type)
+            .get(uuidv4(), name, surname, grade, section, type)
 
         return {
             ok: true,
@@ -91,7 +93,7 @@ export const deletePartner = (db, { id }) => {
 export const addMultiplePartners = (db, partners) => {
     try {
         const insert = db.prepare(
-            'INSERT INTO partner (name, surname, grade, section, type) VALUES (?, ?, ?, ?, ?) RETURNING *'
+            'INSERT INTO partner (id_card, name, surname, grade, section, type) VALUES (?, ?, ?, ?, ?, ?) RETURNING *'
         )
 
         let partnersResponse = []
@@ -99,6 +101,7 @@ export const addMultiplePartners = (db, partners) => {
         for (const partner of partners) {
             partnersResponse.push(
                 insert.get(
+                    partner.id_card,
                     partner.name,
                     partner.surname,
                     partner.grade,

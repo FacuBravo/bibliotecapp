@@ -101,6 +101,7 @@ function createTables() {
     db.prepare(
         `CREATE TABLE IF NOT EXISTS partner (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            id_card INTEGER UNIQUE,
             name varchar(100), 
             surname varchar(100), 
             grade varchar(20), 
@@ -134,7 +135,7 @@ function createTables() {
             FOREIGN KEY (book_id) REFERENCES book (id) 
             ON DELETE CASCADE 
             ON UPDATE CASCADE,
-            FOREIGN KEY (partner_id) REFERENCES partner (id) 
+            FOREIGN KEY (partner_id) REFERENCES partner (id_card) 
             ON DELETE CASCADE 
             ON UPDATE CASCADE)`
     ).run()
