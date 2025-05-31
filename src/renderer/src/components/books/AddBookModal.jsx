@@ -17,7 +17,7 @@ const addBookForm = {
 }
 
 const formValidations = {
-    inventory: [(value) => value.length > 0, 'El nombre de usuario es requerido'],
+    inventory: [(value) => value.length > 0, 'El numero de inventario es requerido'],
     title: [(value) => value.length > 0, 'El título es requerido'],
     author: [(value) => value.length > 0, 'El autor es requerido'],
     theme: [(value) => value.length > 0, 'El tema es requerido']

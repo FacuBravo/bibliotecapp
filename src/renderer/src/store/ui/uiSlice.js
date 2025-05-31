@@ -10,6 +10,8 @@ export const uiSlice = createSlice({
         editBook: null,
         isBookModalOpen: false,
         book: null,
+        isDuplicateBookModalOpen: false,
+        duplicateBook: null,
         isAddPartnerModalOpen: false,
         editPartner: null,
         isPartnerModalOpen: false,
@@ -65,6 +67,15 @@ export const uiSlice = createSlice({
         onCloseBookModal: (state) => {
             state.isBookModalOpen = false
             state.book = null
+        },
+
+        onOpenDuplicateBookModal: (state, { payload }) => {
+            state.isDuplicateBookModalOpen = true
+            state.duplicateBook = payload.duplicateBook
+        },
+        onCloseDuplicateBookModal: (state) => {
+            state.isDuplicateBookModalOpen = false
+            state.duplicateBook = null
         },
 
         onOpenAddPartnerModal: (state, { payload }) => {
@@ -127,6 +138,9 @@ export const {
 
     onOpenBookModal,
     onCloseBookModal,
+
+    onOpenDuplicateBookModal,
+    onCloseDuplicateBookModal,
 
     onOpenAddPartnerModal,
     onCloseAddPartnerModal,

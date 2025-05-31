@@ -2,10 +2,12 @@ import Modal from 'react-modal'
 import { useAuthStore, useUiStore } from '../../hooks'
 import { CloseButton } from '../commons'
 import pencilIcon from '../../assets/images/icons/Pencil.svg'
+import duplicateIcon from '../../assets/images/icons/Duplicate.svg'
 
 export const BookModal = () => {
     const { user } = useAuthStore()
-    const { isBookModalOpen, closeBookModal, book, openAddBookModal } = useUiStore()
+    const { isBookModalOpen, closeBookModal, book, openAddBookModal, openDuplicateBookModal } =
+        useUiStore()
 
     if (!book) {
         return null
@@ -21,15 +23,27 @@ export const BookModal = () => {
             <section className="flex flex-col items-end">
                 <div className="flex gap-2">
                     {user.sessionToken && (
-                        <button
-                            onClick={() => {
-                                closeBookModal()
-                                openAddBookModal(book)
-                            }}
-                            className="transition-transform hover:scale-90"
-                        >
-                            <img src={pencilIcon} alt="Edit Icon" />
-                        </button>
+                        <>
+                            <button
+                                onClick={() => {
+                                    openDuplicateBookModal(book)
+                                    closeBookModal()
+                                }}
+                                className="transition-transform hover:scale-90"
+                            >
+                                <img src={duplicateIcon} alt="Duplicate Icon" />
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    openAddBookModal(book)
+                                    closeBookModal()
+                                }}
+                                className="transition-transform hover:scale-90"
+                            >
+                                <img src={pencilIcon} alt="Edit Icon" />
+                            </button>
+                        </>
                     )}
 
                     <CloseButton close={closeBookModal} />

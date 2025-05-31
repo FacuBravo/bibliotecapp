@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useBooksStore } from '../../hooks'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
-import { BookModal } from './BookModal'
-import { BookRow } from './BookRow'
+import { BookModal, DuplicateBookModal, BookRow } from './'
 
 export const BooksTable = ({ filter }) => {
     const { books, orderBy, sortBy } = useBooksStore()
@@ -121,6 +120,7 @@ export const BooksTable = ({ filter }) => {
             </table>
 
             <BookModal />
+            <DuplicateBookModal />
         </>
     )
 }

@@ -10,6 +10,7 @@ export const BookRow = ({ book, index }) => {
     const deleteBook = (id) => {
         startDeletingBook({ id })
     }
+
     return (
         <tr
             className={`${index % 2 === 0 ? 'bg-yellow_400' : 'bg-yellow_500'} flex items-center rounded-2xl px-6 py-4 text-yellow_600 shadow-md`}

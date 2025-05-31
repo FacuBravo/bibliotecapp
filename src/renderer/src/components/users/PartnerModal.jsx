@@ -23,8 +23,8 @@ export const PartnerModal = () => {
                     {user.sessionToken && (
                         <button
                             onClick={() => {
-                                closePartnerModal()
                                 openAddPartnerModal(partner)
+                                closePartnerModal()
                             }}
                             className="transition-transform hover:scale-90"
                         >
