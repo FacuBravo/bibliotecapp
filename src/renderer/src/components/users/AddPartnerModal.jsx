@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
 
 import { usePartnersStore, useForm, useUiStore } from '../../hooks'
-import { CloseButton, PrimaryButton, SecondaryInput } from '../commons'
+import { CloseButton, PrimaryButton, RadioInput, SecondaryInput } from '../commons'
 import { useEffect } from 'react'
 
 const addPartnerForm = {
@@ -134,14 +134,16 @@ export const AddPartnerModal = () => {
                         />
 
                         <div className="col-span-2">
-                            <SecondaryInput
+                            <RadioInput
                                 name="type"
-                                placeholder="Estudiante | Docente"
                                 onInputChange={onInputChange}
                                 isRequired
                                 value={type}
-                                type="text"
                                 label="Tipo"
+                                options={[
+                                    { value: 'Estudiante', label: 'Estudiante' },
+                                    { value: 'Docente', label: 'Docente' }
+                                ]}
                             />
                         </div>
                     </div>
