@@ -1,7 +1,6 @@
 import { SearchInput } from '../components/commons'
 import { useAuthStore, useForm, useUiStore } from '../hooks'
 import plusPinkIcon from '../assets/images/icons/Plus_pink.svg'
-import excelIcon from '../assets/images/icons/excel.png'
 import { UsersTable, PartnersFileFunctions, AddPartnerModal } from '../components/users'
 
 const searchForm = {
@@ -28,10 +27,6 @@ export const UsersPage = () => {
                                 <img src={plusPinkIcon} alt="Add User Icon" />
                             </button>
                         )}
-
-                        <button className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90">
-                            <img src={excelIcon} alt="To Excel Icon" />
-                        </button>
                     </div>
 
                     <PartnersFileFunctions />

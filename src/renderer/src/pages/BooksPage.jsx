@@ -1,6 +1,5 @@
 import { SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
-import excelIcon from '../assets/images/icons/excel.png'
 import { BooksTable, AddBookModal, BooksFileFunctions } from '../components/books'
 import { useAuthStore, useForm, useUiStore } from '../hooks'
 
@@ -28,10 +27,6 @@ export const BooksPage = () => {
                                 <img src={plusIcon} alt="Add Book" />
                             </button>
                         )}
-
-                        <button className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90">
-                            <img src={excelIcon} alt="To Excel" />
-                        </button>
                     </div>
 
                     <BooksFileFunctions />
