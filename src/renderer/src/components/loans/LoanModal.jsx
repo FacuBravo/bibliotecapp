@@ -10,7 +10,7 @@ const formValidations = {
     date_end: [(value) => value.length > 0, 'El nombre de usuario es requerido']
 }
 
-export const LoansModal = () => {
+export const LoanModal = () => {
     const { isLoanModalOpen, closeLoanModal } = useUiStore()
     const { date_end, onInputChange } = useForm(initialForm, formValidations)
 

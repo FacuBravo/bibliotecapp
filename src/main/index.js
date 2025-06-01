@@ -127,12 +127,12 @@ function createTables() {
     db.prepare(
         `CREATE TABLE IF NOT EXISTS loan (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            date_start DATE, 
-            date_end DATE, 
+            date_start INTEGER, 
+            date_end INTEGER, 
             returned INTEGER,
             book_id INTEGER, 
             partner_id INTEGER,
-            FOREIGN KEY (book_id) REFERENCES book (id) 
+            FOREIGN KEY (book_id) REFERENCES book (inventory) 
             ON DELETE CASCADE 
             ON UPDATE CASCADE,
             FOREIGN KEY (partner_id) REFERENCES partner (id_card) 

@@ -1,11 +1,13 @@
-import { useAuthStore, useBooksStore, useUiStore } from '../../hooks'
+import { useAuthStore, useBooksStore, useLoansStore, useUiStore } from '../../hooks'
 import infoIcon from '../../assets/images/icons/Info.svg'
 import trashIcon from '../../assets/images/icons/Trash.svg'
+import { Link } from 'react-router-dom'
 
 export const BookRow = ({ book, index }) => {
     const { user } = useAuthStore()
     const { startDeletingBook } = useBooksStore()
     const { openBookModal, openConfirmModal } = useUiStore()
+    const { setLoanBook } = useLoansStore()
 
     const deleteBook = (id) => {
         startDeletingBook({ id })
@@ -43,9 +45,13 @@ export const BookRow = ({ book, index }) => {
                         </button>
 
                         {book.borrowed === 0 && (
-                            <button className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white">
+                            <Link
+                                onClick={() => setLoanBook(book)}
+                                to="/loans"
+                                className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white"
+                            >
                                 Prestar
-                            </button>
+                            </Link>
                         )}
                     </>
                 )}

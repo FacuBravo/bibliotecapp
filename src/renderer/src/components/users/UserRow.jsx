@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom'
 import infoIcon from '../../assets/images/icons/Info.svg'
 import trashIcon from '../../assets/images/icons/Trash.svg'
-import { useAuthStore, usePartnersStore, useUiStore } from '../../hooks'
+import { useAuthStore, useLoansStore, usePartnersStore, useUiStore } from '../../hooks'
 
 export const UserRow = ({ partner, index }) => {
     const { user } = useAuthStore()
     const { startDeletingPartner } = usePartnersStore()
     const { openPartnerModal, openConfirmModal } = useUiStore()
+    const { setLoanPartner } = useLoansStore()
 
     const deletePartner = () => {
         startDeletingPartner({ id: partner.id })
@@ -44,9 +46,13 @@ export const UserRow = ({ partner, index }) => {
                             <img src={trashIcon} alt="Delete Icon" />
                         </button>
 
-                        <button className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white">
+                        <Link
+                            onClick={() => setLoanPartner(partner)}
+                            className="cursor-pointer rounded-lg bg-orange_600 p-2 text-white"
+                            to="/loans"
+                        >
                             Prestar
-                        </button>
+                        </Link>
                     </>
                 )}
             </td>
