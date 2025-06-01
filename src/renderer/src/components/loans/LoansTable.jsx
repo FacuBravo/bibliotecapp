@@ -11,8 +11,14 @@ export const LoansTable = ({ filter = '' }) => {
             setFilteredLoans(
                 loans.filter((loan) => {
                     return (
-                        loan.book.title.toLowerCase().includes(filter.toLowerCase()) ||
-                        loan.partner.name.toLowerCase().includes(filter.toLowerCase())
+                        loan.book_id.toString().toLowerCase().includes(filter.toLowerCase()) ||
+                        loan.auto_partner_id
+                            .toString()
+                            .toLowerCase()
+                            .includes(filter.toLowerCase()) ||
+                        loan.title.toLowerCase().includes(filter.toLowerCase()) ||
+                        loan.name.toLowerCase().includes(filter.toLowerCase()) ||
+                        loan.surname.toLowerCase().includes(filter.toLowerCase())
                     )
                 })
             )

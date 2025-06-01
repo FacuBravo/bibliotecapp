@@ -1,14 +1,19 @@
 import { SearchInput } from '../components/commons'
 import { LoanModal, LoansTable } from '../components/loans'
-import { useLoansStore, useUiStore } from '../hooks'
+import { useForm, useLoansStore, useUiStore } from '../hooks'
 import bookGreen from '../assets/images/icons/Book_green.svg'
 import loanBlue from '../assets/images/icons/Loan_blue.svg'
 import userOrange from '../assets/images/icons/User_orange.svg'
 import { Link } from 'react-router-dom'
 
+const searchForm = {
+    filter: ''
+}
+
 export const LoansPage = () => {
     const { openLoanModal } = useUiStore()
     const { partner, book } = useLoansStore()
+    const { filter, onInputChange } = useForm(searchForm)
 
     return (
         <>
@@ -20,11 +25,13 @@ export const LoansPage = () => {
                     <article className="flex h-80 w-72 flex-col items-center justify-between rounded-3xl border-4 border-solid border-green_600 bg-green_400 py-10 font-supermercado text-2xl text-green_600 shadow-md">
                         <h2>Cargar Libro</h2>
                         <img src={bookGreen} alt="Book Icon" />
+
                         {book !== null && (
                             <p className="w-64 overflow-hidden text-ellipsis whitespace-nowrap text-center font-assistant">
                                 {book.title}
                             </p>
                         )}
+
                         <Link
                             to="/catalog"
                             className="flex h-12 w-32 items-center justify-center rounded-lg bg-green_600 font-barrio text-2xl text-green_400 decoration-0 shadow-md"
@@ -44,11 +51,13 @@ export const LoansPage = () => {
                     <article className="flex h-80 w-72 flex-col items-center justify-between rounded-3xl border-4 border-solid border-orange_600 bg-yellow_400 py-10 font-supermercado text-2xl text-orange_600 shadow-md">
                         <h2>Cargar Usuario</h2>
                         <img src={userOrange} alt="User Icon" />
+
                         {partner !== null && (
                             <p className="w-64 overflow-hidden text-ellipsis whitespace-nowrap text-center font-assistant">
                                 {partner.surname + ', ' + partner.name}
                             </p>
                         )}
+
                         <Link
                             to="/users"
                             className="flex h-12 w-32 items-center justify-center rounded-lg bg-orange_600 font-barrio text-2xl text-yellow_400 decoration-0 shadow-md"
@@ -64,10 +73,10 @@ export const LoansPage = () => {
                             <h1>Préstamos</h1>
                         </div>
 
-                        <SearchInput />
+                        <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
                     </section>
 
-                    <LoansTable />
+                    <LoansTable filter={filter} />
                 </section>
             </main>
 

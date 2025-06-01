@@ -58,7 +58,7 @@ export const getLoans = (db) => {
     try {
         const loans = db
             .prepare(
-                'SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.id as auto_partner_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id ORDER BY l.date_start DESC'
+                'SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.surname, p.id as auto_partner_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id ORDER BY l.date_start DESC'
             )
             .all()
 
