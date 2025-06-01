@@ -1,7 +1,8 @@
 import Modal from 'react-modal'
 
-import { useForm, useUiStore } from '../../hooks'
+import { useForm, useLoansStore, useUiStore } from '../../hooks'
 import { CloseButton, PrimaryButton, PrimaryInput } from '../commons'
+import { format, addHours } from 'date-fns'
 
 Modal.setAppElement('#root')
 
@@ -13,11 +14,21 @@ const formValidations = {
 export const LoanModal = () => {
     const { isLoanModalOpen, closeLoanModal } = useUiStore()
     const { date_end, onInputChange } = useForm(initialForm, formValidations)
+    const { startAddingLoan, book, partner } = useLoansStore()
 
     const onSubmit = (event) => {
         event.preventDefault()
-        // TODO: loan
-        console.log({ date_end })
+
+        const dateStart = format(new Date(), 'dd/MM/yyyy')
+        const date = addHours(new Date(date_end), 3)
+        const dateEnd = format(date, 'dd/MM/yyyy')
+
+        startAddingLoan({
+            date_start: dateStart,
+            date_end: dateEnd,
+            book_id: book.inventory,
+            partner_id: partner.id_card
+        })
     }
 
     return (

@@ -101,7 +101,7 @@ function createTables() {
     db.prepare(
         `CREATE TABLE IF NOT EXISTS partner (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            id_card INTEGER UNIQUE,
+            id_card TEXT UNIQUE,
             name varchar(100), 
             surname varchar(100), 
             grade varchar(20), 
@@ -127,11 +127,11 @@ function createTables() {
     db.prepare(
         `CREATE TABLE IF NOT EXISTS loan (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            date_start INTEGER, 
-            date_end INTEGER, 
+            date_start varchar(10), 
+            date_end varchar(10), 
             returned INTEGER,
             book_id INTEGER, 
-            partner_id INTEGER,
+            partner_id TEXT,
             FOREIGN KEY (book_id) REFERENCES book (inventory) 
             ON DELETE CASCADE 
             ON UPDATE CASCADE,
@@ -142,9 +142,15 @@ function createTables() {
 }
 
 function setSessionHandlers() {
-    ipcMain.handle(IpcKeys.SESSION.REGISTER, (_, { username, password }) => register(db, username, password))
-    ipcMain.handle(IpcKeys.SESSION.LOGIN, (_, { username, password }) => login(db, username, password))
-    ipcMain.handle(IpcKeys.SESSION.CHECK_SESSION, (_, { sessionToken }) => checkSessionToken(sessionToken))
+    ipcMain.handle(IpcKeys.SESSION.REGISTER, (_, { username, password }) =>
+        register(db, username, password)
+    )
+    ipcMain.handle(IpcKeys.SESSION.LOGIN, (_, { username, password }) =>
+        login(db, username, password)
+    )
+    ipcMain.handle(IpcKeys.SESSION.CHECK_SESSION, (_, { sessionToken }) =>
+        checkSessionToken(sessionToken)
+    )
     ipcMain.handle(IpcKeys.SESSION.LOGOUT, () => logout())
 }
 
