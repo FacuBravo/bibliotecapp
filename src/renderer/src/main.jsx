@@ -6,11 +6,13 @@ import { Provider } from 'react-redux'
 import { BibliotecApp } from './BibliotecApp'
 import { store } from './store'
 import './assets/css/styles.css'
+import { ScrollToTop } from './routers/ScrollToTop'
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Provider store={store}>
             <BrowserRouter>
+                <ScrollToTop />
                 <BibliotecApp />
             </BrowserRouter>
         </Provider>
