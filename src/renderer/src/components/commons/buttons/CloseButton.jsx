@@ -2,7 +2,7 @@ export const CloseButton = ({ close }) => {
     return (
         <button
             onClick={close}
-            className="rotate-45 cursor-pointer bg-transparent transition-transform hover:scale-90"
+            className="rotate-45 cursor-pointer bg-transparent transition-transform hover:scale-90 z-20"
         >
             <svg
                 width="32"

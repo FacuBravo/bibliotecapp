@@ -40,3 +40,13 @@ body {
 .primary_input input:valid ~ .input_background {
     max-height: 30px;
 }
+
+.loan-book-animation {
+    animation: loanBookAnimation 1s 0.5s ease-in-out both;
+}
+
+@keyframes loanBookAnimation {
+    100% {
+        transform: translate(70px, 10px);
+    }
+}
