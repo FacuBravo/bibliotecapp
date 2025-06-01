@@ -4,7 +4,7 @@ import { useBooksStore } from '../../hooks'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { BookModal, DuplicateBookModal, BookRow } from './'
 
-export const BooksTable = ({ filter }) => {
+export const BooksTable = ({ filter = '' }) => {
     const { books, orderBy, sortBy } = useBooksStore()
     const [filteredBooks, setFilteredBooks] = useState(books)
 

@@ -5,7 +5,7 @@ import { UserRow } from './UserRow'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { PartnerModal } from './'
 
-export const UsersTable = ({ filter }) => {
+export const UsersTable = ({ filter = '' }) => {
     const { partners, orderBy, sortBy } = usePartnersStore()
     const [filteredPartners, setFilteredPartners] = useState(partners)
 

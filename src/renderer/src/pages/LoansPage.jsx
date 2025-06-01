@@ -12,7 +12,7 @@ export const LoansPage = () => {
 
     return (
         <>
-            <main className="mt-32 flex flex-col gap-16">
+            <main className="mt-32 flex min-h-[calc(100vh-98px)] w-full flex-col gap-16 p-8 pt-0">
                 <div className="absolute -left-48 -top-4 -z-20 h-32 w-[1000px] -rotate-45 bg-blue_400"></div>
                 <div className="absolute -left-80 top-80 -z-20 h-32 w-[1200px] -rotate-45 bg-blue_400"></div>
 
