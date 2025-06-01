@@ -1,0 +1,137 @@
+export const addLoan = (db, { date_start, date_end, book_id, partner_id }) => {
+    try {
+        const loan = db
+            .prepare(
+                'INSERT INTO loan (date_start, date_end, returned, book_id, partner_id) VALUES (?, ?, 0, ?, ?) RETURNING *'
+            )
+            .get(date_start, date_end, book_id, partner_id)
+
+        return {
+            ok: true,
+            loan
+        }
+    } catch (error) {
+        console.error('Error al hacer el prestamo:', error)
+        return {
+            ok: false,
+            msg: 'Error al hacer el prestamo'
+        }
+    }
+}
+
+export const setLoanState = (db, { id, returned }) => {
+    try {
+        const data = db.prepare('UPDATE loan SET returned = ? WHERE id = ?').run(returned, id)
+
+        if (data.changes === 0) throw new Error()
+
+        return {
+            ok: true
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al actualizar el prestamo'
+        }
+    }
+}
+
+export const updateLoan = (db, { id, date_end }) => {
+    try {
+        const loan = db
+            .prepare('UPDATE loan SET date_end = ? WHERE id = ? RETURNING *')
+            .get(date_end, id)
+
+        return {
+            ok: true,
+            loan
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al actualizar el prestamo'
+        }
+    }
+}
+
+export const getLoans = (db) => {
+    try {
+        const loans = db.prepare('SELECT * FROM loan ORDER BY date_start DESC').all()
+
+        return {
+            ok: true,
+            loans
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al obtener los prestamos'
+        }
+    }
+}
+
+export const getLoan = (db, { id }) => {
+    try {
+        const loan = db.prepare('SELECT * FROM loan WHERE id = ?').get(id)
+
+        return {
+            ok: true,
+            loan
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al obtener el prestamo'
+        }
+    }
+}
+
+export const addMultipleLoans = (db, loans) => {
+    try {
+        const insert = db.prepare(
+            'INSERT INTO loan (date_start, date_end, returned, book_id, partner_id) VALUES (?, ?, ?, ?, ?) RETURNING *'
+        )
+
+        let loansResponse = []
+
+        for (const loan of loans) {
+            loansResponse.push(
+                insert.get(
+                    loan.date_start,
+                    loan.date_end,
+                    loan.returned,
+                    loan.book_id,
+                    loan.partner_id
+                )
+            )
+        }
+
+        return {
+            ok: true,
+            loans: loansResponse
+        }
+    } catch (error) {
+        console.error('Error al agregar prestamos:', error)
+        return {
+            ok: false,
+            msg: 'Error al agregar prestamos'
+        }
+    }
+}
+
+export const deleteAllLoans = (db) => {
+    try {
+        const data = db.prepare('DELETE FROM loan').run()
+
+        if (data.changes === 0) throw new Error()
+
+        return {
+            ok: true
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al eliminar prestamos'
+        }
+    }
+}

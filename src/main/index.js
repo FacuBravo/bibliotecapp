@@ -7,23 +7,30 @@ import iconPng from '../../resources/icon.png'
 import iconIco from '../../resources/icon.ico'
 import {
     addBook,
+    addLoan,
     addMultipleBooks,
+    addMultipleLoans,
     addMultiplePartners,
     addPartner,
     checkSessionToken,
     deleteAllBooks,
+    deleteAllLoans,
     deleteAllPartners,
     deleteBook,
     deletePartner,
     getBook,
     getBooks,
+    getLoan,
+    getLoans,
     getPartner,
     getPartners,
     login,
     logout,
     register,
     setBookState,
+    setLoanState,
     updateBook,
+    updateLoan,
     updatePartner
 } from './handlers'
 import { IpcKeys } from '../helpers'
@@ -88,6 +95,7 @@ function createDb() {
     setSessionHandlers()
     setBooksHandlers()
     setPartnersHandlers()
+    setLoansHandlers()
 }
 
 function createTables() {
@@ -186,6 +194,24 @@ function setPartnersHandlers() {
     ipcMain.handle(IpcKeys.PARTNER.ADD_MULTIPLE, (_, partners) => addMultiplePartners(db, partners))
 
     ipcMain.handle(IpcKeys.PARTNER.DELETE_ALL, () => deleteAllPartners(db))
+}
+
+function setLoansHandlers() {
+    ipcMain.handle(IpcKeys.LOAN.ADD, (_, loanInfo) => addLoan(db, loanInfo))
+
+    ipcMain.handle(IpcKeys.LOAN.UPDATE, (_, loanInfo) => updateLoan(db, loanInfo))
+
+    ipcMain.handle(IpcKeys.LOAN.SET_STATE, (_, { id, returned }) =>
+        setLoanState(db, { id, returned })
+    )
+
+    ipcMain.handle(IpcKeys.LOAN.GET_ALL, () => getLoans(db))
+
+    ipcMain.handle(IpcKeys.LOAN.GET, (_, { id }) => getLoan(db, { id }))
+
+    ipcMain.handle(IpcKeys.LOAN.ADD_MULTIPLE, (_, loans) => addMultipleLoans(db, loans))
+
+    ipcMain.handle(IpcKeys.LOAN.DELETE_ALL, () => deleteAllLoans(db))
 }
 
 app.on('window-all-closed', () => {

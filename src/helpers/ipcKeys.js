@@ -23,5 +23,14 @@ export const IpcKeys = {
         DELETE: 'delete-book',
         DELETE_ALL: 'delete-all-books',
         ADD_MULTIPLE: 'add-multiple-books'
+    },
+    LOAN: {
+        ADD: 'add-loan',
+        UPDATE: 'update-loan',
+        SET_STATE: 'set-loan-state',
+        GET: 'get-loan',
+        GET_ALL: 'get-loans',
+        DELETE_ALL: 'delete-all-loans',
+        ADD_MULTIPLE: 'add-multiple-loans'
     }
 }
