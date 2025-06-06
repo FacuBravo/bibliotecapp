@@ -47,7 +47,7 @@ export const LoansTable = ({ filter = '' }) => {
                         </tr>
                     ) : (
                         <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
-                            <td className="w-full text-center">No hay libros</td>
+                            <td className="w-full text-center">No hay préstamos</td>
                         </tr>
                     )
                 ) : (

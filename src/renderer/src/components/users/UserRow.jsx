@@ -18,7 +18,7 @@ export const UserRow = ({ partner, index }) => {
         if (!activeLoansDates || activeLoansDates.length === 0) return false
 
         for (const activeLoan of activeLoansDates) {
-            if (getDateFromString(activeLoan) < new Date()) {
+            if (getDateFromString(activeLoan) < new Date(new Date().setHours(0, 0, 0, 0))) {
                 return true
             }
         }
@@ -69,7 +69,8 @@ export const UserRow = ({ partner, index }) => {
                             <img src={isInDebt ? trashWhiteIcon : trashIcon} alt="Delete Icon" />
                         </button>
 
-                        {partner.active_loans === null || partner.type.toLowerCase() === 'docente' ? (
+                        {partner.active_loans === null ||
+                        partner.type.toLowerCase() === 'docente' ? (
                             <Link
                                 onClick={() => setLoanPartner(partner)}
                                 className={`${isInDebt ? 'bg-white font-bold text-red' : 'bg-orange_600 text-white'} cursor-pointer rounded-lg p-2`}
