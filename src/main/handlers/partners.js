@@ -43,13 +43,23 @@ export const updatePartner = (db, { id, name, surname, grade, section, type }) =
 
 export const getPartners = (db) => {
     try {
-        const partners = db.prepare('SELECT * FROM partner ORDER BY id').all()
+        const partners = db
+            .prepare(
+                `SELECT p.*, 
+                    (SELECT GROUP_CONCAT(l.date_end) 
+                        FROM loan l 
+                        WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
+                FROM partner p 
+                ORDER BY p.id;`
+            )
+            .all()
 
         return {
             ok: true,
             partners
         }
     } catch (error) {
+        console.error('Error al obtener los usuarios:', error)
         return {
             ok: false,
             msg: 'Error al obtener los usuarios'

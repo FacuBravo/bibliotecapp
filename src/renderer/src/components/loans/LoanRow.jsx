@@ -1,10 +1,11 @@
+import { getDateFromString } from '../../helpers'
 import { useAuthStore } from '../../hooks'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
 
     const getRowColors = () => {
-        return loan.date_end > new Date().toISOString() && loan.returned === 0
+        return getDateFromString(loan.date_end) < new Date() && loan.returned === 0
             ? 'bg-red text-white'
             : index % 2 === 0
               ? 'bg-yellow_400 text-yellow_600'

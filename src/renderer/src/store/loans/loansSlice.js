@@ -41,9 +41,20 @@ export const loansSlice = createSlice({
         },
         setBook: (state, { payload }) => {
             state.book = payload.book
+        },
+        cleanLoanBookAndPartner: (state) => {
+            state.book = null
+            state.partner = null
         }
     }
 })
 
-export const { setLoading, setNotLoading, setLoans, addLoan, setPartner, setBook } =
-    loansSlice.actions
+export const {
+    setLoading,
+    setNotLoading,
+    setLoans,
+    addLoan,
+    setPartner,
+    setBook,
+    cleanLoanBookAndPartner
+} = loansSlice.actions

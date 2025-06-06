@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
     addLoan,
+    cleanLoanBookAndPartner,
     setBook,
     setLoading,
     setLoans,
@@ -40,7 +41,19 @@ export const useLoansStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add loan')
 
-            dispatch(addLoan({ loan: response.loan }))
+            dispatch(
+                addLoan({
+                    loan: {
+                        ...response.loan,
+                        title: book.title,
+                        surname: partner.surname,
+                        name: partner.name
+                    }
+                })
+            )
+
+            dispatch(cleanLoanBookAndPartner())
+
             return true
         } catch (error) {
             console.error('Error adding loan:', error)
