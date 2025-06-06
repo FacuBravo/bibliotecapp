@@ -2,7 +2,14 @@ import { useEffect, useRef } from 'react'
 import exportIcon from '../../assets/images/icons/Export.svg'
 import importIcon from '../../assets/images/icons/Import.svg'
 import { exportToJSON } from '../../helpers'
-import { useAuthStore, useImports, usePartnersStore, useUiStore } from '../../hooks'
+import {
+    useAuthStore,
+    useBooksStore,
+    useImports,
+    useLoansStore,
+    usePartnersStore,
+    useUiStore
+} from '../../hooks'
 
 export const PartnersFileFunctions = () => {
     const { user } = useAuthStore()
@@ -10,13 +17,21 @@ export const PartnersFileFunctions = () => {
     const { partners, multipleAddPartners } = usePartnersStore()
     const { startImportingPartners, file: importedPartners, resetFile } = useImports()
     const { openConfirmModal } = useUiStore()
+    const { startLoadingLoans } = useLoansStore()
+    const { startLoadingBooks } = useBooksStore()
 
     useEffect(() => {
+        updateStores()
+    }, [importedPartners])
+
+    const updateStores = async () => {
         if (importedPartners) {
-            multipleAddPartners(importedPartners)
+            await multipleAddPartners(importedPartners)
+            await startLoadingLoans()
+            await startLoadingBooks()
             resetFile()
         }
-    }, [importedPartners])
+    }
 
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return

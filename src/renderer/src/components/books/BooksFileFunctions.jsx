@@ -2,21 +2,36 @@ import { useEffect, useRef } from 'react'
 import exportIcon from '../../assets/images/icons/Export.svg'
 import importIcon from '../../assets/images/icons/Import.svg'
 import { exportToJSON } from '../../helpers'
-import { useAuthStore, useBooksStore, useImports, useUiStore } from '../../hooks'
+import {
+    useAuthStore,
+    useBooksStore,
+    useImports,
+    useLoansStore,
+    usePartnersStore,
+    useUiStore
+} from '../../hooks'
 
 export const BooksFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
     const { books, multipleAddBooks } = useBooksStore()
     const { startImportingCatalog, file: importedBooks, resetFile } = useImports()
+    const { startLoadingLoans } = useLoansStore()
+    const { startLoadingPartners } = usePartnersStore()
     const { openConfirmModal } = useUiStore()
 
     useEffect(() => {
+        updateStores()
+    }, [importedBooks])
+
+    const updateStores = async () => {
         if (importedBooks) {
-            multipleAddBooks(importedBooks)
+            await multipleAddBooks(importedBooks)
+            await startLoadingLoans()
+            await startLoadingPartners()
             resetFile()
         }
-    }, [importedBooks])
+    }
 
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return
