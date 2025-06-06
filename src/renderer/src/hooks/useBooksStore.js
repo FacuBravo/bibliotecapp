@@ -6,9 +6,9 @@ import {
     setLoading,
     setNotLoading,
     setOrderBy,
-    updateBook
+    updateBook,
+    updateBookState
 } from '../store/books/booksSlice'
-import { useState } from 'react'
 import { orderObjectsArray } from '../helpers'
 
 const validFields = ['inventory', 'title', 'author', 'theme']
@@ -67,6 +67,25 @@ export const useBooksStore = () => {
         } catch (error) {
             console.error('Error updating book:', error)
             dispatch(setNotLoading({ error: 'Error al actualizar el libro' }))
+            return false
+        }
+    }
+
+    const startUpdatingBookState = async ({ id, borrowed }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.booksApi.updateBookState(id, borrowed, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to update book state')
+
+            dispatch(updateBookState({ id, borrowed }))
+            return true
+        } catch (error) {
+            console.error('Error updating book state:', error)
+            dispatch(setNotLoading({ error: 'Error al actualizar el estado del libro' }))
             return false
         }
     }
@@ -161,6 +180,7 @@ export const useBooksStore = () => {
         startLoadingBooks,
         startAddingBook,
         startUpdatingBook,
+        startUpdatingBookState,
         startDeletingBook,
         multipleAddBooks,
         sortBy

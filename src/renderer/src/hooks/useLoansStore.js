@@ -8,6 +8,7 @@ import {
     setNotLoading,
     setPartner
 } from '../store/loans/loansSlice'
+import { useBooksStore } from './useBooksStore'
 
 export const useLoansStore = () => {
     const dispatch = useDispatch()
@@ -15,6 +16,7 @@ export const useLoansStore = () => {
     const { loans, isLoading, partner, book, error, activeLoansCounter } = useSelector(
         (state) => state.loans
     )
+    const { startUpdatingBookState } = useBooksStore()
 
     const startLoadingLoans = async () => {
         dispatch(setLoading())
@@ -51,6 +53,11 @@ export const useLoansStore = () => {
                     }
                 })
             )
+
+            await startUpdatingBookState({
+                id: book.id,
+                borrowed: 1
+            })
 
             dispatch(cleanLoanBookAndPartner())
 

@@ -38,11 +38,11 @@ const booksApi = {
 
         return null
     },
-    updateBookState: async (callback, id, borrowed, token) => {
+    updateBookState: async (id, borrowed, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke(IpcKeys.BOOK.SET_STATE, id, borrowed)
+            return ipcRenderer.invoke(IpcKeys.BOOK.SET_STATE, { id, borrowed })
         }
 
         return null

@@ -36,6 +36,18 @@ export const booksSlice = createSlice({
             )
             state.isLoading = false
         },
+        updateBookState: (state, { payload }) => {
+            state.books = state.books.map((book) => {
+                if (book.id === payload.id) {
+                    return {
+                        ...book,
+                        borrowed: payload.borrowed
+                    }
+                }
+                return book
+            })
+            state.isLoading = false
+        },
         deleteBook: (state, { payload }) => {
             state.books = state.books.filter((book) => book.id !== payload.id)
             state.counter -= 1
@@ -47,5 +59,13 @@ export const booksSlice = createSlice({
     }
 })
 
-export const { setBooks, setLoading, setNotLoading, addBook, updateBook, deleteBook, setOrderBy } =
-    booksSlice.actions
+export const {
+    setBooks,
+    setLoading,
+    setNotLoading,
+    addBook,
+    updateBook,
+    updateBookState,
+    deleteBook,
+    setOrderBy
+} = booksSlice.actions

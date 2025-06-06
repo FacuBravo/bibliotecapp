@@ -42,7 +42,7 @@ export const BooksFileFunctions = () => {
                     onClick={() =>
                         openConfirmModal({
                             title: 'Importar Catálogo',
-                            message: 'Está acción borrará todos los libros actuales',
+                            message: 'Está acción borrará todos los libros y prestamos actuales',
                             onConfirm: openLoadImportFile
                         })
                     }
