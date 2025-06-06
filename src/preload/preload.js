@@ -136,11 +136,11 @@ const loansApi = {
         }
     },
     getLoans: async () => ipcRenderer.invoke(IpcKeys.LOAN.GET_ALL),
-    updateLoanState: async (callback, id, borrowed, token) => {
+    updateLoanState: async (id, returned, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 
         if (isAuthenticated) {
-            return ipcRenderer.invoke(IpcKeys.LOAN.SET_STATE, id, borrowed)
+            return ipcRenderer.invoke(IpcKeys.LOAN.SET_STATE, { id, returned })
         }
 
         return null

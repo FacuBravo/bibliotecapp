@@ -1,8 +1,9 @@
 import { getDateFromString } from '../../helpers'
-import { useAuthStore } from '../../hooks'
+import { useAuthStore, useLoansStore } from '../../hooks'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
+    const { returnLoan } = useLoansStore()
 
     const getRowColors = () => {
         return getDateFromString(loan.date_end) < new Date(new Date().setHours(0, 0, 0, 0)) &&
@@ -11,6 +12,14 @@ export const LoanRow = ({ loan, index }) => {
             : index % 2 === 0
               ? 'bg-yellow_400 text-yellow_600'
               : 'bg-yellow_500 text-yellow_600'
+    }
+
+    const onReturnBook = () => {
+        if (!user || !user.sessionToken) return
+
+        if (loan.returned === 0) {
+            returnLoan({ id: loan.id, book_id: loan.auto_book_id })
+        }
     }
 
     return (
@@ -28,16 +37,21 @@ export const LoanRow = ({ loan, index }) => {
                 </h4>
             </td>
             <td className="w-[8%] items-center justify-end text-end">
-                {loan.returned === 1 || !user.sessionToken ? (
+                {!user.sessionToken ? (
                     <span>---</span>
-                ) : (
+                ) : loan.returned === 0 ? (
                     <>
                         {user.sessionToken && (
-                            <button className="rounded-lg bg-blue_600 p-2 text-white">
+                            <button
+                                onClick={onReturnBook}
+                                className="rounded-lg bg-blue_600 p-2 text-white"
+                            >
                                 Devolver
                             </button>
                         )}
                     </>
+                ) : (
+                    <span>Devuelto</span>
                 )}
             </td>
         </tr>

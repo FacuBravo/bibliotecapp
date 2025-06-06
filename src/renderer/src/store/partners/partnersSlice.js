@@ -30,6 +30,18 @@ export const partnersSlice = createSlice({
             state.partners.push(payload.partner)
             state.counter += 1
         },
+        addPartnerNewActiveLoan: (state, { payload }) => {
+            state.partners = state.partners.map((partner) => {
+                if (partner.id === payload.id) {
+                    return {
+                        ...partner,
+                        active_loans: partner.active_loans + ',' + payload.date_end
+                    }
+                }
+
+                return partner
+            })
+        },
         updatePartner: (state, { payload }) => {
             state.partners = state.partners.map((partner) =>
                 partner.id === payload.partner.id ? payload.partner : partner
@@ -52,6 +64,7 @@ export const {
     setLoading,
     setNotLoading,
     addPartner,
+    addPartnerNewActiveLoan,
     updatePartner,
     deletePartner,
     setOrderBy

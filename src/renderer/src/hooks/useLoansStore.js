@@ -6,9 +6,11 @@ import {
     setLoading,
     setLoans,
     setNotLoading,
-    setPartner
+    setPartner,
+    updateLoanState
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
+import { usePartnersStore } from './usePartnersStore'
 
 export const useLoansStore = () => {
     const dispatch = useDispatch()
@@ -17,6 +19,7 @@ export const useLoansStore = () => {
         (state) => state.loans
     )
     const { startUpdatingBookState } = useBooksStore()
+    const { startLoadingPartners, addingNewActiveLoan } = usePartnersStore()
 
     const startLoadingLoans = async () => {
         dispatch(setLoading())
@@ -49,7 +52,9 @@ export const useLoansStore = () => {
                         ...response.loan,
                         title: book.title,
                         surname: partner.surname,
-                        name: partner.name
+                        name: partner.name,
+                        auto_partner_id: partner.id,
+                        auto_book_id: book.id
                     }
                 })
             )
@@ -57,6 +62,11 @@ export const useLoansStore = () => {
             await startUpdatingBookState({
                 id: book.id,
                 borrowed: 1
+            })
+
+            addingNewActiveLoan({
+                id: partner.id,
+                date_end: loan.date_end
             })
 
             dispatch(cleanLoanBookAndPartner())
@@ -100,6 +110,33 @@ export const useLoansStore = () => {
         }
     }
 
+    const returnLoan = async ({ id, book_id }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.loansApi.updateLoanState(id, 1, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to return loan')
+
+            dispatch(updateLoanState({ id, returned: 1 }))
+
+            await startUpdatingBookState({
+                id: book_id,
+                borrowed: 0
+            })
+
+            await startLoadingPartners()
+
+            return true
+        } catch (error) {
+            console.error('Error returning loan:', error)
+            dispatch(setNotLoading({ error: 'Error al devolver el prestamo' }))
+            return false
+        }
+    }
+
     const checkIfIsLoansArray = (loans) => {
         if (!Array.isArray(loans)) return false
 
@@ -138,6 +175,7 @@ export const useLoansStore = () => {
         startLoadingLoans,
         startAddingLoan,
         multipleAddLoans,
+        returnLoan,
         checkIfIsLoansArray,
         setLoanPartner,
         setLoanBook

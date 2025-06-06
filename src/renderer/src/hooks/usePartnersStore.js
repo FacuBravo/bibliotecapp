@@ -6,7 +6,8 @@ import {
     setLoading,
     setNotLoading,
     updatePartner,
-    setOrderBy
+    setOrderBy,
+    addPartnerNewActiveLoan
 } from '../store/partners/partnersSlice'
 import { orderObjectsArray } from '../helpers'
 
@@ -123,6 +124,12 @@ export const usePartnersStore = () => {
         }
     }
 
+    const addingNewActiveLoan = ({ id, date_end }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(addPartnerNewActiveLoan({ id, date_end }))
+    }
+
     const checkIfIsPartnersArray = (partners) => {
         if (!Array.isArray(partners)) return false
 
@@ -164,6 +171,7 @@ export const usePartnersStore = () => {
         startAddingPartner,
         startUpdatingPartner,
         startDeletingPartner,
+        addingNewActiveLoan,
         multipleAddPartners,
         sortBy
     }

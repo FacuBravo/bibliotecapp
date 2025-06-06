@@ -45,6 +45,19 @@ export const loansSlice = createSlice({
         cleanLoanBookAndPartner: (state) => {
             state.book = null
             state.partner = null
+        },
+        updateLoanState: (state, { payload }) => {
+            state.loans = state.loans.map((loan) => {
+                if (loan.id === payload.id) {
+                    return {
+                        ...loan,
+                        returned: payload.returned
+                    }
+                }
+                return loan
+            })
+
+            state.isLoading = false
         }
     }
 })
@@ -56,5 +69,6 @@ export const {
     addLoan,
     setPartner,
     setBook,
-    cleanLoanBookAndPartner
+    cleanLoanBookAndPartner,
+    updateLoanState
 } = loansSlice.actions
