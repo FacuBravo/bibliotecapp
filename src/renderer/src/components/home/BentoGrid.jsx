@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom'
 
 import stackOfBooks from '../../assets/images/icons/Stack.svg'
 import reportIcon from '../../assets/images/icons/Report.svg'
-import { useBooksStore, usePartnersStore } from '../../hooks'
+import { useBooksStore, useLoansStore, usePartnersStore } from '../../hooks'
 
 export const BentoGrid = () => {
     const { counter: booksCount } = useBooksStore()
     const { counter: partnersCount } = usePartnersStore()
+    const { activeLoansCounter } = useLoansStore()
 
     return (
         <section className="grid h-full max-h-[616px] w-full max-w-[616px] grid-cols-3 grid-rows-6 gap-4">
@@ -32,7 +33,7 @@ export const BentoGrid = () => {
             </Link>
 
             <div className="relative col-span-1 row-span-1 flex flex-col items-end justify-between overflow-hidden rounded-3xl bg-green_400 p-4 font-supermercado text-lg text-green_600 shadow-lg before:absolute before:-left-8 before:top-0 before:h-1/2 before:w-[200px] before:rotate-[60deg] before:bg-green_500 before:content-[''] after:absolute after:left-14 after:top-0 after:h-1/2 after:w-[200px] after:rotate-[60deg] after:bg-green_500 after:content-['']">
-                <span className="z-10 font-barrio text-[32px]">0</span>
+                <span className="z-10 font-barrio text-[32px]">{activeLoansCounter}</span>
                 <h4 className="z-10">Préstamos activos</h4>
             </div>
 

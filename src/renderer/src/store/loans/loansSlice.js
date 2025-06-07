@@ -20,11 +20,12 @@ export const loansSlice = createSlice({
         },
         setLoans: (state, { payload }) => {
             state.loans = payload.loans
+            state.activeLoansCounter = 0
             state.isLoading = false
             state.error = null
 
             for (const loan of payload.loans) {
-                if (!loan.returned && new Date(loan.date_end) > new Date()) {
+                if (loan.returned === 0) {
                     state.activeLoansCounter++
                 }
             }
@@ -32,7 +33,7 @@ export const loansSlice = createSlice({
         addLoan: (state, { payload }) => {
             state.loans.push(payload.loan)
 
-            if (!payload.loan.returned && new Date(payload.loan.date_end) > new Date()) {
+            if (payload.loan.returned === 0) {
                 state.activeLoansCounter++
             }
         },
@@ -49,11 +50,18 @@ export const loansSlice = createSlice({
         updateLoanState: (state, { payload }) => {
             state.loans = state.loans.map((loan) => {
                 if (loan.id === payload.id) {
+                    if (payload.returned === 0) {
+                        state.activeLoansCounter++
+                    } else {
+                        state.activeLoansCounter--
+                    }
+
                     return {
                         ...loan,
                         returned: payload.returned
                     }
                 }
+
                 return loan
             })
 
