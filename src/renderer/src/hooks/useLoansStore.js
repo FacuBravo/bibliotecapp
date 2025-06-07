@@ -7,15 +7,19 @@ import {
     setLoans,
     setNotLoading,
     setPartner,
+    setOrderBy,
     updateLoanState
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
+import { orderObjectsArray } from '../helpers'
+
+const validFields = ['date_start', 'date_end']
 
 export const useLoansStore = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const { loans, isLoading, partner, book, error, activeLoansCounter } = useSelector(
+    const { loans, isLoading, partner, book, error, activeLoansCounter, orderBy } = useSelector(
         (state) => state.loans
     )
     const { startUpdatingBookState } = useBooksStore()
@@ -182,6 +186,24 @@ export const useLoansStore = () => {
         dispatch(setBook({ book }))
     }
 
+    const sortBy = (field) => {
+        if (!validFields.includes(field)) return
+
+        const newOrder =
+            orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+
+        dispatch(
+            setOrderBy({
+                field,
+                order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+            })
+        )
+
+        const sortedLoans = orderObjectsArray([...loans], field, newOrder, true)
+
+        dispatch(setLoans({ loans: sortedLoans }))
+    }
+
     return {
         loans,
         isLoading,
@@ -189,6 +211,7 @@ export const useLoansStore = () => {
         book,
         error,
         activeLoansCounter,
+        orderBy,
 
         startLoadingLoans,
         startAddingLoan,
@@ -196,6 +219,7 @@ export const useLoansStore = () => {
         returnLoan,
         checkIfIsLoansArray,
         setLoanPartner,
-        setLoanBook
+        setLoanBook,
+        sortBy
     }
 }

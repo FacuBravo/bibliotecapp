@@ -8,7 +8,11 @@ export const loansSlice = createSlice({
         partner: null,
         book: null,
         error: null,
-        activeLoansCounter: 0
+        activeLoansCounter: 0,
+        orderBy: {
+            field: 'date_start',
+            order: 'desc'
+        }
     },
     reducers: {
         setLoading: (state) => {
@@ -66,6 +70,10 @@ export const loansSlice = createSlice({
             })
 
             state.isLoading = false
+        },
+        setOrderBy: (state, { payload }) => {
+            state.orderBy.field = payload.field
+            state.orderBy.order = payload.order
         }
     }
 })
@@ -78,5 +86,6 @@ export const {
     setPartner,
     setBook,
     cleanLoanBookAndPartner,
-    updateLoanState
+    updateLoanState,
+    setOrderBy
 } = loansSlice.actions

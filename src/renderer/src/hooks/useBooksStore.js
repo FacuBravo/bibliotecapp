@@ -109,8 +109,8 @@ export const useBooksStore = () => {
         }
     }
 
-    const multipleAddBooks = async (books) => {
-        const isBooksArray = checkIfIsBooksArray(books)
+    const multipleAddBooks = async (importedBooks = []) => {
+        const isBooksArray = checkIfIsBooksArray(importedBooks)
 
         if (!isBooksArray) return
 
@@ -126,7 +126,10 @@ export const useBooksStore = () => {
                     throw new Error(deleteResponse.msg || 'Failed to delete books')
             }
 
-            const response = await window.booksApi.addMultipleBooks(books, user.sessionToken)
+            const response = await window.booksApi.addMultipleBooks(
+                importedBooks,
+                user.sessionToken
+            )
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add books')
 
