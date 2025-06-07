@@ -108,6 +108,7 @@ export const useLoansStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add loans')
 
             dispatch(setLoans({ loans: response.loans }))
+            dispatch(setOrderBy({ field: 'date_start', order: 'desc' }))
 
             const updateBookStatePromises = []
 

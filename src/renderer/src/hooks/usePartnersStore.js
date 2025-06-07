@@ -120,6 +120,7 @@ export const usePartnersStore = () => {
             }))
 
             dispatch(setPartners({ partners: partnersWithActiveLoans }))
+            dispatch(setOrderBy({ field: 'id', order: 'asc' }))
 
             return true
         } catch (error) {

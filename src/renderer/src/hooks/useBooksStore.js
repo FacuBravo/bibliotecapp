@@ -134,6 +134,7 @@ export const useBooksStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add books')
 
             dispatch(setBooks({ books: response.books }))
+            dispatch(setOrderBy({ field: 'inventory', order: 'asc' }))
 
             return true
         } catch (error) {
