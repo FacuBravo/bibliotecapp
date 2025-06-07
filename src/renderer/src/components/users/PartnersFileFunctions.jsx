@@ -15,7 +15,7 @@ export const PartnersFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
     const { partners, multipleAddPartners } = usePartnersStore()
-    const { startImportingPartners, file: importedPartners, resetFile } = useImports()
+    const { startImporting, file: importedPartners, resetFile } = useImports()
     const { openConfirmModal } = useUiStore()
     const { startLoadingLoans } = useLoansStore()
     const { startLoadingBooks } = useBooksStore()
@@ -36,7 +36,7 @@ export const PartnersFileFunctions = () => {
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return
 
-        startImportingPartners(target.files[0])
+        startImporting(target.files[0])
         target.value = ''
     }
 

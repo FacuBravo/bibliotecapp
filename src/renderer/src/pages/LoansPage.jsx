@@ -1,5 +1,5 @@
 import { SearchInput } from '../components/commons'
-import { LoanModal, LoansTable } from '../components/loans'
+import { LoanModal, LoansFileFunctions, LoansTable } from '../components/loans'
 import { useForm, useLoansStore, useUiStore } from '../hooks'
 import bookGreen from '../assets/images/icons/Book_green.svg'
 import loanBlue from '../assets/images/icons/Loan_blue.svg'
@@ -72,6 +72,8 @@ export const LoansPage = () => {
                         <div className="flex w-fit items-center gap-1 font-supermercado text-2xl text-pink_600">
                             <h1>Préstamos</h1>
                         </div>
+
+                        <LoansFileFunctions />
 
                         <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
                     </section>

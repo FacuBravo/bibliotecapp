@@ -90,8 +90,8 @@ export const usePartnersStore = () => {
         }
     }
 
-    const multipleAddPartners = async (partners) => {
-        const isPartnersArray = checkIfIsPartnersArray(partners)
+    const multipleAddPartners = async (importedPartners) => {
+        const isPartnersArray = checkIfIsPartnersArray(importedPartners)
 
         if (!isPartnersArray) return
 
@@ -108,18 +108,23 @@ export const usePartnersStore = () => {
             }
 
             const response = await window.partnersApi.addMultiplePartners(
-                partners,
+                importedPartners,
                 user.sessionToken
             )
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add partners')
 
-            dispatch(setPartners({ partners: response.partners }))
+            const partnersWithActiveLoans = response.partners.map((partner) => ({
+                ...partner,
+                active_loans: null
+            }))
+
+            dispatch(setPartners({ partners: partnersWithActiveLoans }))
 
             return true
         } catch (error) {
             console.error('Error adding partners:', error)
-            dispatch(setNotLoading({ error: 'Error al agregar los libros' }))
+            dispatch(setNotLoading({ error: 'Error al agregar los usuarios' }))
             return false
         }
     }

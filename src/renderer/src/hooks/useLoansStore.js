@@ -79,8 +79,8 @@ export const useLoansStore = () => {
         }
     }
 
-    const multipleAddLoans = async (loans) => {
-        const isLoansArray = checkIfIsLoansArray(loans)
+    const multipleAddLoans = async (importedLoans = []) => {
+        const isLoansArray = checkIfIsLoansArray(importedLoans)
 
         if (!isLoansArray) return
 
@@ -96,11 +96,29 @@ export const useLoansStore = () => {
                     throw new Error(deleteResponse.msg || 'Failed to delete loans')
             }
 
-            const response = await window.loansApi.addMultipleLoans(loans, user.sessionToken)
+            const response = await window.loansApi.addMultipleLoans(
+                importedLoans,
+                user.sessionToken
+            )
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add loans')
 
             dispatch(setLoans({ loans: response.loans }))
+
+            const updateBookStatePromises = []
+
+            response.loans.forEach((loan) => {
+                updateBookStatePromises.push(
+                    startUpdatingBookState({
+                        id: loan.auto_book_id,
+                        borrowed: 1
+                    })
+                )
+            })
+
+            await Promise.all(updateBookStatePromises)
+
+            await startLoadingPartners()
 
             return true
         } catch (error) {
@@ -146,7 +164,7 @@ export const useLoansStore = () => {
             if (
                 !loan.date_start ||
                 !loan.date_end ||
-                !loan.returned ||
+                (!loan.returned && loan.returned !== 0) ||
                 !loan.book_id ||
                 !loan.partner_id
             )

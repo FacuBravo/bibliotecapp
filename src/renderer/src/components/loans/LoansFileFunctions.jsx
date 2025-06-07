@@ -2,33 +2,22 @@ import { useEffect, useRef } from 'react'
 import exportIcon from '../../assets/images/icons/Export.svg'
 import importIcon from '../../assets/images/icons/Import.svg'
 import { exportToJSON } from '../../helpers'
-import {
-    useAuthStore,
-    useBooksStore,
-    useImports,
-    useLoansStore,
-    usePartnersStore,
-    useUiStore
-} from '../../hooks'
+import { useAuthStore, useImports, useLoansStore, useUiStore } from '../../hooks'
 
-export const BooksFileFunctions = () => {
+export const LoansFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
-    const { books, multipleAddBooks } = useBooksStore()
-    const { startImporting, file: importedBooks, resetFile } = useImports()
-    const { startLoadingLoans } = useLoansStore()
-    const { startLoadingPartners } = usePartnersStore()
+    const { loans, multipleAddLoans } = useLoansStore()
+    const { startImporting, file: importedLoans, resetFile } = useImports()
     const { openConfirmModal } = useUiStore()
 
     useEffect(() => {
         updateStores()
-    }, [importedBooks])
+    }, [importedLoans])
 
     const updateStores = async () => {
-        if (importedBooks) {
-            await multipleAddBooks(importedBooks)
-            await startLoadingLoans()
-            await startLoadingPartners()
+        if (importedLoans) {
+            await multipleAddLoans(importedLoans)
             resetFile()
         }
     }
@@ -45,7 +34,7 @@ export const BooksFileFunctions = () => {
     return (
         <div className="flex gap-4">
             <button
-                onClick={() => exportToJSON(books, 'catalogo.json')}
+                onClick={() => exportToJSON(loans, 'prestamos.json')}
                 className="flex cursor-pointer items-center gap-2 bg-transparent font-supermercado text-2xl text-pink_600 transition-transform hover:scale-95"
             >
                 <img className="h-6 w-6" src={exportIcon} alt="Export JSON Icon" />
@@ -56,8 +45,8 @@ export const BooksFileFunctions = () => {
                 <button
                     onClick={() =>
                         openConfirmModal({
-                            title: 'Importar Catálogo',
-                            message: 'Está acción borrará todos los libros y prestamos actuales',
+                            title: 'Importar Prestamos',
+                            message: 'Está acción borrará todos los prestamos actuales',
                             onConfirm: openLoadImportFile
                         })
                     }

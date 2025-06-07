@@ -96,23 +96,13 @@ export const addMultipleLoans = (db, loans) => {
             'INSERT INTO loan (date_start, date_end, returned, book_id, partner_id) VALUES (?, ?, ?, ?, ?) RETURNING *'
         )
 
-        let loansResponse = []
-
         for (const loan of loans) {
-            loansResponse.push(
-                insert.get(
-                    loan.date_start,
-                    loan.date_end,
-                    loan.returned,
-                    loan.book_id,
-                    loan.partner_id
-                )
-            )
+            insert.run(loan.date_start, loan.date_end, loan.returned, loan.book_id, loan.partner_id)
         }
 
         return {
             ok: true,
-            loans: loansResponse
+            loans: getLoans(db).loans
         }
     } catch (error) {
         console.error('Error al agregar prestamos:', error)
