@@ -10,6 +10,7 @@ import {
     updateBookState
 } from '../store/books/booksSlice'
 import { orderObjectsArray } from '../helpers'
+import { useReportsStore } from './useReportsStore'
 
 const validFields = ['inventory', 'title', 'author', 'theme']
 
@@ -17,6 +18,12 @@ export const useBooksStore = () => {
     const dispatch = useDispatch()
     const { books, isLoading, error, counter, orderBy } = useSelector((state) => state.books)
     const { user } = useSelector((state) => state.auth)
+    const {
+        startLoadingAuthorsReports,
+        startLoadingBooksReports,
+        startLoadingThemesReports,
+        setNotLoadingWithoutError
+    } = useReportsStore()
 
     const startLoadingBooks = async () => {
         dispatch(setLoading())
@@ -44,6 +51,12 @@ export const useBooksStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add book')
 
             dispatch(addBook({ book: response.book }))
+
+            startLoadingAuthorsReports()
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error adding book:', error)
@@ -63,6 +76,12 @@ export const useBooksStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to update book')
 
             dispatch(updateBook({ book: response.book }))
+
+            startLoadingAuthorsReports()
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error updating book:', error)
@@ -101,6 +120,12 @@ export const useBooksStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to delete book')
 
             dispatch(deleteBook({ id }))
+
+            startLoadingAuthorsReports()
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error deleting book:', error)
@@ -135,6 +160,11 @@ export const useBooksStore = () => {
 
             dispatch(setBooks({ books: response.books }))
             dispatch(setOrderBy({ field: 'inventory', order: 'asc' }))
+
+            startLoadingAuthorsReports()
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            setNotLoadingWithoutError()
 
             return true
         } catch (error) {

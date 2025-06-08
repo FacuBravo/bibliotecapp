@@ -73,6 +73,10 @@ export const useReportsStore = () => {
         }
     }
 
+    const setNotLoadingWithoutError = () => {
+        dispatch(setNotLoading({ error: null }))
+    }
+
     return {
         authorsWithMoreBooks,
         mostBorrowedBooks,
@@ -82,6 +86,7 @@ export const useReportsStore = () => {
         startLoadingAuthorsReports,
         startLoadingBooksReports,
         startLoadingThemesReports,
-        startLoadingMostReaderSectionReports
+        startLoadingMostReaderSectionReports,
+        setNotLoadingWithoutError
     }
 }

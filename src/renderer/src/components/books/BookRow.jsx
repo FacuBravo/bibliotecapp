@@ -44,7 +44,7 @@ export const BookRow = ({ book, index }) => {
                             <img className="h-8 w-8" src={trashIcon} alt="Delete" />
                         </button>
 
-                        {book.borrowed === 0 && (
+                        {book.borrowed === 0 ? (
                             <Link
                                 onClick={() => setLoanBook(book)}
                                 to="/loans"
@@ -52,10 +52,11 @@ export const BookRow = ({ book, index }) => {
                             >
                                 Prestar
                             </Link>
+                        ) : (
+                            <p>Prestado</p>
                         )}
                     </>
                 )}
-                {book.borrowed == 1 && <p>Prestado</p>}
             </td>
         </tr>
     )

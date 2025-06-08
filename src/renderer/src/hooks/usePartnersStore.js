@@ -10,6 +10,7 @@ import {
     addPartnerNewActiveLoan
 } from '../store/partners/partnersSlice'
 import { orderObjectsArray } from '../helpers'
+import { useReportsStore } from './useReportsStore'
 
 const validFields = ['id', 'surname', 'type']
 
@@ -17,6 +18,7 @@ export const usePartnersStore = () => {
     const dispatch = useDispatch()
     const { partners, isLoading, error, counter, orderBy } = useSelector((state) => state.partners)
     const { user } = useSelector((state) => state.auth)
+    const { startLoadingMostReaderSectionReports, setNotLoadingWithoutError } = useReportsStore()
 
     const startLoadingPartners = async () => {
         dispatch(setLoading())
@@ -44,6 +46,10 @@ export const usePartnersStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add partner')
 
             dispatch(addPartner({ partner: response.partner }))
+
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error adding partner:', error)
@@ -63,6 +69,10 @@ export const usePartnersStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to update partner')
 
             dispatch(updatePartner({ partner: response.partner }))
+
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error updating partner:', error)
@@ -82,6 +92,10 @@ export const usePartnersStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to delete partner')
 
             dispatch(deletePartner({ id }))
+
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error deleting partner:', error)
@@ -121,6 +135,9 @@ export const usePartnersStore = () => {
 
             dispatch(setPartners({ partners: partnersWithActiveLoans }))
             dispatch(setOrderBy({ field: 'id', order: 'asc' }))
+
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
 
             return true
         } catch (error) {

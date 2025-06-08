@@ -13,6 +13,7 @@ import {
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
 import { orderObjectsArray } from '../helpers'
+import { useReportsStore } from './useReportsStore'
 
 const validFields = ['date_start', 'date_end']
 
@@ -24,6 +25,12 @@ export const useLoansStore = () => {
     )
     const { startUpdatingBookState } = useBooksStore()
     const { startLoadingPartners, addingNewActiveLoan } = usePartnersStore()
+    const {
+        startLoadingBooksReports,
+        startLoadingThemesReports,
+        startLoadingMostReaderSectionReports,
+        setNotLoadingWithoutError
+    } = useReportsStore()
 
     const startLoadingLoans = async () => {
         dispatch(setLoading())
@@ -75,6 +82,11 @@ export const useLoansStore = () => {
 
             dispatch(cleanLoanBookAndPartner())
 
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
+
             return true
         } catch (error) {
             console.error('Error adding loan:', error)
@@ -124,6 +136,11 @@ export const useLoansStore = () => {
             await Promise.all(updateBookStatePromises)
 
             await startLoadingPartners()
+
+            startLoadingBooksReports()
+            startLoadingThemesReports()
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
 
             return true
         } catch (error) {

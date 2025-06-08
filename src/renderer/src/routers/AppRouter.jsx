@@ -14,7 +14,8 @@ export const AppRouter = () => {
         startLoadingAuthorsReports,
         startLoadingBooksReports,
         startLoadingThemesReports,
-        startLoadingMostReaderSectionReports
+        startLoadingMostReaderSectionReports,
+        setNotLoadingWithoutError
     } = useReportsStore()
 
     useEffect(() => {
@@ -26,6 +27,7 @@ export const AppRouter = () => {
         startLoadingBooksReports()
         startLoadingThemesReports()
         startLoadingMostReaderSectionReports()
+        setNotLoadingWithoutError()
     }, [])
 
     return (
