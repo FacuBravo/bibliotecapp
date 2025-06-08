@@ -31,10 +31,13 @@ export const ReportsPage = () => {
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-yellow_400 p-4 text-yellow_600">
                     <h2 className="font-barrio text-3xl">Temas más elegidos</h2>
                     <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
-                        {mostPopularThemes.map((report) => (
-                            <li>
+                        {mostPopularThemes.map((report, index) => (
+                            <li key={index}>
                                 <p>{report.theme}</p>
-                                <p>{report.n_borrowed} veces prestado</p>
+                                <p>
+                                    <span className="font-bold">{report.n_borrowed}</span>{' '}
+                                    {report.n_borrowed === 1 ? 'vez' : 'veces'} prestado
+                                </p>
                             </li>
                         ))}
                     </ul>

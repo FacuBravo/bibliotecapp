@@ -3,6 +3,7 @@ import {
     setAuthorsWithMoreBooks,
     setLoading,
     setMostBorrowedBooks,
+    setMostPopularThemes,
     setNotLoading
 } from '../store/reports/reportsSlice'
 
@@ -41,6 +42,21 @@ export const useReportsStore = () => {
         }
     }
 
+    const startLoadingThemesReports = async () => {
+        dispatch(setLoading())
+
+        try {
+            const response = await window.reportsApi.getMostPopularThemes()
+
+            if (!response.ok) throw new Error('Failed to fetch themes')
+
+            dispatch(setMostPopularThemes({ mostPopularThemes: response.themes }))
+        } catch (error) {
+            console.error('Error loading themes:', error)
+            dispatch(setNotLoading({ error: 'Error al obtener los temas' }))
+        }
+    }
+
     return {
         authorsWithMoreBooks,
         mostBorrowedBooks,
@@ -48,6 +64,7 @@ export const useReportsStore = () => {
         mostReaderSection,
 
         startLoadingAuthorsReports,
-        startLoadingBooksReports
+        startLoadingBooksReports,
+        startLoadingThemesReports
     }
 }
