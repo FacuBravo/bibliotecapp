@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { authSlice, uiSlice, booksSlice, partnersSlice, loansSlice } from './'
+import { authSlice, uiSlice, booksSlice, partnersSlice, loansSlice, reportsSlice } from './'
 
 export const store = configureStore({
     reducer: {
@@ -7,7 +7,8 @@ export const store = configureStore({
         ui: uiSlice.reducer,
         books: booksSlice.reducer,
         partners: partnersSlice.reducer,
-        loans: loansSlice.reducer
+        loans: loansSlice.reducer,
+        reports: reportsSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
