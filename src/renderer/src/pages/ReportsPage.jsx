@@ -48,9 +48,9 @@ export const ReportsPage = () => {
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-orange_400 p-4 text-orange_600">
                     <h2 className="font-barrio text-3xl">Cursos más lectores</h2>
                     <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
-                        {mostReaderSection.map((report) => (
-                            <li>
-                                <p>
+                        {mostReaderSection.map((report, index) => (
+                            <li key={index}>
+                                <p className="font-bold">
                                     {report.grade} "{report.section}"
                                 </p>
                                 <p>Sacó {report.n_borrowed} libros</p>

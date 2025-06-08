@@ -10,8 +10,12 @@ export const AppRouter = () => {
     const { startLoadingBooks } = useBooksStore()
     const { startLoadingPartners } = usePartnersStore()
     const { startLoadingLoans } = useLoansStore()
-    const { startLoadingAuthorsReports, startLoadingBooksReports, startLoadingThemesReports } =
-        useReportsStore()
+    const {
+        startLoadingAuthorsReports,
+        startLoadingBooksReports,
+        startLoadingThemesReports,
+        startLoadingMostReaderSectionReports
+    } = useReportsStore()
 
     useEffect(() => {
         checkAuthToken()
@@ -21,6 +25,7 @@ export const AppRouter = () => {
         startLoadingAuthorsReports()
         startLoadingBooksReports()
         startLoadingThemesReports()
+        startLoadingMostReaderSectionReports()
     }, [])
 
     return (

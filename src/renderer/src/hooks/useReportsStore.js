@@ -4,6 +4,7 @@ import {
     setLoading,
     setMostBorrowedBooks,
     setMostPopularThemes,
+    setMostReaderSection,
     setNotLoading
 } from '../store/reports/reportsSlice'
 
@@ -57,6 +58,21 @@ export const useReportsStore = () => {
         }
     }
 
+    const startLoadingMostReaderSectionReports = async () => {
+        dispatch(setLoading())
+
+        try {
+            const response = await window.reportsApi.getMostReaderSection()
+
+            if (!response.ok) throw new Error('Failed to fetch sections')
+
+            dispatch(setMostReaderSection({ mostReaderSection: response.sections }))
+        } catch (error) {
+            console.error('Error loading sections', error)
+            dispatch(setNotLoading({ error: 'Error al obtener las secciones' }))
+        }
+    }
+
     return {
         authorsWithMoreBooks,
         mostBorrowedBooks,
@@ -65,6 +81,7 @@ export const useReportsStore = () => {
 
         startLoadingAuthorsReports,
         startLoadingBooksReports,
-        startLoadingThemesReports
+        startLoadingThemesReports,
+        startLoadingMostReaderSectionReports
     }
 }
