@@ -91,7 +91,7 @@ export const Header = () => {
                         <Link
                             onClick={closeAll}
                             className="flex items-center gap-3 bg-transparent font-supermercado text-xl text-green_600 decoration-0"
-                            to="/"
+                            to="/reports"
                         >
                             <img src={reportIcon} alt="Report Icon" />
                             Reportes

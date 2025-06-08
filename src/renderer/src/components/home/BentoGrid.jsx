@@ -38,7 +38,7 @@ export const BentoGrid = () => {
             </div>
 
             <Link
-                to="/"
+                to="/reports"
                 className="col-span-1 row-span-4 flex items-end justify-center rounded-3xl bg-gradient-to-b from-green_500 to-green_400 p-4 font-barrio text-xl text-green_600 shadow-lg"
             >
                 <h2 className="w-full text-start">Reportes</h2>

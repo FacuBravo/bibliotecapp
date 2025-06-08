@@ -165,6 +165,17 @@ const loansApi = {
     }
 }
 
+const reportsApi = {
+    getAuthorsWithMoreBooks: async () =>
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_AUTHORS_WITH_MORE_BOOKS),
+    getMostBorrowedBooks: async () =>
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_BORROWED_BOOKS),
+    getMostPopularThemes: async () =>
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_POPULAR_THEMES),
+    getMostReaderSection: async () =>
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_READER_SECTION)
+}
+
 if (process.contextIsolated) {
     try {
         contextBridge.exposeInMainWorld('electron', electronAPI)
@@ -172,6 +183,7 @@ if (process.contextIsolated) {
         contextBridge.exposeInMainWorld('booksApi', booksApi)
         contextBridge.exposeInMainWorld('partnersApi', partnersApi)
         contextBridge.exposeInMainWorld('loansApi', loansApi)
+        contextBridge.exposeInMainWorld('reportsApi', reportsApi)
     } catch (error) {
         console.error(error)
     }
@@ -181,4 +193,5 @@ if (process.contextIsolated) {
     window.booksApi = booksApi
     window.partnersApi = partnersApi
     window.loansApi = loansApi
+    window.reportsApi = reportsApi
 }

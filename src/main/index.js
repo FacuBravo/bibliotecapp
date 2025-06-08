@@ -18,10 +18,14 @@ import {
     deleteAllPartners,
     deleteBook,
     deletePartner,
+    getAuthorsWithMoreBooks,
     getBook,
     getBooks,
     getLoan,
     getLoans,
+    getMostBorrowedBooks,
+    getMostPopularThemes,
+    getMostReaderSection,
     getPartner,
     getPartners,
     login,
@@ -96,6 +100,7 @@ function createDb() {
     setBooksHandlers()
     setPartnersHandlers()
     setLoansHandlers()
+    setReportsHandlers()
 }
 
 function createTables() {
@@ -212,6 +217,13 @@ function setLoansHandlers() {
     ipcMain.handle(IpcKeys.LOAN.ADD_MULTIPLE, (_, loans) => addMultipleLoans(db, loans))
 
     ipcMain.handle(IpcKeys.LOAN.DELETE_ALL, () => deleteAllLoans(db))
+}
+
+function setReportsHandlers() {
+    ipcMain.handle(IpcKeys.REPORTS.GET_AUTHORS_WITH_MORE_BOOKS, () => getAuthorsWithMoreBooks(db))
+    ipcMain.handle(IpcKeys.REPORTS.GET_MOST_BORROWED_BOOKS, () => getMostBorrowedBooks(db))
+    ipcMain.handle(IpcKeys.REPORTS.GET_MOST_POPULAR_THEMES, () => getMostPopularThemes(db))
+    ipcMain.handle(IpcKeys.REPORTS.GET_MOST_READER_SECTION, () => getMostReaderSection(db))
 }
 
 app.on('window-all-closed', () => {

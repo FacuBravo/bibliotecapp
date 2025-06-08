@@ -32,5 +32,11 @@ export const IpcKeys = {
         GET_ALL: 'get-loans',
         DELETE_ALL: 'delete-all-loans',
         ADD_MULTIPLE: 'add-multiple-loans'
+    },
+    REPORTS: {
+        GET_AUTHORS_WITH_MORE_BOOKS: 'get-authors-with-more-books',
+        GET_MOST_BORROWED_BOOKS: 'get-most-borrowed-books',
+        GET_MOST_POPULAR_THEMES: 'get-most-popular-themes',
+        GET_MOST_READER_SECTION: 'get-most-reader-section'
     }
 }
