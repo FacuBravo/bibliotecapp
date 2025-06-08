@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setAuthorsWithMoreBooks, setLoading, setNotLoading } from '../store/reports/reportsSlice'
+import {
+    setAuthorsWithMoreBooks,
+    setLoading,
+    setMostBorrowedBooks,
+    setNotLoading
+} from '../store/reports/reportsSlice'
 
 export const useReportsStore = () => {
     const dispatch = useDispatch()
     const { authorsWithMoreBooks, mostBorrowedBooks, mostPopularThemes, mostReaderSection } =
         useSelector((state) => state.reports)
 
-    const startLoadingAuthors = async () => {
+    const startLoadingAuthorsReports = async () => {
         dispatch(setLoading())
 
         try {
@@ -21,11 +26,28 @@ export const useReportsStore = () => {
         }
     }
 
+    const startLoadingBooksReports = async () => {
+        dispatch(setLoading())
+
+        try {
+            const response = await window.reportsApi.getMostBorrowedBooks()
+
+            if (!response.ok) throw new Error('Failed to fetch books')
+
+            dispatch(setMostBorrowedBooks({ mostBorrowedBooks: response.books }))
+        } catch (error) {
+            console.error('Error loading books:', error)
+            dispatch(setNotLoading({ error: 'Error al obtener los libros' }))
+        }
+    }
+
     return {
         authorsWithMoreBooks,
         mostBorrowedBooks,
         mostPopularThemes,
         mostReaderSection,
-        startLoadingAuthors
+
+        startLoadingAuthorsReports,
+        startLoadingBooksReports
     }
 }

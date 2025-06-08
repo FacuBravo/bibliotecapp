@@ -20,19 +20,15 @@ export const reportsSlice = createSlice({
         },
         setMostBorrowedBooks: (state, { payload }) => {
             state.mostBorrowedBooks = payload.mostBorrowedBooks
-            state.isLoading = false
         },
         setAuthorsWithMoreBooks: (state, { payload }) => {
             state.authorsWithMoreBooks = payload.authorsWithMoreBooks
-            state.isLoading = false
         },
         setMostReaderSection: (state, { payload }) => {
             state.mostReaderSection = payload.mostReaderSection
-            state.isLoading = false
         },
         setMostPopularThemes: (state, { payload }) => {
             state.mostPopularThemes = payload.mostPopularThemes
-            state.isLoading = false
         }
     }
 })

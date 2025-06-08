@@ -10,14 +10,15 @@ export const AppRouter = () => {
     const { startLoadingBooks } = useBooksStore()
     const { startLoadingPartners } = usePartnersStore()
     const { startLoadingLoans } = useLoansStore()
-    const { startLoadingAuthors } = useReportsStore()
+    const { startLoadingAuthorsReports, startLoadingBooksReports } = useReportsStore()
 
     useEffect(() => {
         checkAuthToken()
         startLoadingBooks()
         startLoadingPartners()
         startLoadingLoans()
-        startLoadingAuthors()
+        startLoadingAuthorsReports()
+        startLoadingBooksReports()
     }, [])
 
     return (

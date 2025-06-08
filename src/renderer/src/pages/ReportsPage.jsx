@@ -13,14 +13,16 @@ export const ReportsPage = () => {
             <section className="flex flex-col items-end gap-5">
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-pink_400 p-4 text-pink_600">
                     <h2 className="font-barrio text-3xl">Libros más prestados</h2>
-                    <ul className="flex list-none flex-col gap-4 font-supermercado text-xl">
-                        {mostBorrowedBooks.map((book) => (
-                            <li>
+                    <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
+                        {mostBorrowedBooks.map((book, index) => (
+                            <li key={index}>
+                                <p className="font-bold">#{book.inventory}</p>
+                                <p>{book.title}</p>
+                                <p>- {book.author}</p>
                                 <p>
-                                    {book.title} #{book.id}
+                                    {book.n_borrowed} {book.n_borrowed === 1 ? 'vez' : 'veces'}{' '}
+                                    prestado
                                 </p>
-                                <p>{book.author}</p>
-                                <p>{book.n_borrowed} veces prestado</p>
                             </li>
                         ))}
                     </ul>
@@ -28,7 +30,7 @@ export const ReportsPage = () => {
 
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-yellow_400 p-4 text-yellow_600">
                     <h2 className="font-barrio text-3xl">Temas más elegidos</h2>
-                    <ul className="flex list-none flex-col gap-4 font-supermercado text-xl">
+                    <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
                         {mostPopularThemes.map((report) => (
                             <li>
                                 <p>{report.theme}</p>
@@ -42,7 +44,7 @@ export const ReportsPage = () => {
             <section className="flex flex-col items-start gap-5">
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-orange_400 p-4 text-orange_600">
                     <h2 className="font-barrio text-3xl">Cursos más lectores</h2>
-                    <ul className="flex list-none flex-col gap-4 font-supermercado text-xl">
+                    <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
                         {mostReaderSection.map((report) => (
                             <li>
                                 <p>
@@ -60,7 +62,9 @@ export const ReportsPage = () => {
                         {authorsWithMoreBooks.map((author, index) => (
                             <li key={index}>
                                 <p>{author.author}</p>
-                                <p>{author.n_books} libros</p>
+                                <p>
+                                    <span className="font-bold">{author.n_books}</span> libros
+                                </p>
                             </li>
                         ))}
                     </ul>
