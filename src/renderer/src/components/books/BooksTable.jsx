@@ -27,7 +27,7 @@ export const BooksTable = ({ filter = '' }) => {
 
     return (
         <>
-            <table className="flex h-full w-4/5 flex-col gap-6">
+            <table className="flex h-full w-full flex-col gap-6 lg:w-4/5">
                 <thead className="font-supermercado text-xl">
                     <tr className="flex items-center rounded-2xl bg-yellow_500 px-6 py-4 text-yellow_600 shadow-md">
                         <td

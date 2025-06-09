@@ -51,7 +51,11 @@ export const UserRow = ({ partner, index }) => {
                     onClick={() => openPartnerModal(partner)}
                     className="cursor-pointer bg-transparent"
                 >
-                    <img src={isInDebt ? infoWhiteIcon : infoIcon} alt="See more Icon" />
+                    <img
+                        className="min-h-8 min-w-8"
+                        src={isInDebt ? infoWhiteIcon : infoIcon}
+                        alt="See more Icon"
+                    />
                 </button>
 
                 {user.sessionToken && (
@@ -66,7 +70,11 @@ export const UserRow = ({ partner, index }) => {
                             }
                             className="cursor-pointer bg-transparent"
                         >
-                            <img src={isInDebt ? trashWhiteIcon : trashIcon} alt="Delete Icon" />
+                            <img
+                                className="min-h-8 min-w-8"
+                                src={isInDebt ? trashWhiteIcon : trashIcon}
+                                alt="Delete Icon"
+                            />
                         </button>
 
                         {partner.active_loans === null ||

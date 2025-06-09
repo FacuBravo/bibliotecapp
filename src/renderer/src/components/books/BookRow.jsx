@@ -26,7 +26,7 @@ export const BookRow = ({ book, index }) => {
                     onClick={() => openBookModal(book)}
                     className="cursor-pointer bg-transparent"
                 >
-                    <img className="h-8 w-8" src={infoIcon} alt="See more" />
+                    <img className="min-h-8 min-w-8" src={infoIcon} alt="See more" />
                 </button>
 
                 {user.sessionToken && (
@@ -41,7 +41,7 @@ export const BookRow = ({ book, index }) => {
                             }
                             className="cursor-pointer bg-transparent"
                         >
-                            <img className="h-8 w-8" src={trashIcon} alt="Delete" />
+                            <img className="min-h-8 min-w-8" src={trashIcon} alt="Delete" />
                         </button>
 
                         {book.borrowed === 0 ? (

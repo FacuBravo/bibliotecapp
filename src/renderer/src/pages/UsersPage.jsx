@@ -15,7 +15,7 @@ export const UsersPage = () => {
     return (
         <>
             <main className="flex min-h-[calc(100vh-98px)] w-full flex-col items-center bg-catalog bg-cover bg-fixed bg-center bg-no-repeat p-8 pt-0">
-                <section className="flex h-[82px] w-4/5 justify-between pb-4 pt-6">
+                <section className="flex h-[82px] w-full justify-between pb-4 pt-6 lg:w-4/5">
                     <div className="flex w-fit items-center gap-1 font-supermercado text-2xl text-pink_600">
                         <h1>Usuarios</h1>
 
