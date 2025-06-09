@@ -90,6 +90,23 @@ export const getLoan = (db, { id }) => {
     }
 }
 
+export const deleteLoan = (db, { id }) => {
+    try {
+        const data = db.prepare('DELETE FROM loan WHERE id = ?').run(id)
+
+        if (data.changes === 0) throw new Error()
+
+        return {
+            ok: true
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al eliminar el prestamo'
+        }
+    }
+}
+
 export const addMultipleLoans = (db, loans) => {
     try {
         const insert = db.prepare(

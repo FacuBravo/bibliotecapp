@@ -1,13 +1,21 @@
+import { useMemo } from 'react'
 import { getDateFromString } from '../../helpers'
-import { useAuthStore, useLoansStore } from '../../hooks'
+import { useAuthStore, useLoansStore, useUiStore } from '../../hooks'
+import { DeleteButton } from '../commons/buttons/DeleteButton'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
-    const { returnLoan } = useLoansStore()
+    const { returnLoan, startDeletingLoan } = useLoansStore()
+
+    const { openConfirmModal } = useUiStore()
+
+    const isInDebt = useMemo(
+        () => getDateFromString(loan.date_end) < new Date(new Date().setHours(0, 0, 0, 0)),
+        [loan.date_end]
+    )
 
     const getRowColors = () => {
-        return getDateFromString(loan.date_end) < new Date(new Date().setHours(0, 0, 0, 0)) &&
-            loan.returned === 0
+        return isInDebt && loan.returned === 0
             ? 'bg-red text-white'
             : index % 2 === 0
               ? 'bg-yellow_400 text-yellow_600'
@@ -20,6 +28,10 @@ export const LoanRow = ({ loan, index }) => {
         if (loan.returned === 0) {
             returnLoan({ id: loan.id, book_id: loan.auto_book_id })
         }
+    }
+
+    const deleteLoan = () => {
+        startDeletingLoan({ id: loan.id })
     }
 
     return (
@@ -37,21 +49,32 @@ export const LoanRow = ({ loan, index }) => {
                 </h4>
             </td>
             <td className="w-[8%] items-center justify-end text-end">
-                {!user.sessionToken ? (
-                    <span>---</span>
-                ) : loan.returned === 0 ? (
-                    <>
-                        {user.sessionToken && (
+                {user.sessionToken ? (
+                    <div className="flex items-center justify-end gap-2">
+                        <DeleteButton
+                            action={() =>
+                                openConfirmModal({
+                                    title: '¿Eliminar prestamo?',
+                                    message: 'Esta acción no se puede deshacer',
+                                    onConfirm: deleteLoan
+                                })
+                            }
+                            white={isInDebt && loan.returned === 0}
+                        />
+
+                        {loan.returned === 0 ? (
                             <button
                                 onClick={onReturnBook}
                                 className="rounded-lg bg-blue_600 p-2 text-white"
                             >
                                 Devolver
                             </button>
+                        ) : (
+                            <span>Devuelto</span>
                         )}
-                    </>
+                    </div>
                 ) : (
-                    <span>Devuelto</span>
+                    <span>---</span>
                 )}
             </td>
         </tr>

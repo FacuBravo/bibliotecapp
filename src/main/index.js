@@ -19,6 +19,7 @@ import {
     deleteAllLoans,
     deleteAllPartners,
     deleteBook,
+    deleteLoan,
     deletePartner,
     getAuthorsWithMoreBooks,
     getBook,
@@ -42,8 +43,6 @@ import {
 import { IpcKeys } from '../helpers'
 
 let db
-
-app.commandLine.appendSwitch('no-sandbox')
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -224,6 +223,8 @@ function setLoansHandlers() {
     ipcMain.handle(IpcKeys.LOAN.GET_ALL, () => getLoans(db))
 
     ipcMain.handle(IpcKeys.LOAN.GET, (_, { id }) => getLoan(db, { id }))
+
+    ipcMain.handle(IpcKeys.LOAN.DELETE, (_, { id }) => deleteLoan(db, { id }))
 
     ipcMain.handle(IpcKeys.LOAN.ADD_MULTIPLE, (_, loans) => addMultipleLoans(db, loans))
 

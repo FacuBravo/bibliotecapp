@@ -41,6 +41,16 @@ export const loansSlice = createSlice({
                 state.activeLoansCounter++
             }
         },
+        deleteLoan: (state, { payload }) => {
+            state.isLoading = false
+
+            const loan = state.loans.find((loan) => loan.id === payload.id)
+            state.loans = state.loans.filter((loan) => loan.id !== payload.id)
+
+            if (loan.returned === 0) {
+                state.activeLoansCounter--
+            }
+        },
         setPartner: (state, { payload }) => {
             state.partner = payload.partner
         },
@@ -85,6 +95,7 @@ export const {
     addLoan,
     setPartner,
     setBook,
+    deleteLoan,
     cleanLoanBookAndPartner,
     updateLoanState,
     setOrderBy

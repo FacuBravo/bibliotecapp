@@ -8,7 +8,8 @@ import {
     setNotLoading,
     setPartner,
     setOrderBy,
-    updateLoanState
+    updateLoanState,
+    deleteLoan
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
@@ -177,6 +178,29 @@ export const useLoansStore = () => {
         }
     }
 
+    const startDeletingLoan = async ({ id }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.loansApi.deleteLoan(id, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to delete loan')
+
+            dispatch(deleteLoan({ id }))
+
+            startLoadingMostReaderSectionReports()
+            setNotLoadingWithoutError()
+
+            return true
+        } catch (error) {
+            console.error('Error deleting loan:', error)
+            dispatch(setNotLoading({ error: 'Error al eliminar el prestamo' }))
+            return false
+        }
+    }
+
     const checkIfIsLoansArray = (loans) => {
         if (!Array.isArray(loans)) return false
 
@@ -235,6 +259,7 @@ export const useLoansStore = () => {
         startAddingLoan,
         multipleAddLoans,
         returnLoan,
+        startDeletingLoan,
         checkIfIsLoansArray,
         setLoanPartner,
         setLoanBook,

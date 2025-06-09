@@ -136,6 +136,15 @@ const loansApi = {
         }
     },
     getLoans: async () => ipcRenderer.invoke(IpcKeys.LOAN.GET_ALL),
+    deleteLoan: async (id, token) => {
+        const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
+
+        if (isAuthenticated) {
+            return ipcRenderer.invoke(IpcKeys.LOAN.DELETE, { id })
+        }
+
+        return null
+    },
     updateLoanState: async (id, returned, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 

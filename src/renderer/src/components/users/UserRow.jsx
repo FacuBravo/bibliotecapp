@@ -2,10 +2,9 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import infoIcon from '../../assets/images/icons/Info.svg'
 import infoWhiteIcon from '../../assets/images/icons/Info_white.svg'
-import trashIcon from '../../assets/images/icons/Trash.svg'
-import trashWhiteIcon from '../../assets/images/icons/Trash_white.svg'
 import { useAuthStore, useLoansStore, usePartnersStore, useUiStore } from '../../hooks'
 import { getDateFromString } from '../../helpers'
+import { DeleteButton } from '../commons/buttons/DeleteButton'
 
 export const UserRow = ({ partner, index }) => {
     const { user } = useAuthStore()
@@ -60,22 +59,16 @@ export const UserRow = ({ partner, index }) => {
 
                 {user.sessionToken && (
                     <>
-                        <button
-                            onClick={() =>
+                        <DeleteButton
+                            action={() =>
                                 openConfirmModal({
                                     title: '¿Eliminar usuario?',
                                     message: 'Esta acción no se puede deshacer',
                                     onConfirm: deletePartner
                                 })
                             }
-                            className="cursor-pointer bg-transparent"
-                        >
-                            <img
-                                className="min-h-8 min-w-8"
-                                src={isInDebt ? trashWhiteIcon : trashIcon}
-                                alt="Delete Icon"
-                            />
-                        </button>
+                            white={isInDebt}
+                        />
 
                         {partner.active_loans === null ||
                         partner.type.toLowerCase() === 'docente' ? (

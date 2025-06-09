@@ -1,7 +1,7 @@
 import { useAuthStore, useBooksStore, useLoansStore, useUiStore } from '../../hooks'
 import infoIcon from '../../assets/images/icons/Info.svg'
-import trashIcon from '../../assets/images/icons/Trash.svg'
 import { Link } from 'react-router-dom'
+import { DeleteButton } from '../commons/buttons/DeleteButton'
 
 export const BookRow = ({ book, index }) => {
     const { user } = useAuthStore()
@@ -31,18 +31,15 @@ export const BookRow = ({ book, index }) => {
 
                 {user.sessionToken && (
                     <>
-                        <button
-                            onClick={() =>
+                        <DeleteButton
+                            action={() => {
                                 openConfirmModal({
                                     title: '¿Eliminar libro?',
                                     message: 'Esta acción no se puede deshacer',
                                     onConfirm: () => deleteBook(book.id)
                                 })
-                            }
-                            className="cursor-pointer bg-transparent"
-                        >
-                            <img className="min-h-8 min-w-8" src={trashIcon} alt="Delete" />
-                        </button>
+                            }}
+                        />
 
                         {book.borrowed === 0 ? (
                             <Link
