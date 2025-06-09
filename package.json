@@ -2,7 +2,7 @@
     "name": "bibliotecapp",
     "productName": "BibliotecApp",
     "version": "1.0.0",
-    "description": "An Electron application with React",
+    "description": "An app to manage your library",
     "main": "./out/main/index.js",
     "author": "facundobravo.vercel.app",
     "homepage": "https://facundobravo.vercel.app/",

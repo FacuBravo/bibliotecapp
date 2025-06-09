@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { join } from 'path'
+import { existsSync, mkdirSync } from 'fs'
 import Database from 'better-sqlite3'
 
 import iconPng from '../../resources/icon.png'
@@ -41,6 +42,8 @@ import { IpcKeys } from '../helpers'
 
 let db
 
+app.commandLine.appendSwitch('no-sandbox')
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         show: false,
@@ -73,7 +76,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-    electronApp.setAppUserModelId('com.electron')
+    electronApp.setAppUserModelId('com.bibliotecapp')
 
     app.on('browser-window-created', (_, window) => {
         optimizer.watchWindowShortcuts(window)
@@ -89,7 +92,14 @@ app.whenReady().then(() => {
 })
 
 function createDb() {
-    db = new Database('mydb.db')
+    const dbDir = join(os.homedir(), '.bibliotecapp')
+    if (!existsSync(dbDir)) {
+        mkdirSync(dbDir, { recursive: true })
+    }
+
+    const dbPath = join(dbDir, 'mydb.db')
+
+    db = new Database(dbPath)
 
     db.pragma('foreign_keys = ON')
     db.pragma('journal_mode = WAL')
