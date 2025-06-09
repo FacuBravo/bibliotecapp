@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { join } from 'path'
+import { homedir } from 'os'
 import { existsSync, mkdirSync } from 'fs'
 import Database from 'better-sqlite3'
 
@@ -92,7 +93,7 @@ app.whenReady().then(() => {
 })
 
 function createDb() {
-    const dbDir = join(os.homedir(), '.bibliotecapp')
+    const dbDir = join(homedir(), '.bibliotecapp')
     if (!existsSync(dbDir)) {
         mkdirSync(dbDir, { recursive: true })
     }
