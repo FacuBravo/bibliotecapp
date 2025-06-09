@@ -43,8 +43,6 @@ let db
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 900,
-        height: 670,
         show: false,
         autoHideMenuBar: true,
         icon: process.platform === 'linux' ? { iconPng } : { iconIco },
@@ -53,6 +51,8 @@ function createWindow() {
             sandbox: false
         }
     })
+
+    mainWindow.maximize()
 
     mainWindow.on('ready-to-show', () => {
         mainWindow.show()
