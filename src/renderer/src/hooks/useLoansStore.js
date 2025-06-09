@@ -184,13 +184,24 @@ export const useLoansStore = () => {
         dispatch(setLoading())
 
         try {
+            const loan = loans.find((loan) => loan.id === id)
             const response = await window.loansApi.deleteLoan(id, user.sessionToken)
 
             if (!response.ok) throw new Error(response.msg || 'Failed to delete loan')
 
             dispatch(deleteLoan({ id }))
 
+            startLoadingBooksReports()
+            startLoadingThemesReports()
             startLoadingMostReaderSectionReports()
+
+            await startUpdatingBookState({
+                id: loan.auto_book_id,
+                borrowed: 0
+            })
+
+            await startLoadingPartners()
+
             setNotLoadingWithoutError()
 
             return true
