@@ -24,7 +24,11 @@ export const updatePartner = async (db, { id, name, surname, grade, section, typ
             [name, surname, grade, section, type, id]
         )
 
-        const partner = await db.get('SELECT * FROM partner WHERE id = ?', [id])
+        const res = await getPartner(db, { id })
+
+        if (!res.ok) throw new Error(res.msg)
+
+        const partner = res.partner
 
         return { ok: true, partner }
     } catch (error) {
