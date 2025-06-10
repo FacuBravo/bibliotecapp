@@ -21,13 +21,19 @@ export const addPartner = (db, { name, surname, grade, section, type }) => {
     }
 }
 
-export const updatePartner = (db, { id, name, surname, grade, section, type }) => {
+export const updatePartner = async (db, { id, name, surname, grade, section, type }) => {
     try {
-        const partner = db
+        await db
             .prepare(
                 'UPDATE partner SET name = ?, surname = ?, grade = ?, section = ?, type = ? WHERE id = ? RETURNING *'
             )
-            .get(name, surname, grade, section, type, id)
+            .run(name, surname, grade, section, type, id)
+
+        const res = getPartner(db, { id })
+
+        if (!res.ok) throw new Error(res.msg)
+
+        const partner = res.partner
 
         return {
             ok: true,
@@ -69,7 +75,16 @@ export const getPartners = (db) => {
 
 export const getPartner = (db, { id }) => {
     try {
-        const partner = db.prepare('SELECT * FROM partner WHERE id = ?').get(id)
+        const partner = db
+            .prepare(
+                `SELECT p.*, 
+                    (SELECT GROUP_CONCAT(l.date_end) 
+                        FROM loan l 
+                        WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
+                FROM partner p 
+                WHERE p.id = ?`
+            )
+            .get(id)
 
         return {
             ok: true,

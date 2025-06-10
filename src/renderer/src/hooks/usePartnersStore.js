@@ -68,7 +68,11 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to update partner')
 
-            dispatch(updatePartner({ partner: response.partner }))
+            dispatch(
+                updatePartner({
+                    partner: response.partner
+                })
+            )
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
