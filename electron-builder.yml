@@ -16,12 +16,13 @@ win:
           arch:
               - x64
               - ia32
-    executableName: BibliotecApp
+    # Compatibilidad extra
+    legalTrademarks: 'BibliotecApp'
+    requestedExecutionLevel: asInvoker
+    verifyUpdateCodeSignature: false
+    rfc3161TimeStampServer: 'http://timestamp.digicert.com' # opcional si firmás
 nsis:
     artifactName: ${name}-installer-${arch}.${ext}
-    shortcutName: ${productName}
-    uninstallDisplayName: ${productName}
-    createDesktopShortcut: always
 mac:
     entitlementsInherit: build/entitlements.mac.plist
     extendInfo:

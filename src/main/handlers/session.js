@@ -1,16 +1,18 @@
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs'
 import { getRandomToken } from '../../helpers'
 let session = null
 
-export const register = (db, username, password) => {
+export const register = async (db, username, password) => {
     const hash = bcrypt.hashSync(password, 10)
 
     try {
-        const data = db
-            .prepare(`INSERT INTO users (username, password) VALUES (?, ?)`)
-            .run(username, hash)
+        const result = await db.run(
+            `INSERT INTO users (username, password) VALUES (?, ?)`,
+            username,
+            hash
+        )
 
-        if (data.changes !== 1) throw new Error()
+        if (result.changes !== 1) throw new Error()
 
         session = {
             username,
@@ -29,23 +31,30 @@ export const register = (db, username, password) => {
     }
 }
 
-export const login = (db, username, password) => {
-    const user = db.prepare(`SELECT * FROM users WHERE username = ?`).get(username)
+export const login = async (db, username, password) => {
+    try {
+        const user = await db.get(`SELECT * FROM users WHERE username = ?`, username)
 
-    if (!user) return { ok: false, msg: 'Credenciales incorrectas' }
+        if (!user) return { ok: false, msg: 'Credenciales incorrectas' }
 
-    const validPassword = bcrypt.compareSync(password, user.password)
+        const validPassword = bcrypt.compareSync(password, user.password)
 
-    if (!validPassword) return { ok: false, msg: 'Credenciales incorrectas' }
+        if (!validPassword) return { ok: false, msg: 'Credenciales incorrectas' }
 
-    session = {
-        username,
-        token: getRandomToken()
-    }
+        session = {
+            username,
+            token: getRandomToken()
+        }
 
-    return {
-        ok: true,
-        sessionToken: session.token
+        return {
+            ok: true,
+            sessionToken: session.token
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            msg: 'Error al intentar iniciar sesión'
+        }
     }
 }
 

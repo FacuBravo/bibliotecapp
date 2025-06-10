@@ -3,7 +3,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { join } from 'path'
 import { homedir } from 'os'
 import { existsSync, mkdirSync } from 'fs'
-import Database from 'better-sqlite3'
+import sqlite3 from 'sqlite3'
+import { open } from 'sqlite'
 
 import iconPng from '../../resources/icon.png'
 import iconIco from '../../resources/icon.ico'
@@ -91,7 +92,7 @@ app.whenReady().then(() => {
     createDb()
 })
 
-function createDb() {
+async function createDb() {
     const dbDir = join(homedir(), '.bibliotecapp')
     if (!existsSync(dbDir)) {
         mkdirSync(dbDir, { recursive: true })
@@ -99,12 +100,14 @@ function createDb() {
 
     const dbPath = join(dbDir, 'mydb.db')
 
-    db = new Database(dbPath)
+    db = await open({
+        filename: dbPath,
+        driver: sqlite3.Database
+    })
 
-    db.pragma('foreign_keys = ON')
-    db.pragma('journal_mode = WAL')
+    await db.exec('PRAGMA foreign_keys = ON')
 
-    createTables()
+    await createTables()
 
     setSessionHandlers()
     setBooksHandlers()
@@ -113,55 +116,59 @@ function createDb() {
     setReportsHandlers()
 }
 
-function createTables() {
-    db.prepare(
-        `CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            username varchar(20) UNIQUE, 
-            password TEXT)`
-    ).run()
+async function createTables() {
+    await db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      username VARCHAR(20) UNIQUE, 
+      password TEXT
+    )
+  `)
 
-    db.prepare(
-        `CREATE TABLE IF NOT EXISTS partner (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            id_card TEXT UNIQUE,
-            name varchar(100), 
-            surname varchar(100), 
-            grade varchar(20), 
-            section varchar(10), 
-            type varchar(20))`
-    ).run()
+    await db.run(`
+    CREATE TABLE IF NOT EXISTS partner (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      id_card TEXT UNIQUE,
+      name VARCHAR(100), 
+      surname VARCHAR(100), 
+      grade VARCHAR(20), 
+      section VARCHAR(10), 
+      type VARCHAR(20)
+    )
+  `)
 
-    db.prepare(
-        `CREATE TABLE IF NOT EXISTS book (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            inventory INTEGER UNIQUE,
-            title varchar(150), 
-            author varchar(400), 
-            edition varchar(100) NULL, 
-            place varchar(100) NULL, 
-            editorial varchar(100) NULL, 
-            year INTEGER NULL,
-            borrowed INTEGER,
-            theme varchar(100),
-            collection varchar(80) NULL)`
-    ).run()
+    await db.run(`
+    CREATE TABLE IF NOT EXISTS book (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      inventory INTEGER UNIQUE,
+      title VARCHAR(150), 
+      author VARCHAR(400), 
+      edition VARCHAR(100), 
+      place VARCHAR(100), 
+      editorial VARCHAR(100), 
+      year INTEGER,
+      borrowed INTEGER,
+      theme VARCHAR(100),
+      collection VARCHAR(80)
+    )
+  `)
 
-    db.prepare(
-        `CREATE TABLE IF NOT EXISTS loan (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            date_start varchar(10), 
-            date_end varchar(10), 
-            returned INTEGER,
-            book_id INTEGER, 
-            partner_id TEXT,
-            FOREIGN KEY (book_id) REFERENCES book (inventory) 
-            ON DELETE CASCADE 
-            ON UPDATE CASCADE,
-            FOREIGN KEY (partner_id) REFERENCES partner (id_card) 
-            ON DELETE CASCADE 
-            ON UPDATE CASCADE)`
-    ).run()
+    await db.run(`
+    CREATE TABLE IF NOT EXISTS loan (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      date_start VARCHAR(10), 
+      date_end VARCHAR(10), 
+      returned INTEGER,
+      book_id INTEGER, 
+      partner_id TEXT,
+      FOREIGN KEY (book_id) REFERENCES book (inventory) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE,
+      FOREIGN KEY (partner_id) REFERENCES partner (id_card) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
+    )
+  `)
 }
 
 function setSessionHandlers() {
