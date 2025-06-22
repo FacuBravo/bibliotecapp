@@ -45,7 +45,7 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add partner')
 
-            dispatch(addPartner({ partner: response.partner }))
+            dispatch(addPartner({ partner: {...response.partner, active_loans: null} }))
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
