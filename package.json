@@ -16,7 +16,7 @@
         "build:unpack": "npm run build && electron-builder --dir",
         "build:win": "electron-builder --win --ia32",
         "build:mac": "npm run build && electron-builder --mac",
-        "build:linux": "npm run build && electron-builder --linux",
+        "build:linux": "electron-builder build --linux",
         "rebuild": "electron-rebuild -f -w yourmodule"
     },
     "dependencies": {
@@ -38,7 +38,7 @@
         "@electron-toolkit/eslint-config-prettier": "^3.0.0",
         "@vitejs/plugin-react": "^4.3.4",
         "autoprefixer": "^10.4.21",
-        "electron": "22.3.27",
+        "electron": "21.4.0",
         "electron-builder": "^25.1.8",
         "electron-rebuild": "^3.2.9",
         "electron-vite": "^3.1.0",
