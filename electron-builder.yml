@@ -22,6 +22,10 @@ win:
     verifyUpdateCodeSignature: false
     rfc3161TimeStampServer: 'http://timestamp.digicert.com' # opcional si firmás
 nsis:
+    oneClick: false
+    perMachine: false
+    allowToChangeInstallationDirectory: true
+    deleteAppDataOnUninstall: true
     artifactName: ${name}-installer-${arch}.${ext}
 mac:
     entitlementsInherit: build/entitlements.mac.plist
