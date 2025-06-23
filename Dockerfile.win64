@@ -6,5 +6,5 @@ COPY . .
 
 RUN npm install
 
-CMD ["npx", "electron-builder", "--win", "--x64"]
+CMD ["npm", "run", "build:win"]
 
