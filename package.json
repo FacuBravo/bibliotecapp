@@ -16,7 +16,7 @@
         "build:unpack": "npm run build && electron-builder --dir",
         "build:win": "electron-builder --win --ia32",
         "build:mac": "npm run build && electron-builder --mac",
-        "build:linux": "electron-builder build --linux",
+        "build:linux": "npm run build && electron-builder build --linux",
         "rebuild": "electron-rebuild -f -w yourmodule"
     },
     "dependencies": {

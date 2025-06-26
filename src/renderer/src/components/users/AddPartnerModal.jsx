@@ -15,7 +15,7 @@ const addPartnerForm = {
 const formValidations = {
     name: [(value) => value.length > 0, 'El nombre de usuario es requerido'],
     surname: [(value) => value.length > 0, 'El apellido es requerido'],
-    grade: [(value) => value.length > 0, 'El grado es requerido'],
+    grade: [(value) => value.toString().length > 0, 'El grado es requerido'],
     section: [(value) => value.length > 0, 'La sección es requerida'],
     type: [(value) => value.length > 0, 'El tipo es requerido']
 }
