@@ -1,9 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Menu, dialog } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { join } from 'path'
 import { homedir } from 'os'
-import { existsSync, mkdirSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import Database from 'better-sqlite3'
+import XLSX from 'xlsx'
 
 import iconPng from '../../resources/icon.png'
 import iconIco from '../../resources/icon.ico'
@@ -42,10 +43,10 @@ import {
 } from './handlers'
 import { IpcKeys } from '../helpers'
 
-let db
+let db, mainWindow
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         show: false,
         autoHideMenuBar: true,
         icon: process.platform === 'linux' ? { iconPng } : { iconIco },
@@ -111,6 +112,7 @@ function createDb() {
     setPartnersHandlers()
     setLoansHandlers()
     setReportsHandlers()
+    setExcelHandlers()
 }
 
 function createTables() {
@@ -236,6 +238,33 @@ function setReportsHandlers() {
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_BORROWED_BOOKS, () => getMostBorrowedBooks(db))
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_POPULAR_THEMES, () => getMostPopularThemes(db))
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_READER_SECTION, () => getMostReaderSection(db))
+}
+
+function setExcelHandlers() {
+    ipcMain.handle('dialog:save-file', async (event, defaultName) => {
+        const result = await dialog.showSaveDialog(mainWindow, {
+            title: 'Guardar archivo Excel',
+            defaultPath: defaultName || 'archivo.xlsx',
+            filters: [{ name: 'Archivos Excel', extensions: ['xlsx'] }]
+        })
+
+        return result.filePath
+    })
+
+    ipcMain.on('export-to-excel', (event, data, filePath) => {
+        if (!filePath) return
+
+        const worksheet = XLSX.utils.json_to_sheet(data)
+        const workbook = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1')
+
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: 'xlsx',
+            type: 'buffer'
+        })
+
+        writeFileSync(filePath, excelBuffer)
+    })
 }
 
 app.on('window-all-closed', () => {

@@ -26,7 +26,7 @@ export const BentoGrid = () => {
 
             <Link
                 to="/catalog"
-                className="col-span-1 row-span-4 flex flex-col items-end justify-between rounded-3xl bg-gradient-to-b from-blue_400 to-blue_500 pt-4 font-barrio text-xl text-blue_600 shadow-lg"
+                className="col-span-1 row-span-4 flex flex-col items-end justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-blue_400 to-blue_500 pt-4 font-barrio text-xl text-blue_600 shadow-lg"
             >
                 <h2 className="mr-4">Catálogo</h2>
                 <img className="w-full" src={stackOfBooks} alt="Pila de libros Icon" />
