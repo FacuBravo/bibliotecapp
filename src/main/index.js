@@ -241,7 +241,7 @@ function setReportsHandlers() {
 }
 
 function setExcelHandlers() {
-    ipcMain.handle('dialog:save-file', async (event, defaultName) => {
+    ipcMain.handle(IpcKeys.EXCEL.OPEN_SAVE_DIALOG, async (event, defaultName) => {
         const result = await dialog.showSaveDialog(mainWindow, {
             title: 'Guardar archivo Excel',
             defaultPath: defaultName || 'archivo.xlsx',
@@ -251,7 +251,7 @@ function setExcelHandlers() {
         return result.filePath
     })
 
-    ipcMain.on('export-to-excel', (event, data, filePath) => {
+    ipcMain.on(IpcKeys.EXCEL.EXPORT_TO_EXCEL, (event, data, filePath) => {
         if (!filePath) return
 
         const worksheet = XLSX.utils.json_to_sheet(data)
