@@ -185,6 +185,13 @@ const reportsApi = {
         await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_READER_SECTION)
 }
 
+const excelApi = {
+    openSaveDialog: async (defaultName) =>
+        ipcRenderer.invoke(IpcKeys.EXCEL.OPEN_SAVE_DIALOG, defaultName),
+    exportToExcel: async (data, filePath) =>
+        ipcRenderer.send(IpcKeys.EXCEL.EXPORT_TO_EXCEL, data, filePath)
+}
+
 if (process.contextIsolated) {
     try {
         contextBridge.exposeInMainWorld('electron', electronAPI)
@@ -193,6 +200,7 @@ if (process.contextIsolated) {
         contextBridge.exposeInMainWorld('partnersApi', partnersApi)
         contextBridge.exposeInMainWorld('loansApi', loansApi)
         contextBridge.exposeInMainWorld('reportsApi', reportsApi)
+        contextBridge.exposeInMainWorld('excelApi', excelApi)
     } catch (error) {
         console.error(error)
     }
@@ -203,4 +211,5 @@ if (process.contextIsolated) {
     window.partnersApi = partnersApi
     window.loansApi = loansApi
     window.reportsApi = reportsApi
+    window.excelApi = excelApi
 }

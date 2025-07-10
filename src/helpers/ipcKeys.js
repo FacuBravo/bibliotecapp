@@ -39,5 +39,9 @@ export const IpcKeys = {
         GET_MOST_BORROWED_BOOKS: 'get-most-borrowed-books',
         GET_MOST_POPULAR_THEMES: 'get-most-popular-themes',
         GET_MOST_READER_SECTION: 'get-most-reader-section'
+    },
+    EXCEL: {
+        OPEN_SAVE_DIALOG: 'dialog:save-file',
+        EXPORT_TO_EXCEL: 'export-to-excel'
     }
 }
