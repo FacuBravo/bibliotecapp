@@ -1,7 +1,8 @@
 import { SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
+import excelIcon from '../assets/images/icons/Excel.png'
 import { BooksTable, AddBookModal, BooksFileFunctions } from '../components/books'
-import { useAuthStore, useForm, useUiStore } from '../hooks'
+import { useAuthStore, useBooksStore, useForm, useUiStore } from '../hooks'
 
 const searchForm = {
     filter: ''
@@ -11,6 +12,34 @@ export const BooksPage = () => {
     const { user } = useAuthStore()
     const { openAddBookModal } = useUiStore()
     const { filter, onInputChange } = useForm(searchForm)
+    const { books } = useBooksStore()
+
+    const catalogToExcel = async () => {
+        const booksDTO = []
+
+        for (const book of books) {
+            const borrowed = book.borrowed == 1 ? 'Prestado' : 'Sin prestar'
+
+            booksDTO.push({
+                'Nro. inventario': book.inventory,
+                Título: book.title,
+                Autor: book.author,
+                Edición: book.edition,
+                Lugar: book.place,
+                Editorial: book.editorial,
+                Año: book.year,
+                Tema: book.theme,
+                Colección: book.collection,
+                Estado: borrowed
+            })
+        }
+
+        const filePath = await window.excelApi.openSaveDialog('catalogo.xlsx')
+
+        if (filePath) {
+            window.excelApi.exportToExcel(booksDTO, filePath)
+        }
+    }
 
     return (
         <>
@@ -27,6 +56,13 @@ export const BooksPage = () => {
                                 <img src={plusIcon} alt="Add Book" />
                             </button>
                         )}
+
+                        <button
+                            onClick={() => catalogToExcel()}
+                            className="h-8 cursor-pointer bg-transparent transition-transform hover:scale-90"
+                        >
+                            <img src={excelIcon} alt="Excel Icon" />
+                        </button>
                     </div>
 
                     <BooksFileFunctions />
