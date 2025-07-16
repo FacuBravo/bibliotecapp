@@ -42,6 +42,8 @@ linux:
     category: Utility
 appImage:
     artifactName: ${name}-installer-${arch}.${ext}
+deb:
+    compression: gzip
 npmRebuild: false
 publish:
     provider: generic
