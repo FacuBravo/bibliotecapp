@@ -43,7 +43,7 @@ linux:
 appImage:
     artifactName: ${name}-installer-${arch}.${ext}
 deb:
-    compression: gzip
+    compression: gz
 npmRebuild: false
 publish:
     provider: generic
