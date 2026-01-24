@@ -3,7 +3,7 @@ import { useAuthStore, useUiStore } from '../../hooks'
 import { CloseButton } from '../commons'
 import pencilIcon from '../../assets/images/icons/Pencil.svg'
 
-export const PartnerModal = () => {
+export const PartnerModal = ({ showEdit = true }) => {
     const { user } = useAuthStore()
     const { isPartnerModalOpen, closePartnerModal, partner, openAddPartnerModal } = useUiStore()
 
@@ -20,7 +20,7 @@ export const PartnerModal = () => {
         >
             <section className="flex flex-col items-end">
                 <div className="flex gap-2">
-                    {user.sessionToken && (
+                    {user.sessionToken && showEdit && (
                         <button
                             onClick={() => {
                                 openAddPartnerModal(partner)

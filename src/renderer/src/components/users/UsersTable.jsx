@@ -75,6 +75,7 @@ export const UsersTable = ({ filter = '' }) => {
                                 alt="Arrow Icon"
                             />
                         </td>
+                        <td className="w-[27%]">Grado</td>
                         <td className="w-[27%]">Estado</td>
                         <td className="w-[14%] items-center justify-end text-end">Acciones</td>
                     </tr>
