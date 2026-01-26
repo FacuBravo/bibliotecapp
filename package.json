@@ -3,7 +3,7 @@
     "productName": "BibliotecApp",
     "version": "1.0.0",
     "description": "An app to manage your library",
-    "main": "./out/main/index.js",
+    "main": "./out/main/main.js",
     "author": "facundobravo.vercel.app",
     "homepage": "https://facundobravo.vercel.app/",
     "scripts": {
