@@ -14,6 +14,7 @@ export const UsersTable = ({ filter = '' }) => {
             setFilteredPartners(
                 partners.filter((partner) => {
                     return (
+                        partner.id.toString().toLowerCase().includes(filter.toLowerCase()) ||
                         partner.name.toLowerCase().includes(filter.toLowerCase()) ||
                         partner.surname.toLowerCase().includes(filter.toLowerCase()) ||
                         partner.type.toLowerCase().includes(filter.toLowerCase())
