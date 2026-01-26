@@ -44,6 +44,9 @@ export const UserRow = ({ partner, index }) => {
                 {partner.surname}, {partner.name}
             </td>
             <td className="w-[27%]">{partner.type}</td>
+            <td className="w-[27%]">
+                {partner.grade}° {partner.section}
+            </td>
             <td className="w-[27%]">{isInDebt ? 'En deuda' : 'Al día'}</td>
             <td className="flex w-[14%] items-center justify-end gap-2 text-end">
                 <button

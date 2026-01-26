@@ -42,7 +42,7 @@ export const Header = () => {
                             to="/"
                         >
                             <img src={homeIcon} alt="Home Icon" />
-                            Home
+                            Inicio
                         </Link>
                     </li>
 
