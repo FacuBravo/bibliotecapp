@@ -12,7 +12,7 @@ export const BooksPage = () => {
     const { user } = useAuthStore()
     const { openAddBookModal } = useUiStore()
     const { filter, onInputChange } = useForm(searchForm)
-    const { books } = useBooksStore()
+    const { books, startLoadingBooks, counter, page, isLast } = useBooksStore()
 
     const catalogToExcel = async () => {
         const booksDTO = []
@@ -39,6 +39,18 @@ export const BooksPage = () => {
         if (filePath) {
             window.excelApi.exportToExcel(booksDTO, filePath)
         }
+    }
+
+    const onNextPage = () => {
+        startLoadingBooks(page + 1)
+    }
+
+    const onPreviousPage = () => {
+        startLoadingBooks(page - 1)
+    }
+
+    const onGoToPage = (page) => {
+        startLoadingBooks(page)
     }
 
     return (
@@ -72,7 +84,14 @@ export const BooksPage = () => {
 
                 <BooksTable filter={filter} />
 
-                <PageSelector />
+                <PageSelector
+                    onNextPage={onNextPage}
+                    onPreviousPage={onPreviousPage}
+                    onGoToPage={onGoToPage}
+                    counter={counter}
+                    page={page}
+                    isLast={isLast}
+                />
             </main>
 
             <AddBookModal />

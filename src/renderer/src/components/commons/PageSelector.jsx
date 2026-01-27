@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import arrowIcon from '../../assets/images/icons/Arrow_secondary.svg'
-import { useBooksStore } from '../../hooks'
+import { BOOKS_LIMIT } from '../../consts'
 
-export const PageSelector = () => {
-    const { counter, page } = useBooksStore()
+export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, page, isLast }) => {
     const [totalPages, setTotalPages] = useState(0)
     const [pages, setPages] = useState([])
 
     useEffect(() => {
         setPages(initPagesArray())
-    }, [counter, totalPages])
+    }, [counter, totalPages, page])
 
     const initPagesArray = () => {
-        setTotalPages(Math.ceil(counter / 10))
+        setTotalPages(Math.ceil(counter / BOOKS_LIMIT))
 
         if (totalPages <= 1) return []
 
@@ -34,18 +33,6 @@ export const PageSelector = () => {
         }
 
         return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i)
-    }
-
-    const onNextPage = () => {
-        // this.goNextPage.emit()
-    }
-
-    const onPreviousPage = () => {
-        // this.goPreviousPage.emit()
-    }
-
-    const onGoToPage = (page) => {
-        // this.goToPage.emit(page)
     }
 
     return (
@@ -73,7 +60,7 @@ export const PageSelector = () => {
                 {pages.map((n) => (
                     <button
                         key={n}
-                        className={`h-9 rounded p-1 text-black md:w-9 ${page === n - 1 ? 'bg-red text-black' : ''}`}
+                        className={`h-9 rounded p-1 text-black md:w-9 ${page === n - 1 ? 'bg-pink_500 text-black' : ''}`}
                         onClick={() => onGoToPage(n - 1)}
                     >
                         {n}
@@ -95,7 +82,7 @@ export const PageSelector = () => {
             </div>
 
             <button
-                disabled={page === totalPages - 1}
+                disabled={isLast}
                 onClick={() => onNextPage()}
                 className="rounded bg-pink_600 p-1 disabled:cursor-not-allowed disabled:opacity-50"
             >

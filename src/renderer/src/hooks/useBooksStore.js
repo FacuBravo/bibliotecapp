@@ -11,12 +11,15 @@ import {
 } from '../store/books/booksSlice'
 import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
+import { BOOKS_LIMIT } from '../consts'
 
 const validFields = ['inventory', 'title', 'author', 'theme']
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
-    const { books, page, isLoading, error, counter, orderBy } = useSelector((state) => state.books)
+    const { books, page, isLast, isLoading, error, counter, orderBy } = useSelector(
+        (state) => state.books
+    )
     const { user } = useSelector((state) => state.auth)
     const {
         startLoadingAuthorsReports,
@@ -25,11 +28,11 @@ export const useBooksStore = () => {
         setNotLoadingWithoutError
     } = useReportsStore()
 
-    const startLoadingBooks = async () => {
+    const startLoadingBooks = async (page = 0) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.booksApi.getBooks()
+            const response = await window.booksApi.getBooks(page * BOOKS_LIMIT, BOOKS_LIMIT)
 
             if (!response.ok) throw new Error('Failed to fetch books')
 
@@ -207,6 +210,7 @@ export const useBooksStore = () => {
     return {
         books,
         page,
+        isLast,
         isLoading,
         error,
         counter,

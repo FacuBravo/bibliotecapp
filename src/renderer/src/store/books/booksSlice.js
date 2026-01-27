@@ -4,7 +4,8 @@ export const booksSlice = createSlice({
     name: 'books',
     initialState: {
         books: [],
-        page: 1,
+        page: 0,
+        isLast: false,
         isLoading: true,
         error: null,
         counter: 0,
@@ -24,6 +25,7 @@ export const booksSlice = createSlice({
         setBooks: (state, { payload }) => {
             state.books = payload.books
             state.page = payload.page
+            state.isLast = payload.isLast
             state.isLoading = false
             state.error = null
             state.counter = payload.total
