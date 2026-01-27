@@ -9,7 +9,6 @@ import {
     updateBook,
     updateBookState
 } from '../store/books/booksSlice'
-import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
 import { BOOKS_LIMIT } from '../consts'
 
@@ -28,11 +27,16 @@ export const useBooksStore = () => {
         setNotLoadingWithoutError
     } = useReportsStore()
 
-    const startLoadingBooks = async (page = 0) => {
+    const startLoadingBooks = async (page = 0, orderBy = { field: 'inventory', order: 'asc' }) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.booksApi.getBooks(page * BOOKS_LIMIT, BOOKS_LIMIT)
+            const response = await window.booksApi.getBooks({
+                offset: page * BOOKS_LIMIT,
+                limit: BOOKS_LIMIT,
+                orderBy: orderBy.field,
+                order: orderBy.order
+            })
 
             if (!response.ok) throw new Error('Failed to fetch books')
 
@@ -198,13 +202,11 @@ export const useBooksStore = () => {
         dispatch(
             setOrderBy({
                 field,
-                order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+                order: newOrder
             })
         )
 
-        const sortedBooks = orderObjectsArray([...books], field, newOrder)
-
-        dispatch(setBooks({ books: sortedBooks }))
+        startLoadingBooks(page, { field, order: newOrder })
     }
 
     return {
