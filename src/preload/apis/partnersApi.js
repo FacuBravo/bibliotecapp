@@ -20,7 +20,8 @@ export const partnersApi = {
             return null
         }
     },
-    getPartners: async () => ipcRenderer.invoke(IpcKeys.PARTNER.GET_ALL),
+    getPartners: async (offset = 0, limit = 10) =>
+        ipcRenderer.invoke(IpcKeys.PARTNER.GET_ALL, offset, limit),
     getPartner: async (id) => ipcRenderer.invoke(IpcKeys.PARTNER.GET, { id }),
     deletePartner: async (id, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })

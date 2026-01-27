@@ -66,7 +66,7 @@ function setBooksHandlers(db) {
     )
 
     ipcMain.handle(IpcKeys.BOOK.UPDATE, (_, bookInfo) => updateBook(db, bookInfo))
-    ipcMain.handle(IpcKeys.BOOK.GET_ALL, () => getBooks(db))
+    ipcMain.handle(IpcKeys.BOOK.GET_ALL, (_, offset = 0, limit = 10) => getBooks(db, offset, limit))
 
     ipcMain.handle(IpcKeys.BOOK.GET, (_, { id }) => getBook(db, { id }))
 
@@ -81,7 +81,9 @@ function setPartnersHandlers(db) {
     ipcMain.handle(IpcKeys.PARTNER.ADD, (_, partnerInfo) => addPartner(db, partnerInfo))
 
     ipcMain.handle(IpcKeys.PARTNER.UPDATE, (_, partnerInfo) => updatePartner(db, partnerInfo))
-    ipcMain.handle(IpcKeys.PARTNER.GET_ALL, () => getPartners(db))
+    ipcMain.handle(IpcKeys.PARTNER.GET_ALL, (_, offset = 0, limit = 10) =>
+        getPartners(db, offset, limit)
+    )
 
     ipcMain.handle(IpcKeys.PARTNER.GET, (_, { id }) => getPartner(db, { id }))
 
@@ -101,7 +103,7 @@ function setLoansHandlers(db) {
         setLoanState(db, { id, returned })
     )
 
-    ipcMain.handle(IpcKeys.LOAN.GET_ALL, () => getLoans(db))
+    ipcMain.handle(IpcKeys.LOAN.GET_ALL, (_, offset = 0, limit = 10) => getLoans(db, offset, limit))
 
     ipcMain.handle(IpcKeys.LOAN.GET, (_, { id }) => getLoan(db, { id }))
 

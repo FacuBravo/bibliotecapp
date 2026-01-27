@@ -36,16 +36,20 @@ export const updatePartner = async (db, { id, name, surname, grade, section, typ
     }
 }
 
-export const getPartners = async (db) => {
+export const getPartners = async (db, offset, limit) => {
     try {
-        const partners = await db.all(`
+        const partners = await db.all(
+            `
             SELECT p.*, 
                 (SELECT GROUP_CONCAT(l.date_end) 
                  FROM loan l 
                  WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
             FROM partner p 
-            ORDER BY p.id
-        `)
+            ORDER BY p.id 
+            LIMIT ? OFFSET ?
+        `,
+            [limit, offset]
+        )
 
         return { ok: true, partners }
     } catch (error) {

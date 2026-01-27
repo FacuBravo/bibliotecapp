@@ -41,17 +41,20 @@ export const updateLoan = async (db, { id, date_end }) => {
     }
 }
 
-export const getLoans = async (db) => {
+export const getLoans = async (db, offset, limit) => {
     try {
-        const loans = await db.all(`
+        const loans = await db.all(
+            `
             SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned,
                    p.name, p.surname, p.id as auto_partner_id,
                    b.id as auto_book_id, b.title, b.borrowed
             FROM loan l
             JOIN partner p ON l.partner_id = p.id_card
             JOIN book b ON b.inventory = l.book_id
-            ORDER BY l.date_start DESC
-        `)
+            ORDER BY l.date_start DESC LIMIT ? OFFSET ?
+        `,
+            [limit, offset]
+        )
 
         return { ok: true, loans }
     } catch (error) {

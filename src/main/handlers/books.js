@@ -46,9 +46,12 @@ export const updateBook = async (
     }
 }
 
-export const getBooks = async (db) => {
+export const getBooks = async (db, offset, limit) => {
     try {
-        const books = await db.all('SELECT * FROM book ORDER BY inventory')
+        const books = await db.all('SELECT * FROM book ORDER BY inventory LIMIT ? OFFSET ? ', [
+            limit,
+            offset
+        ])
         return { ok: true, books }
     } catch (error) {
         return { ok: false, msg: 'Error al obtener los libros' }
