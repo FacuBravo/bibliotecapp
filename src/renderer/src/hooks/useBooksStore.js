@@ -16,7 +16,7 @@ const validFields = ['inventory', 'title', 'author', 'theme']
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
-    const { books, isLoading, error, counter, orderBy } = useSelector((state) => state.books)
+    const { books, page, isLoading, error, counter, orderBy } = useSelector((state) => state.books)
     const { user } = useSelector((state) => state.auth)
     const {
         startLoadingAuthorsReports,
@@ -33,7 +33,7 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error('Failed to fetch books')
 
-            dispatch(setBooks({ books: response.books }))
+            dispatch(setBooks(response))
         } catch (error) {
             console.error('Error loading books:', error)
             dispatch(setNotLoading({ error: 'Error al obtener los libros' }))
@@ -206,6 +206,7 @@ export const useBooksStore = () => {
 
     return {
         books,
+        page,
         isLoading,
         error,
         counter,

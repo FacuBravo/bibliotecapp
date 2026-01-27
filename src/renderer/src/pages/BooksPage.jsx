@@ -1,4 +1,4 @@
-import { SearchInput } from '../components/commons'
+import { PageSelector, SearchInput } from '../components/commons'
 import plusIcon from '../assets/images/icons/Plus_pink.svg'
 import excelIcon from '../assets/images/icons/Excel.png'
 import { BooksTable, AddBookModal, BooksFileFunctions } from '../components/books'
@@ -71,6 +71,8 @@ export const BooksPage = () => {
                 </section>
 
                 <BooksTable filter={filter} />
+
+                <PageSelector />
             </main>
 
             <AddBookModal />

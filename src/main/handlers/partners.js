@@ -51,7 +51,11 @@ export const getPartners = async (db, offset, limit) => {
             [limit, offset]
         )
 
-        return { ok: true, partners }
+        const row = await db.get(`SELECT COUNT(*) as total FROM partner`)
+        const total = row.total
+        const page = Math.floor(offset / limit)
+
+        return { ok: true, partners, page, total, isLast: offset + limit >= total }
     } catch (error) {
         console.error('Error al obtener los usuarios:', error)
         return { ok: false, msg: 'Error al obtener los usuarios' }

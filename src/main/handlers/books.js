@@ -52,7 +52,12 @@ export const getBooks = async (db, offset, limit) => {
             limit,
             offset
         ])
-        return { ok: true, books }
+
+        const row = await db.get(`SELECT COUNT(*) as total FROM book`)
+        const total = row.total
+        const page = Math.floor(offset / limit)
+
+        return { ok: true, books, page, total, isLast: offset + limit >= total }
     } catch (error) {
         return { ok: false, msg: 'Error al obtener los libros' }
     }
