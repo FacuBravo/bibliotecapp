@@ -4,6 +4,9 @@ export const loansSlice = createSlice({
     name: 'loans',
     initialState: {
         loans: [],
+        page: 0,
+        isLast: false,
+        counter: 0,
         isLoading: true,
         partner: null,
         book: null,
@@ -24,15 +27,12 @@ export const loansSlice = createSlice({
         },
         setLoans: (state, { payload }) => {
             state.loans = payload.loans
-            state.activeLoansCounter = 0
+            state.page = payload.page
+            state.isLast = payload.isLast
+            state.counter = payload.total
+            state.activeLoansCounter = payload.activeLoansCounter
             state.isLoading = false
             state.error = null
-
-            for (const loan of payload.loans) {
-                if (loan.returned === 0) {
-                    state.activeLoansCounter++
-                }
-            }
         },
         addLoan: (state, { payload }) => {
             state.loans.push(payload.loan)

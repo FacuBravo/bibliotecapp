@@ -15,15 +15,15 @@ import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
 import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
+import { LOANS_LIMIT } from '../consts'
 
 const validFields = ['date_start', 'date_end']
 
 export const useLoansStore = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const { loans, isLoading, partner, book, error, activeLoansCounter, orderBy } = useSelector(
-        (state) => state.loans
-    )
+    const { loans, page, isLast, counter, isLoading, partner, book, error, activeLoansCounter, orderBy } =
+        useSelector((state) => state.loans)
     const { startUpdatingBookState } = useBooksStore()
     const { startLoadingPartners, addingNewActiveLoan } = usePartnersStore()
     const {
@@ -33,15 +33,15 @@ export const useLoansStore = () => {
         setNotLoadingWithoutError
     } = useReportsStore()
 
-    const startLoadingLoans = async () => {
+    const startLoadingLoans = async (page = 0) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.loansApi.getLoans()
+            const response = await window.loansApi.getLoans(page * LOANS_LIMIT, LOANS_LIMIT)
 
             if (!response.ok) throw new Error('Failed to fetch loans')
 
-            dispatch(setLoans({ loans: response.loans }))
+            dispatch(setLoans(response))
         } catch (error) {
             console.error('Error loading loans:', error)
             dispatch(setNotLoading({ error: 'Error al obtener los prestamos' }))
@@ -259,6 +259,9 @@ export const useLoansStore = () => {
 
     return {
         loans,
+        page,
+        isLast,
+        counter,
         isLoading,
         partner,
         book,

@@ -1,5 +1,5 @@
-import { SearchInput } from '../components/commons'
-import { useAuthStore, useForm, useUiStore } from '../hooks'
+import { PageSelector, SearchInput } from '../components/commons'
+import { useAuthStore, useForm, usePartnersStore, useUiStore } from '../hooks'
 import plusPinkIcon from '../assets/images/icons/Plus_pink.svg'
 import { UsersTable, PartnersFileFunctions, AddPartnerModal } from '../components/users'
 
@@ -11,6 +11,36 @@ export const UsersPage = () => {
     const { user } = useAuthStore()
     const { openAddPartnerModal } = useUiStore()
     const { filter, onInputChange } = useForm(searchForm)
+    const { page, isLast, startLoadingPartners, counter } = usePartnersStore()
+
+    const onNextPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
+        startLoadingPartners(page + 1)
+    }
+
+    const onPreviousPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
+        startLoadingPartners(page - 1)
+    }
+
+    const onGoToPage = (newPage) => {
+        if (newPage !== page) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+
+            startLoadingPartners(newPage)
+        }
+    }
 
     return (
         <>
@@ -35,6 +65,17 @@ export const UsersPage = () => {
                 </section>
 
                 <UsersTable filter={filter} />
+
+                <div className="mt-8 h-full w-full lg:w-4/5">
+                    <PageSelector
+                        onNextPage={onNextPage}
+                        onPreviousPage={onPreviousPage}
+                        onGoToPage={onGoToPage}
+                        counter={counter}
+                        page={page}
+                        isLast={isLast}
+                    />
+                </div>
             </main>
 
             <AddPartnerModal />

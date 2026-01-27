@@ -4,6 +4,8 @@ export const partnersSlice = createSlice({
     name: 'partners',
     initialState: {
         partners: [],
+        page: 0,
+        isLast: false,
         isLoading: true,
         error: null,
         counter: 0,
@@ -22,9 +24,11 @@ export const partnersSlice = createSlice({
         },
         setPartners: (state, { payload }) => {
             state.partners = payload.partners
+            state.page = payload.page
+            state.isLast = payload.isLast
             state.isLoading = false
             state.error = null
-            state.counter = payload.partners.length
+            state.counter = payload.total
         },
         addPartner: (state, { payload }) => {
             state.partners.push(payload.partner)

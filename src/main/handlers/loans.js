@@ -60,7 +60,17 @@ export const getLoans = async (db, offset, limit) => {
         const total = row.total
         const page = Math.floor(offset / limit)
 
-        return { ok: true, loans, page, total, isLast: offset + limit >= total }
+        const activeLoansRow = await db.get(`SELECT COUNT(*) as total FROM loan WHERE returned = 0`)
+        const activeLoansCounter = activeLoansRow.total
+
+        return {
+            ok: true,
+            loans,
+            page,
+            total,
+            isLast: offset + limit >= total,
+            activeLoansCounter
+        }
     } catch (error) {
         return { ok: false, msg: 'Error al obtener los préstamos' }
     }

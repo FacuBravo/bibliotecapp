@@ -11,24 +11,30 @@ import {
 } from '../store/partners/partnersSlice'
 import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
+import { PARTNERS_LIMIT } from '../consts'
 
 const validFields = ['id', 'surname', 'type']
 
 export const usePartnersStore = () => {
     const dispatch = useDispatch()
-    const { partners, isLoading, error, counter, orderBy } = useSelector((state) => state.partners)
+    const { partners, page, isLast, isLoading, error, counter, orderBy } = useSelector(
+        (state) => state.partners
+    )
     const { user } = useSelector((state) => state.auth)
     const { startLoadingMostReaderSectionReports, setNotLoadingWithoutError } = useReportsStore()
 
-    const startLoadingPartners = async () => {
+    const startLoadingPartners = async (page = 0) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.partnersApi.getPartners()
+            const response = await window.partnersApi.getPartners(
+                page * PARTNERS_LIMIT,
+                PARTNERS_LIMIT
+            )
 
             if (!response.ok) throw new Error('Failed to fetch partners')
 
-            dispatch(setPartners({ partners: response.partners }))
+            dispatch(setPartners(response))
         } catch (error) {
             console.error('Error loading partners:', error)
             dispatch(setNotLoading({ error: 'Error al obtener los usuarios' }))
@@ -45,7 +51,7 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add partner')
 
-            dispatch(addPartner({ partner: {...response.partner, active_loans: null} }))
+            dispatch(addPartner({ partner: { ...response.partner, active_loans: null } }))
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
@@ -189,6 +195,8 @@ export const usePartnersStore = () => {
 
     return {
         partners,
+        page,
+        isLast,
         isLoading,
         error,
         counter,

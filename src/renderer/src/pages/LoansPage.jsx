@@ -1,4 +1,4 @@
-import { SearchInput } from '../components/commons'
+import { PageSelector, SearchInput } from '../components/commons'
 import { LoanModal, LoansFileFunctions, LoansTable } from '../components/loans'
 import { useForm, useLoansStore, useUiStore } from '../hooks'
 import bookGreen from '../assets/images/icons/Book_green.svg'
@@ -12,8 +12,37 @@ const searchForm = {
 
 export const LoansPage = () => {
     const { openLoanModal } = useUiStore()
-    const { partner, book } = useLoansStore()
+    const { partner, book, startLoadingLoans, counter, page, isLast } = useLoansStore()
     const { filter, onInputChange } = useForm(searchForm)
+
+    const onNextPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
+        startLoadingLoans(page + 1)
+    }
+
+    const onPreviousPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
+        startLoadingLoans(page - 1)
+    }
+
+    const onGoToPage = (newPage) => {
+        if (newPage !== page) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+
+            startLoadingLoans(newPage)
+        }
+    }
 
     return (
         <>
@@ -79,6 +108,17 @@ export const LoansPage = () => {
                     </section>
 
                     <LoansTable filter={filter} />
+
+                    <div className="mt-8 w-full">
+                        <PageSelector
+                            onNextPage={onNextPage}
+                            onPreviousPage={onPreviousPage}
+                            onGoToPage={onGoToPage}
+                            counter={counter}
+                            page={page}
+                            isLast={isLast}
+                        />
+                    </div>
                 </section>
             </main>
 

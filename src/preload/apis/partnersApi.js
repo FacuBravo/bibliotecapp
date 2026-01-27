@@ -20,7 +20,7 @@ export const partnersApi = {
             return null
         }
     },
-    getPartners: async (offset = 0, limit = 10) =>
+    getPartners: async (offset, limit) =>
         ipcRenderer.invoke(IpcKeys.PARTNER.GET_ALL, offset, limit),
     getPartner: async (id) => ipcRenderer.invoke(IpcKeys.PARTNER.GET, { id }),
     deletePartner: async (id, token) => {
