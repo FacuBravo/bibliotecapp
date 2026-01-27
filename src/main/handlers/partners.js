@@ -36,22 +36,35 @@ export const updatePartner = async (db, { id, name, surname, grade, section, typ
     }
 }
 
-export const getPartners = async (db, offset, limit) => {
+export const getPartners = async (db, { offset, limit, search, orderBy, order }) => {
     try {
-        const partners = await db.all(
-            `
-            SELECT p.*, 
-                (SELECT GROUP_CONCAT(l.date_end) 
-                 FROM loan l 
-                 WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
-            FROM partner p 
-            ORDER BY p.id 
-            LIMIT ? OFFSET ?
-        `,
-            [limit, offset]
-        )
+        let query = `
+        SELECT p.*, 
+        (SELECT GROUP_CONCAT(l.date_end) 
+        FROM loan l 
+        WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
+        FROM partner p 
+        ORDER BY p.${orderBy} ${order} 
+        LIMIT ? OFFSET ?`
 
-        const row = await db.get(`SELECT COUNT(*) as total FROM partner`)
+        let parameters = [limit, offset]
+
+        if (search) {
+            query += ` WHERE id ILIKE '%?%' OR name ILIKE '%?%' OR surname ILIKE '%?%' OR type ILIKE '%?%'`
+            parameters = [...parameters, search, search, search, search]
+        }
+
+        const partners = await db.all(query, parameters)
+
+        let countQuery = `SELECT COUNT(*) as total FROM partner`
+        let countParameters = []
+
+        if (search) {
+            countQuery += ` WHERE id ILIKE '%?%' OR name ILIKE '%?%' OR surname ILIKE '%?%' OR type ILIKE '%?%'`
+            countParameters = [...countParameters, search, search, search, search]
+        }
+
+        const row = await db.get(countQuery, countParameters)
         const total = row.total
         const page = Math.floor(offset / limit)
 

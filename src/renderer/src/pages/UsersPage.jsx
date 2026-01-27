@@ -11,7 +11,7 @@ export const UsersPage = () => {
     const { user } = useAuthStore()
     const { openAddPartnerModal } = useUiStore()
     const { filter, onInputChange } = useForm(searchForm)
-    const { page, isLast, startLoadingPartners, counter } = usePartnersStore()
+    const { page, isLast, startLoadingPartners, counter, orderBy } = usePartnersStore()
 
     const onNextPage = () => {
         window.scrollTo({
@@ -19,7 +19,7 @@ export const UsersPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingPartners(page + 1)
+        startLoadingPartners(page + 1, orderBy)
     }
 
     const onPreviousPage = () => {
@@ -28,7 +28,7 @@ export const UsersPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingPartners(page - 1)
+        startLoadingPartners(page - 1, orderBy)
     }
 
     const onGoToPage = (newPage) => {
@@ -38,7 +38,7 @@ export const UsersPage = () => {
                 behavior: 'smooth'
             })
 
-            startLoadingPartners(newPage)
+            startLoadingPartners(newPage, orderBy)
         }
     }
 

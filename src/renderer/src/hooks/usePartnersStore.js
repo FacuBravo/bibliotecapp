@@ -9,7 +9,6 @@ import {
     setOrderBy,
     addPartnerNewActiveLoan
 } from '../store/partners/partnersSlice'
-import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
 import { PARTNERS_LIMIT } from '../consts'
 
@@ -23,14 +22,16 @@ export const usePartnersStore = () => {
     const { user } = useSelector((state) => state.auth)
     const { startLoadingMostReaderSectionReports, setNotLoadingWithoutError } = useReportsStore()
 
-    const startLoadingPartners = async (page = 0) => {
+    const startLoadingPartners = async (page = 0, orderBy = { field: 'id', order: 'asc' }) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.partnersApi.getPartners(
-                page * PARTNERS_LIMIT,
-                PARTNERS_LIMIT
-            )
+            const response = await window.partnersApi.getPartners({
+                offset: page * PARTNERS_LIMIT,
+                limit: PARTNERS_LIMIT,
+                orderBy: orderBy.field,
+                order: orderBy.order
+            })
 
             if (!response.ok) throw new Error('Failed to fetch partners')
 
@@ -188,9 +189,7 @@ export const usePartnersStore = () => {
             })
         )
 
-        const sortedPartners = orderObjectsArray([...partners], field, newOrder)
-
-        dispatch(setPartners({ partners: sortedPartners }))
+        startLoadingPartners(page, { field, order: newOrder })
     }
 
     return {
