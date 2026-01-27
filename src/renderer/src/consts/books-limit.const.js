@@ -1,1 +1,1 @@
-export const BOOKS_LIMIT = 10
+export const BOOKS_LIMIT = 20

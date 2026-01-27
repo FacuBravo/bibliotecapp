@@ -36,31 +36,29 @@ export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, 
     }
 
     return (
-        <article className="font-body text-sz_button text-primary flex w-full items-center justify-between rounded bg-pink_400 p-1">
+        <article className="flex w-full items-center justify-between rounded-xl bg-pink_400 p-1 font-supermercado text-lg text-pink_600 shadow-md">
             <button
                 disabled={page === 0}
                 onClick={() => onPreviousPage()}
-                className="rounded bg-pink_600 p-1 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg bg-pink_600 p-1 disabled:cursor-not-allowed disabled:opacity-50"
             >
                 <img className="h-6 w-6" src={arrowIcon} alt="Icono de anterior" />
             </button>
 
             <div className="flex items-center gap-1 md:gap-2">
                 <button
-                    className={`h-9 rounded p-1 md:w-9 ${page === 0 ? 'bg-pink_500 text-black' : ''}`}
+                    className={`h-9 rounded-lg p-1 md:w-9 ${page === 0 ? 'bg-pink_600 text-white' : ''}`}
                     onClick={() => onGoToPage(0)}
                 >
                     1
                 </button>
 
-                {pages.length && pages[0] > 2 && (
-                    <div className="h-9 w-6 rounded p-1 md:w-9">...</div>
-                )}
+                {pages.length && pages[0] > 2 && <div className="h-9 w-6 p-1 md:w-9">...</div>}
 
                 {pages.map((n) => (
                     <button
                         key={n}
-                        className={`h-9 rounded p-1 text-black md:w-9 ${page === n - 1 ? 'bg-pink_500 text-black' : ''}`}
+                        className={`h-9 rounded-lg p-1 md:w-9 ${page === n - 1 ? 'bg-pink_600 text-white' : ''}`}
                         onClick={() => onGoToPage(n - 1)}
                     >
                         {n}
@@ -68,12 +66,12 @@ export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, 
                 ))}
 
                 {pages.length && pages[pages.length - 1] < totalPages - 1 && (
-                    <div className="h-9 w-6 rounded p-1 md:w-9">...</div>
+                    <div className="h-9 w-6 p-1 md:w-9">...</div>
                 )}
 
                 {totalPages > 1 && (
                     <button
-                        className={`h-9 rounded p-1 md:w-9 ${page === totalPages - 1 ? 'bg-pink_500 text-black' : ''}`}
+                        className={`h-9 rounded-lg p-1 md:w-9 ${page === totalPages - 1 ? 'bg-pink_600 text-white' : ''}`}
                         onClick={() => onGoToPage(totalPages - 1)}
                     >
                         {totalPages}
@@ -84,7 +82,7 @@ export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, 
             <button
                 disabled={isLast}
                 onClick={() => onNextPage()}
-                className="rounded bg-pink_600 p-1 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg bg-pink_600 p-1 disabled:cursor-not-allowed disabled:opacity-50"
             >
                 <img className="h-6 w-6 rotate-180" src={arrowIcon} alt="Icono de siguiente" />
             </button>

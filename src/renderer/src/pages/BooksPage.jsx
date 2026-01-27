@@ -42,15 +42,32 @@ export const BooksPage = () => {
     }
 
     const onNextPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
         startLoadingBooks(page + 1)
     }
 
     const onPreviousPage = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+
         startLoadingBooks(page - 1)
     }
 
-    const onGoToPage = (page) => {
-        startLoadingBooks(page)
+    const onGoToPage = (newPage) => {
+        if (newPage !== page) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+
+            startLoadingBooks(newPage)
+        }
     }
 
     return (
@@ -84,14 +101,16 @@ export const BooksPage = () => {
 
                 <BooksTable filter={filter} />
 
-                <PageSelector
-                    onNextPage={onNextPage}
-                    onPreviousPage={onPreviousPage}
-                    onGoToPage={onGoToPage}
-                    counter={counter}
-                    page={page}
-                    isLast={isLast}
-                />
+                <div className="mt-8 h-full w-full lg:w-4/5">
+                    <PageSelector
+                        onNextPage={onNextPage}
+                        onPreviousPage={onPreviousPage}
+                        onGoToPage={onGoToPage}
+                        counter={counter}
+                        page={page}
+                        isLast={isLast}
+                    />
+                </div>
             </main>
 
             <AddBookModal />
