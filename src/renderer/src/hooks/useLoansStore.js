@@ -13,7 +13,6 @@ import {
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
-import { orderObjectsArray } from '../helpers'
 import { useReportsStore } from './useReportsStore'
 import { LOANS_LIMIT } from '../consts'
 
@@ -22,8 +21,18 @@ const validFields = ['date_start', 'date_end']
 export const useLoansStore = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const { loans, page, isLast, counter, isLoading, partner, book, error, activeLoansCounter, orderBy } =
-        useSelector((state) => state.loans)
+    const {
+        loans,
+        page,
+        isLast,
+        counter,
+        isLoading,
+        partner,
+        book,
+        error,
+        activeLoansCounter,
+        orderBy
+    } = useSelector((state) => state.loans)
     const { startUpdatingBookState } = useBooksStore()
     const { startLoadingPartners, addingNewActiveLoan } = usePartnersStore()
     const {
@@ -33,11 +42,19 @@ export const useLoansStore = () => {
         setNotLoadingWithoutError
     } = useReportsStore()
 
-    const startLoadingLoans = async (page = 0) => {
+    const startLoadingLoans = async (
+        page = 0,
+        orderBy = { field: 'date_start', order: 'desc' }
+    ) => {
         dispatch(setLoading())
 
         try {
-            const response = await window.loansApi.getLoans(page * LOANS_LIMIT, LOANS_LIMIT)
+            const response = await window.loansApi.getLoans({
+                offset: page * LOANS_LIMIT,
+                limit: LOANS_LIMIT,
+                orderBy: orderBy.field,
+                order: orderBy.order
+            })
 
             if (!response.ok) throw new Error('Failed to fetch loans')
 
@@ -248,13 +265,11 @@ export const useLoansStore = () => {
         dispatch(
             setOrderBy({
                 field,
-                order: orderBy.field === field ? (orderBy.order === 'asc' ? 'desc' : 'asc') : 'asc'
+                order: newOrder
             })
         )
 
-        const sortedLoans = orderObjectsArray([...loans], field, newOrder, true)
-
-        dispatch(setLoans({ loans: sortedLoans }))
+        startLoadingLoans(page, { field, order: newOrder })
     }
 
     return {

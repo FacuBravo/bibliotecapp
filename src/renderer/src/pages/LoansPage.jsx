@@ -12,7 +12,7 @@ const searchForm = {
 
 export const LoansPage = () => {
     const { openLoanModal } = useUiStore()
-    const { partner, book, startLoadingLoans, counter, page, isLast } = useLoansStore()
+    const { partner, book, startLoadingLoans, counter, page, isLast, orderBy } = useLoansStore()
     const { filter, onInputChange } = useForm(searchForm)
 
     const onNextPage = () => {
@@ -21,7 +21,7 @@ export const LoansPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingLoans(page + 1)
+        startLoadingLoans(page + 1, orderBy)
     }
 
     const onPreviousPage = () => {
@@ -30,7 +30,7 @@ export const LoansPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingLoans(page - 1)
+        startLoadingLoans(page - 1, orderBy)
     }
 
     const onGoToPage = (newPage) => {
@@ -40,7 +40,7 @@ export const LoansPage = () => {
                 behavior: 'smooth'
             })
 
-            startLoadingLoans(newPage)
+            startLoadingLoans(newPage, orderBy)
         }
     }
 

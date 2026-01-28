@@ -41,22 +41,36 @@ export const updateLoan = async (db, { id, date_end }) => {
     }
 }
 
-export const getLoans = async (db, offset, limit) => {
+export const getLoans = async (db, { offset, limit, search, orderBy, order }) => {
     try {
-        const loans = await db.all(
-            `
-            SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned,
-                   p.name, p.surname, p.id as auto_partner_id,
-                   b.id as auto_book_id, b.title, b.borrowed
-            FROM loan l
-            JOIN partner p ON l.partner_id = p.id_card
-            JOIN book b ON b.inventory = l.book_id
-            ORDER BY l.date_start DESC LIMIT ? OFFSET ?
-        `,
-            [limit, offset]
-        )
+        let query = `
+        SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned,
+        p.name, p.surname, p.id as auto_partner_id,
+        b.id as auto_book_id, b.title, b.borrowed
+        FROM loan l
+        JOIN partner p ON l.partner_id = p.id_card
+        JOIN book b ON b.inventory = l.book_id
+        ORDER BY l.${orderBy} ${order} LIMIT ? OFFSET ?`
 
-        const row = await db.get(`SELECT COUNT(*) as total FROM loan`)
+        let parameters = [limit, offset]
+
+        if (search) {
+            query += ` WHERE l.book_id ILIKE '%?%' OR p.id ILIKE '%?%' OR p.name ILIKE '%?%' OR p.surname ILIKE '%?%' OR b.title ILIKE '%?%'`
+            parameters = [...parameters, search, search, search, search, search]
+        }
+
+        const loans = await db.all(query, parameters)
+        console.log({ loans })
+
+        let countQuery = `SELECT COUNT(*) as total FROM loan`
+        let countParameters = []
+
+        if (search) {
+            countQuery += ` WHERE l.book_id ILIKE '%?%' OR p.id ILIKE '%?%' OR p.name ILIKE '%?%' OR p.surname ILIKE '%?%' OR b.title ILIKE '%?%'`
+            countParameters = [...countParameters, search, search, search, search, search]
+        }
+
+        const row = await db.get(countQuery, countParameters)
         const total = row.total
         const page = Math.floor(offset / limit)
 
@@ -72,6 +86,8 @@ export const getLoans = async (db, offset, limit) => {
             activeLoansCounter
         }
     } catch (error) {
+        console.log({ error })
+
         return { ok: false, msg: 'Error al obtener los préstamos' }
     }
 }
