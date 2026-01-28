@@ -49,20 +49,24 @@ export const updateBook = async (
 export const getBooks = async (db, { offset, limit, search, orderBy, order }) => {
     try {
         let query = `SELECT * FROM book ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?`
+        let parameters = [limit, offset]
 
         if (search) {
-            query += ` WHERE title ILIKE '%${search}%' OR author ILIKE '%${search}%' OR theme ILIKE '%${search}%' OR inventory ILIKE '%${search}%'`
+            query += ` WHERE title ILIKE '%?%' OR author ILIKE '%?%' OR theme ILIKE '%?%' OR inventory ILIKE '%?%'`
+            parameters = [...parameters, search, search, search, search]
         }
 
-        const books = await db.all(query, [limit, offset])
+        const books = await db.all(query, parameters)
 
         let countQuery = `SELECT COUNT(*) as total FROM book`
+        let countParameters = []
 
         if (search) {
-            countQuery += ` WHERE title ILIKE '%${search}%' OR author ILIKE '%${search}%' OR theme ILIKE '%${search}%' OR inventory ILIKE '%${search}%'`
+            countQuery += ` WHERE title ILIKE '%?%' OR author ILIKE '%?%' OR theme ILIKE '%?%' OR inventory ILIKE '%?%'`
+            countParameters = [...countParameters, search, search, search, search]
         }
 
-        const row = await db.get(countQuery)
+        const row = await db.get(countQuery, countParameters)
         const total = row.total
         const page = Math.floor(offset / limit)
 
