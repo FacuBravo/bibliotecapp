@@ -50,9 +50,10 @@ export const getBooks = async (db, { offset, limit, search, orderBy, order }) =>
     try {
         let query = `SELECT * FROM book`
         let parameters = [limit, offset]
+        const searchQuery = ` WHERE title LIKE ? OR author LIKE ? OR theme LIKE ? OR inventory LIKE ?`
 
         if (search) {
-            query += ` WHERE title LIKE ? OR author LIKE ? OR theme LIKE ? OR inventory LIKE ?`
+            query += searchQuery
             parameters = [search, search, search, search, ...parameters]
         }
 
@@ -64,7 +65,7 @@ export const getBooks = async (db, { offset, limit, search, orderBy, order }) =>
         let countParameters = []
 
         if (search) {
-            countQuery += ` WHERE title LIKE ? OR author LIKE ? OR theme LIKE ? OR inventory LIKE ?`
+            countQuery += searchQuery
             countParameters = [...countParameters, search, search, search, search]
         }
 

@@ -43,16 +43,17 @@ export const getPartners = async (db, { offset, limit, search, orderBy, order })
         (SELECT GROUP_CONCAT(l.date_end) 
         FROM loan l 
         WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
-        FROM partner p 
-        ORDER BY p.${orderBy} ${order} 
-        LIMIT ? OFFSET ?`
+        FROM partner p`
 
         let parameters = [limit, offset]
+        const searchQuery = ` WHERE id LIKE ? OR name LIKE ? OR surname LIKE ? OR type LIKE ? OR LOWER(CAST(grade AS TEXT) || section) LIKE ?`
 
         if (search) {
-            query += ` WHERE id ILIKE '%?%' OR name ILIKE '%?%' OR surname ILIKE '%?%' OR type ILIKE '%?%'`
-            parameters = [...parameters, search, search, search, search]
+            query += searchQuery
+            parameters = [search, search, search, search, search, ...parameters]
         }
+
+        query += ` ORDER BY p.${orderBy} ${order} LIMIT ? OFFSET ?`
 
         const partners = await db.all(query, parameters)
 
@@ -60,8 +61,8 @@ export const getPartners = async (db, { offset, limit, search, orderBy, order })
         let countParameters = []
 
         if (search) {
-            countQuery += ` WHERE id ILIKE '%?%' OR name ILIKE '%?%' OR surname ILIKE '%?%' OR type ILIKE '%?%'`
-            countParameters = [...countParameters, search, search, search, search]
+            countQuery += searchQuery
+            countParameters = [...countParameters, search, search, search, search, search]
         }
 
         const row = await db.get(countQuery, countParameters)

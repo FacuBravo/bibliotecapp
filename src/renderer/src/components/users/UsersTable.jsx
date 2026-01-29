@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { usePartnersStore } from '../../hooks'
 import { UserRow } from './UserRow'
@@ -6,25 +6,15 @@ import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { PartnerModal } from './'
 
 export const UsersTable = ({ filter = '' }) => {
-    const { partners, orderBy, sortBy } = usePartnersStore()
-    const [filteredPartners, setFilteredPartners] = useState(partners)
+    const { partners, orderBy, sortBy, startLoadingPartners } = usePartnersStore()
 
     useEffect(() => {
         if (filter !== '') {
-            setFilteredPartners(
-                partners.filter((partner) => {
-                    return (
-                        partner.id.toString().toLowerCase().includes(filter.toLowerCase()) ||
-                        partner.name.toLowerCase().includes(filter.toLowerCase()) ||
-                        partner.surname.toLowerCase().includes(filter.toLowerCase()) ||
-                        partner.type.toLowerCase().includes(filter.toLowerCase())
-                    )
-                })
-            )
+            startLoadingPartners(0, orderBy, filter)
         } else {
-            setFilteredPartners(partners)
+            startLoadingPartners(0, orderBy)
         }
-    }, [filter, partners])
+    }, [filter])
 
     return (
         <>
@@ -83,7 +73,7 @@ export const UsersTable = ({ filter = '' }) => {
                 </thead>
 
                 <tbody className="flex flex-col gap-6 font-assistant text-lg">
-                    {filteredPartners.length === 0 ? (
+                    {partners.length === 0 ? (
                         filter !== '' ? (
                             <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
                                 <td className="w-full text-center">No hay resultados</td>
@@ -97,7 +87,7 @@ export const UsersTable = ({ filter = '' }) => {
                         <></>
                     )}
 
-                    {filteredPartners.map((partner, index) => (
+                    {partners.map((partner, index) => (
                         <UserRow key={partner.id} partner={partner} index={index} />
                     ))}
                 </tbody>

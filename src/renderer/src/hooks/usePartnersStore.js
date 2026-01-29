@@ -21,7 +21,11 @@ export const usePartnersStore = () => {
     const { user } = useSelector((state) => state.auth)
     const { startLoadingMostReaderSectionReports, setNotLoadingWithoutError } = useReportsStore()
 
-    const startLoadingPartners = async (page = 0, orderBy = { field: 'id', order: 'asc' }) => {
+    const startLoadingPartners = async (
+        page = 0,
+        orderBy = { field: 'id', order: 'asc' },
+        query = undefined
+    ) => {
         dispatch(setLoading())
 
         try {
@@ -29,7 +33,8 @@ export const usePartnersStore = () => {
                 offset: page * PARTNERS_LIMIT,
                 limit: PARTNERS_LIMIT,
                 orderBy: orderBy.field,
-                order: orderBy.order
+                order: orderBy.order,
+                search: query ? `%${query}%` : undefined
             })
 
             if (!response.ok) throw new Error('Failed to fetch partners')

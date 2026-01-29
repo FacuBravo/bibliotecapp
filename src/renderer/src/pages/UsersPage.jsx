@@ -19,7 +19,7 @@ export const UsersPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingPartners(page + 1, orderBy)
+        startLoadingPartners(page + 1, orderBy, filter ? filter : undefined)
     }
 
     const onPreviousPage = () => {
@@ -28,7 +28,7 @@ export const UsersPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingPartners(page - 1, orderBy)
+        startLoadingPartners(page - 1, orderBy, filter ? filter : undefined)
     }
 
     const onGoToPage = (newPage) => {
@@ -38,7 +38,7 @@ export const UsersPage = () => {
                 behavior: 'smooth'
             })
 
-            startLoadingPartners(newPage, orderBy)
+            startLoadingPartners(newPage, orderBy, filter ? filter : undefined)
         }
     }
 
