@@ -109,16 +109,18 @@ export const LoansPage = () => {
 
                     <LoansTable filter={filter} />
 
-                    <div className="mt-8 w-full">
-                        <PageSelector
-                            onNextPage={onNextPage}
-                            onPreviousPage={onPreviousPage}
-                            onGoToPage={onGoToPage}
-                            counter={counter}
-                            page={page}
-                            isLast={isLast}
-                        />
-                    </div>
+                    {counter > 0 && (
+                        <div className="mt-8 w-full">
+                            <PageSelector
+                                onNextPage={onNextPage}
+                                onPreviousPage={onPreviousPage}
+                                onGoToPage={onGoToPage}
+                                counter={counter}
+                                page={page}
+                                isLast={isLast}
+                            />
+                        </div>
+                    )}
                 </section>
             </main>
 

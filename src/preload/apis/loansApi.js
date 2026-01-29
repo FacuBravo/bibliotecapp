@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { IpcKeys } from '../../helpers'
+import { sessionApi } from './sessionApi'
 
 export const loansApi = {
     addLoan: async (loanInfo, token) => {

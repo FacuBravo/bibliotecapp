@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { IpcKeys } from '../../helpers'
+import { sessionApi } from './sessionApi'
 
 export const partnersApi = {
     addPartner: async (partnerInfo, token) => {

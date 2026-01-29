@@ -1,14 +1,15 @@
+import { isISO } from './dateStringIso'
+
 export const createTables = async (db) => {
-    try {
-        await db.run(
-            `CREATE TABLE IF NOT EXISTS users (
+    await db.run(
+        `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         username VARCHAR(20) UNIQUE, 
         password TEXT)`
-        )
+    )
 
-        await db.run(
-            `CREATE TABLE IF NOT EXISTS partner (
+    await db.run(
+        `CREATE TABLE IF NOT EXISTS partner (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         id_card TEXT UNIQUE,
         name VARCHAR(100), 
@@ -16,10 +17,10 @@ export const createTables = async (db) => {
         grade VARCHAR(20), 
         section VARCHAR(10), 
         type VARCHAR(20))`
-        )
+    )
 
-        await db.run(
-            `CREATE TABLE IF NOT EXISTS book (
+    await db.run(
+        `CREATE TABLE IF NOT EXISTS book (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         inventory INTEGER UNIQUE,
         title VARCHAR(150), 
@@ -31,10 +32,10 @@ export const createTables = async (db) => {
         borrowed INTEGER,
         theme VARCHAR(100),
         collection VARCHAR(80))`
-        )
+    )
 
-        await db.run(
-            `CREATE TABLE IF NOT EXISTS loan (
+    await db.run(
+        `CREATE TABLE IF NOT EXISTS loan (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         date_start VARCHAR(10), 
         date_end VARCHAR(10), 
@@ -47,44 +48,35 @@ export const createTables = async (db) => {
         FOREIGN KEY (partner_id) REFERENCES partner (id_card) 
           ON DELETE CASCADE 
           ON UPDATE CASCADE)`
-        )
+    )
 
-        const loans = await db.all(`SELECT date_start, date_end FROM loan`)
+    try {
+        const loan = await db.get(`SELECT date_start, date_end FROM loan LIMIT 1`)
 
-        if (loans.find((loan) => !isISO(loan.date_start) || !isISO(loan.date_end))) {
-            await db.exec('BEGIN TRANSACTION')
+        if (loan) {
+            if (!isISO(loan.date_start) || !isISO(loan.date_end)) {
+                await db.exec('BEGIN TRANSACTION')
 
-            await db.exec(
-                `UPDATE loan SET 
+                await db.exec(
+                    `UPDATE loan SET 
                 date_start = substr(date_start, 7, 4) || '-' ||
                 substr(date_start, 4, 2) || '-' ||
                 substr(date_start, 1, 2),
                 date_end = substr(date_end, 7, 4) || '-' ||
                 substr(date_end, 4, 2) || '-' ||
                 substr(date_end, 1, 2);`
-            )
+                )
 
-            await db.exec('COMMIT')
+                await db.exec('COMMIT')
 
-            await db.exec(
-                `CREATE INDEX IF NOT EXISTS idx_loan_date_start ON loan(date_start);
+                await db.exec(
+                    `CREATE INDEX IF NOT EXISTS idx_loan_date_start ON loan(date_start);
                 CREATE INDEX IF NOT EXISTS idx_loan_date_end   ON loan(date_end);`
-            )
+                )
+            }
         }
     } catch (error) {
         await db.exec('ROLLBACK')
         console.log(error)
     }
-}
-
-const isISO = (dateStr) => {
-    if (typeof dateStr !== 'string') return false
-
-    const isoRegex =
-        /^\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})?)?$/
-
-    if (!isoRegex.test(dateStr)) return false
-
-    const date = new Date(dateStr)
-    return !isNaN(date.getTime())
 }

@@ -1,8 +1,13 @@
+import { dateStringToISO, isISO } from '../helpers'
+
 export const addLoan = async (db, { date_start, date_end, book_id, partner_id }) => {
     try {
+        const formatedDateStart = isISO(date_start) ? date_start : dateStringToISO(date_start)
+        const formatedDateEnd = isISO(date_end) ? date_end : dateStringToISO(date_end)
+
         await db.run(
             'INSERT INTO loan (date_start, date_end, returned, book_id, partner_id) VALUES (?, ?, 0, ?, ?)',
-            [date_start, date_end, book_id, partner_id]
+            [formatedDateStart, formatedDateEnd, book_id, partner_id]
         )
 
         const loan = await db.get(
@@ -60,7 +65,6 @@ export const getLoans = async (db, { offset, limit, search, orderBy, order }) =>
         }
 
         const loans = await db.all(query, parameters)
-        console.log({ loans })
 
         let countQuery = `SELECT COUNT(*) as total FROM loan`
         let countParameters = []
@@ -86,8 +90,6 @@ export const getLoans = async (db, { offset, limit, search, orderBy, order }) =>
             activeLoansCounter
         }
     } catch (error) {
-        console.log({ error })
-
         return { ok: false, msg: 'Error al obtener los préstamos' }
     }
 }
@@ -116,9 +118,20 @@ export const deleteLoan = async (db, { id }) => {
 export const addMultipleLoans = async (db, loans) => {
     try {
         for (const loan of loans) {
+            let date_start = loan.date_start
+            let date_end = loan.date_end
+
+            if (!isISO(date_start)) {
+                date_start = dateStringToISO(date_start)
+            }
+
+            if (!isISO(date_end)) {
+                date_end = dateStringToISO(date_end)
+            }
+
             await db.run(
                 'INSERT INTO loan (date_start, date_end, returned, book_id, partner_id) VALUES (?, ?, ?, ?, ?)',
-                [loan.date_start, loan.date_end, loan.returned, loan.book_id, loan.partner_id]
+                [date_start, date_end, loan.returned, loan.book_id, loan.partner_id]
             )
         }
 
