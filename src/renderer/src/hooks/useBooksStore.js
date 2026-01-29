@@ -5,9 +5,7 @@ import {
     setBooks,
     setLoading,
     setNotLoading,
-    setOrderBy,
-    updateBook,
-    updateBookState
+    setOrderBy
 } from '../store/books/booksSlice'
 import { useReportsStore } from './useReportsStore'
 import { BOOKS_LIMIT } from '../consts'
@@ -57,7 +55,9 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add book')
 
-            dispatch(addBook({ book: response.book }))
+            dispatch(addBook())
+
+            startLoadingBooks(page, orderBy)
 
             startLoadingAuthorsReports()
             startLoadingBooksReports()
@@ -82,7 +82,7 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to update book')
 
-            dispatch(updateBook({ book: response.book }))
+            startLoadingBooks(page, orderBy)
 
             startLoadingAuthorsReports()
             startLoadingBooksReports()
@@ -107,7 +107,9 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to update book state')
 
-            dispatch(updateBookState({ id, borrowed }))
+            startLoadingBooks(page, orderBy)
+            dispatch(setNotLoading())
+
             return true
         } catch (error) {
             console.error('Error updating book state:', error)
@@ -126,7 +128,9 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to delete book')
 
-            dispatch(deleteBook({ id }))
+            dispatch(deleteBook())
+
+            startLoadingBooks(page, orderBy)
 
             startLoadingAuthorsReports()
             startLoadingBooksReports()
@@ -165,8 +169,9 @@ export const useBooksStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add books')
 
-            dispatch(setBooks({ books: response.books }))
             dispatch(setOrderBy({ field: 'inventory', order: 'asc' }))
+
+            startLoadingBooks(0, { field: 'inventory', order: 'asc' })
 
             startLoadingAuthorsReports()
             startLoadingBooksReports()

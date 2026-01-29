@@ -20,7 +20,7 @@ export const booksSlice = createSlice({
         },
         setNotLoading: (state, { payload }) => {
             state.isLoading = false
-            state.error = payload.error || null
+            state.error = payload?.error || null
         },
         setBooks: (state, { payload }) => {
             state.books = payload.books
@@ -30,30 +30,10 @@ export const booksSlice = createSlice({
             state.error = null
             state.counter = payload.total
         },
-        addBook: (state, { payload }) => {
-            state.books.push(payload.book)
+        addBook: (state) => {
             state.counter += 1
         },
-        updateBook: (state, { payload }) => {
-            state.books = state.books.map((book) =>
-                book.id === payload.book.id ? payload.book : book
-            )
-            state.isLoading = false
-        },
-        updateBookState: (state, { payload }) => {
-            state.books = state.books.map((book) => {
-                if (book.id === payload.id) {
-                    return {
-                        ...book,
-                        borrowed: payload.borrowed
-                    }
-                }
-                return book
-            })
-            state.isLoading = false
-        },
-        deleteBook: (state, { payload }) => {
-            state.books = state.books.filter((book) => book.id !== payload.id)
+        deleteBook: (state) => {
             state.counter -= 1
         },
         setOrderBy: (state, { payload }) => {
@@ -63,13 +43,5 @@ export const booksSlice = createSlice({
     }
 })
 
-export const {
-    setBooks,
-    setLoading,
-    setNotLoading,
-    addBook,
-    updateBook,
-    updateBookState,
-    deleteBook,
-    setOrderBy
-} = booksSlice.actions
+export const { setBooks, setLoading, setNotLoading, addBook, deleteBook, setOrderBy } =
+    booksSlice.actions
