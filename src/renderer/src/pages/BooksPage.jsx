@@ -101,16 +101,18 @@ export const BooksPage = () => {
 
                 <BooksTable filter={filter} />
 
-                <div className="mt-8 h-full w-full lg:w-4/5">
-                    <PageSelector
-                        onNextPage={onNextPage}
-                        onPreviousPage={onPreviousPage}
-                        onGoToPage={onGoToPage}
-                        counter={counter}
-                        page={page}
-                        isLast={isLast}
-                    />
-                </div>
+                {!(page === 0 && isLast) && (
+                    <div className="mt-8 h-full w-full lg:w-4/5">
+                        <PageSelector
+                            onNextPage={onNextPage}
+                            onPreviousPage={onPreviousPage}
+                            onGoToPage={onGoToPage}
+                            counter={counter}
+                            page={page}
+                            isLast={isLast}
+                        />
+                    </div>
+                )}
             </main>
 
             <AddBookModal />

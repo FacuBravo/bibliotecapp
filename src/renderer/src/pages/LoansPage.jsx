@@ -109,7 +109,7 @@ export const LoansPage = () => {
 
                     <LoansTable filter={filter} />
 
-                    {counter > 0 && (
+                    {!(page === 0 && isLast) && (
                         <div className="mt-8 w-full">
                             <PageSelector
                                 onNextPage={onNextPage}
