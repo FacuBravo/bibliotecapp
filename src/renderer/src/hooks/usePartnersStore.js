@@ -5,7 +5,6 @@ import {
     setPartners,
     setLoading,
     setNotLoading,
-    updatePartner,
     setOrderBy,
     addPartnerNewActiveLoan
 } from '../store/partners/partnersSlice'
@@ -52,7 +51,9 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add partner')
 
-            dispatch(addPartner({ partner: { ...response.partner, active_loans: null } }))
+            dispatch(addPartner())
+
+            startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
@@ -75,11 +76,9 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to update partner')
 
-            dispatch(
-                updatePartner({
-                    partner: response.partner
-                })
-            )
+            dispatch(setNotLoading())
+
+            startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
@@ -102,7 +101,9 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to delete partner')
 
-            dispatch(deletePartner({ id }))
+            dispatch(deletePartner())
+
+            startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()
@@ -139,13 +140,9 @@ export const usePartnersStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add partners')
 
-            const partnersWithActiveLoans = response.partners.map((partner) => ({
-                ...partner,
-                active_loans: null
-            }))
-
-            dispatch(setPartners({ partners: partnersWithActiveLoans }))
             dispatch(setOrderBy({ field: 'id', order: 'asc' }))
+
+            startLoadingPartners(0, { field: 'id', order: 'asc' })
 
             startLoadingMostReaderSectionReports()
             setNotLoadingWithoutError()

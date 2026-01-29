@@ -20,7 +20,7 @@ export const partnersSlice = createSlice({
         },
         setNotLoading: (state, { payload }) => {
             state.isLoading = false
-            state.error = payload.error || null
+            state.error = payload?.error || null
         },
         setPartners: (state, { payload }) => {
             state.partners = payload.partners
@@ -30,8 +30,7 @@ export const partnersSlice = createSlice({
             state.error = null
             state.counter = payload.total
         },
-        addPartner: (state, { payload }) => {
-            state.partners.push(payload.partner)
+        addPartner: (state) => {
             state.counter += 1
         },
         addPartnerNewActiveLoan: (state, { payload }) => {
@@ -46,14 +45,7 @@ export const partnersSlice = createSlice({
                 return partner
             })
         },
-        updatePartner: (state, { payload }) => {
-            state.partners = state.partners.map((partner) =>
-                partner.id === payload.partner.id ? payload.partner : partner
-            )
-            state.isLoading = false
-        },
         deletePartner: (state, { payload }) => {
-            state.partners = state.partners.filter((partner) => partner.id !== payload.id)
             state.counter -= 1
         },
         setOrderBy: (state, { payload }) => {
@@ -69,7 +61,6 @@ export const {
     setNotLoading,
     addPartner,
     addPartnerNewActiveLoan,
-    updatePartner,
     deletePartner,
     setOrderBy
 } = partnersSlice.actions
