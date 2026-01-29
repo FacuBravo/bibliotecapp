@@ -25,7 +25,11 @@ export const useBooksStore = () => {
         setNotLoadingWithoutError
     } = useReportsStore()
 
-    const startLoadingBooks = async (page = 0, orderBy = { field: 'inventory', order: 'asc' }) => {
+    const startLoadingBooks = async (
+        page = 0,
+        orderBy = { field: 'inventory', order: 'asc' },
+        query = undefined
+    ) => {
         dispatch(setLoading())
 
         try {
@@ -33,7 +37,8 @@ export const useBooksStore = () => {
                 offset: page * BOOKS_LIMIT,
                 limit: BOOKS_LIMIT,
                 orderBy: orderBy.field,
-                order: orderBy.order
+                order: orderBy.order,
+                search: query ? `%${query}%` : undefined
             })
 
             if (!response.ok) throw new Error('Failed to fetch books')

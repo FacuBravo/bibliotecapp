@@ -1,29 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { useBooksStore } from '../../hooks'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { BookModal, DuplicateBookModal, BookRow } from './'
 
 export const BooksTable = ({ filter = '' }) => {
-    const { books, orderBy, sortBy } = useBooksStore()
-    const [filteredBooks, setFilteredBooks] = useState(books)
+    const { books, orderBy, sortBy, startLoadingBooks } = useBooksStore()
 
     useEffect(() => {
         if (filter !== '') {
-            setFilteredBooks(
-                books.filter((book) => {
-                    return (
-                        book.title.toLowerCase().includes(filter.toLowerCase()) ||
-                        book.author.toLowerCase().includes(filter.toLowerCase()) ||
-                        book.theme.toLowerCase().includes(filter.toLowerCase()) ||
-                        book.inventory.toString().toLowerCase().includes(filter.toLowerCase())
-                    )
-                })
-            )
+            startLoadingBooks(0, orderBy, filter)
         } else {
-            setFilteredBooks(books)
+            startLoadingBooks(0, orderBy)
         }
-    }, [filter, books])
+    }, [filter])
 
     return (
         <>
@@ -99,7 +89,7 @@ export const BooksTable = ({ filter = '' }) => {
                 </thead>
 
                 <tbody className="flex flex-col gap-6 font-assistant text-lg">
-                    {filteredBooks.length === 0 ? (
+                    {books.length === 0 ? (
                         filter !== '' ? (
                             <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
                                 <td className="w-full text-center">No hay resultados</td>
@@ -113,7 +103,7 @@ export const BooksTable = ({ filter = '' }) => {
                         <></>
                     )}
 
-                    {filteredBooks.map((book, index) => (
+                    {books.map((book, index) => (
                         <BookRow key={book.id} book={book} index={index} />
                     ))}
                 </tbody>

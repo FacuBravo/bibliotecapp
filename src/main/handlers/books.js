@@ -48,13 +48,15 @@ export const updateBook = async (
 
 export const getBooks = async (db, { offset, limit, search, orderBy, order }) => {
     try {
-        let query = `SELECT * FROM book ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?`
+        let query = `SELECT * FROM book`
         let parameters = [limit, offset]
 
         if (search) {
-            query += ` WHERE title ILIKE '%?%' OR author ILIKE '%?%' OR theme ILIKE '%?%' OR inventory ILIKE '%?%'`
-            parameters = [...parameters, search, search, search, search]
+            query += ` WHERE title LIKE ? OR author LIKE ? OR theme LIKE ? OR inventory LIKE ?`
+            parameters = [search, search, search, search, ...parameters]
         }
+
+        query += ` ORDER BY ${orderBy} ${order} LIMIT ? OFFSET ?`
 
         const books = await db.all(query, parameters)
 
@@ -62,7 +64,7 @@ export const getBooks = async (db, { offset, limit, search, orderBy, order }) =>
         let countParameters = []
 
         if (search) {
-            countQuery += ` WHERE title ILIKE '%?%' OR author ILIKE '%?%' OR theme ILIKE '%?%' OR inventory ILIKE '%?%'`
+            countQuery += ` WHERE title LIKE ? OR author LIKE ? OR theme LIKE ? OR inventory LIKE ?`
             countParameters = [...countParameters, search, search, search, search]
         }
 

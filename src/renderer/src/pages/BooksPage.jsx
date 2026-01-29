@@ -47,7 +47,7 @@ export const BooksPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingBooks(page + 1, orderBy)
+        startLoadingBooks(page + 1, orderBy, filter ? filter : undefined)
     }
 
     const onPreviousPage = () => {
@@ -56,7 +56,7 @@ export const BooksPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingBooks(page - 1, orderBy)
+        startLoadingBooks(page - 1, orderBy, filter ? filter : undefined)
     }
 
     const onGoToPage = (newPage) => {
@@ -66,7 +66,7 @@ export const BooksPage = () => {
                 behavior: 'smooth'
             })
 
-            startLoadingBooks(newPage, orderBy)
+            startLoadingBooks(newPage, orderBy, filter ? filter : undefined)
         }
     }
 
