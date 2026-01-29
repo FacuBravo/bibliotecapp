@@ -34,20 +34,13 @@ export const loansSlice = createSlice({
             state.isLoading = false
             state.error = null
         },
-        addLoan: (state, { payload }) => {
-            state.loans.push(payload.loan)
-
-            if (payload.loan.returned === 0) {
-                state.activeLoansCounter++
-            }
+        addLoan: (state) => {
+            state.activeLoansCounter++
         },
         deleteLoan: (state, { payload }) => {
             state.isLoading = false
 
-            const loan = state.loans.find((loan) => loan.id === payload.id)
-            state.loans = state.loans.filter((loan) => loan.id !== payload.id)
-
-            if (loan.returned === 0) {
+            if (payload.loan.returned === 0) {
                 state.activeLoansCounter--
             }
         },
@@ -62,22 +55,11 @@ export const loansSlice = createSlice({
             state.partner = null
         },
         updateLoanState: (state, { payload }) => {
-            state.loans = state.loans.map((loan) => {
-                if (loan.id === payload.id) {
-                    if (payload.returned === 0) {
-                        state.activeLoansCounter++
-                    } else {
-                        state.activeLoansCounter--
-                    }
-
-                    return {
-                        ...loan,
-                        returned: payload.returned
-                    }
-                }
-
-                return loan
-            })
+            if (payload.returned === 0) {
+                state.activeLoansCounter++
+            } else {
+                state.activeLoansCounter--
+            }
 
             state.isLoading = false
         },

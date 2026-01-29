@@ -137,6 +137,7 @@ export const addMultiplePartners = async (db, partners) => {
 
 export const deleteAllPartners = async (db) => {
     try {
+        await db.run(`UPDATE sqlite_sequence SET seq = 0 WHERE name = 'partner';`)
         const result = await db.run('DELETE FROM partner')
         if (result.changes === 0) throw new Error()
 

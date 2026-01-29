@@ -75,18 +75,9 @@ export const useLoansStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add loan')
 
-            dispatch(
-                addLoan({
-                    loan: {
-                        ...response.loan,
-                        title: book.title,
-                        surname: partner.surname,
-                        name: partner.name,
-                        auto_partner_id: partner.id,
-                        auto_book_id: book.id
-                    }
-                })
-            )
+            dispatch(addLoan())
+
+            startLoadingLoans(page, orderBy)
 
             await startUpdatingBookState({
                 id: book.id,
@@ -137,19 +128,21 @@ export const useLoansStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to add loans')
 
-            dispatch(setLoans({ loans: response.loans }))
             dispatch(setOrderBy({ field: 'date_start', order: 'desc' }))
+            startLoadingLoans(0, { field: 'date_start', order: 'desc' })
 
             const updateBookStatePromises = []
 
-            response.loans.forEach((loan) => {
-                updateBookStatePromises.push(
-                    startUpdatingBookState({
-                        id: loan.auto_book_id,
-                        borrowed: 1
-                    })
-                )
-            })
+            importedLoans
+                .filter((loan) => loan.returned === 0)
+                .forEach(async (loan) => {
+                    updateBookStatePromises.push(
+                        startUpdatingBookState({
+                            id: loan.auto_book_id,
+                            borrowed: 1
+                        })
+                    )
+                })
 
             await Promise.all(updateBookStatePromises)
 
@@ -178,7 +171,9 @@ export const useLoansStore = () => {
 
             if (!response.ok) throw new Error(response.msg || 'Failed to return loan')
 
-            dispatch(updateLoanState({ id, returned: 1 }))
+            dispatch(updateLoanState({ returned: 1 }))
+
+            startLoadingLoans(page, orderBy)
 
             await startUpdatingBookState({
                 id: book_id,
@@ -201,21 +196,25 @@ export const useLoansStore = () => {
         dispatch(setLoading())
 
         try {
-            const loan = loans.find((loan) => loan.id === id)
+            const loan = await window.loansApi.getLoan(id)
             const response = await window.loansApi.deleteLoan(id, user.sessionToken)
 
             if (!response.ok) throw new Error(response.msg || 'Failed to delete loan')
 
-            dispatch(deleteLoan({ id }))
+            dispatch(deleteLoan(loan))
+
+            startLoadingLoans(page, orderBy)
 
             startLoadingBooksReports()
             startLoadingThemesReports()
             startLoadingMostReaderSectionReports()
 
-            await startUpdatingBookState({
-                id: loan.auto_book_id,
-                borrowed: 0
-            })
+            if (loan.returned === 0) {
+                await startUpdatingBookState({
+                    id: loan.auto_book_id,
+                    borrowed: 0
+                })
+            }
 
             await startLoadingPartners()
 

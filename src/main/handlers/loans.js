@@ -135,17 +135,7 @@ export const addMultipleLoans = async (db, loans) => {
             )
         }
 
-        const allLoans = await db.all(`
-            SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned,
-                   p.name, p.surname, p.id as auto_partner_id,
-                   b.id as auto_book_id, b.title, b.borrowed
-            FROM loan l
-            JOIN partner p ON l.partner_id = p.id_card
-            JOIN book b ON b.inventory = l.book_id
-            ORDER BY l.date_start DESC
-        `)
-
-        return { ok: true, loans: allLoans }
+        return { ok: true }
     } catch (error) {
         console.error('Error al agregar préstamos:', error)
         return { ok: false, msg: 'Error al agregar préstamos' }
@@ -154,6 +144,7 @@ export const addMultipleLoans = async (db, loans) => {
 
 export const deleteAllLoans = async (db) => {
     try {
+        await db.run(`UPDATE sqlite_sequence SET seq = 0 WHERE name = 'loan';`)
         const result = await db.run('DELETE FROM loan')
         if (result.changes === 0) throw new Error()
 

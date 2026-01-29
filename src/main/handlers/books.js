@@ -135,6 +135,7 @@ export const addMultipleBooks = async (db, books) => {
 
 export const deleteAllBooks = async (db) => {
     try {
+        await db.run(`UPDATE sqlite_sequence SET seq = 0 WHERE name = 'book';`)
         const result = await db.run('DELETE FROM book')
         if (result.changes === 0) throw new Error()
 

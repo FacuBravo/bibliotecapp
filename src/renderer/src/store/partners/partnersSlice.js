@@ -45,7 +45,7 @@ export const partnersSlice = createSlice({
                 return partner
             })
         },
-        deletePartner: (state, { payload }) => {
+        deletePartner: (state) => {
             state.counter -= 1
         },
         setOrderBy: (state, { payload }) => {

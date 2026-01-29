@@ -59,19 +59,19 @@ export const createTables = async (db) => {
 
                 await db.exec(
                     `UPDATE loan SET 
-                date_start = substr(date_start, 7, 4) || '-' ||
-                substr(date_start, 4, 2) || '-' ||
-                substr(date_start, 1, 2),
-                date_end = substr(date_end, 7, 4) || '-' ||
-                substr(date_end, 4, 2) || '-' ||
-                substr(date_end, 1, 2);`
+                    date_start = substr(date_start, 7, 4) || '-' ||
+                    substr(date_start, 4, 2) || '-' ||
+                    substr(date_start, 1, 2),
+                    date_end = substr(date_end, 7, 4) || '-' ||
+                    substr(date_end, 4, 2) || '-' ||
+                    substr(date_end, 1, 2);`
                 )
 
                 await db.exec('COMMIT')
 
                 await db.exec(
                     `CREATE INDEX IF NOT EXISTS idx_loan_date_start ON loan(date_start);
-                CREATE INDEX IF NOT EXISTS idx_loan_date_end   ON loan(date_end);`
+                    CREATE INDEX IF NOT EXISTS idx_loan_date_end   ON loan(date_end);`
                 )
             }
         }
