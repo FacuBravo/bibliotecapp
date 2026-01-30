@@ -21,7 +21,7 @@ export const LoansPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingLoans(page + 1, orderBy)
+        startLoadingLoans(page + 1, orderBy, filter ? filter : undefined)
     }
 
     const onPreviousPage = () => {
@@ -30,7 +30,7 @@ export const LoansPage = () => {
             behavior: 'smooth'
         })
 
-        startLoadingLoans(page - 1, orderBy)
+        startLoadingLoans(page - 1, orderBy, filter ? filter : undefined)
     }
 
     const onGoToPage = (newPage) => {
@@ -40,7 +40,7 @@ export const LoansPage = () => {
                 behavior: 'smooth'
             })
 
-            startLoadingLoans(newPage, orderBy)
+            startLoadingLoans(newPage, orderBy, filter ? filter : undefined)
         }
     }
 

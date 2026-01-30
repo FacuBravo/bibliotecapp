@@ -48,35 +48,26 @@ export const updateLoan = async (db, { id, date_end }) => {
 
 export const getLoans = async (db, { offset, limit, search, orderBy, order }) => {
     try {
-        let query = `
-        SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned,
-        p.name, p.surname, p.id as auto_partner_id,
-        b.id as auto_book_id, b.title, b.borrowed
-        FROM loan l
-        JOIN partner p ON l.partner_id = p.id_card
-        JOIN book b ON b.inventory = l.book_id
-        ORDER BY l.${orderBy} ${order} LIMIT ? OFFSET ?`
+        let query = `SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.surname, p.id as auto_partner_id, b.id as auto_book_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id ORDER BY l.${orderBy} ${order}`
 
-        let parameters = [limit, offset]
+        let loans = await db.all(query)
 
         if (search) {
-            query += ` WHERE l.book_id ILIKE '%?%' OR p.id ILIKE '%?%' OR p.name ILIKE '%?%' OR p.surname ILIKE '%?%' OR b.title ILIKE '%?%'`
-            parameters = [...parameters, search, search, search, search, search]
+            loans = loans.filter((loan) => {
+                return (
+                    loan.book_id.toString().toLowerCase().includes(search.toLowerCase()) ||
+                    loan.auto_partner_id.toString().toLowerCase().includes(search.toLowerCase()) ||
+                    loan.title.toLowerCase().includes(search.toLowerCase()) ||
+                    loan.name.toLowerCase().includes(search.toLowerCase()) ||
+                    loan.surname.toLowerCase().includes(search.toLowerCase())
+                )
+            })
         }
 
-        const loans = await db.all(query, parameters)
-
-        let countQuery = `SELECT COUNT(*) as total FROM loan`
-        let countParameters = []
-
-        if (search) {
-            countQuery += ` WHERE l.book_id ILIKE '%?%' OR p.id ILIKE '%?%' OR p.name ILIKE '%?%' OR p.surname ILIKE '%?%' OR b.title ILIKE '%?%'`
-            countParameters = [...countParameters, search, search, search, search, search]
-        }
-
-        const row = await db.get(countQuery, countParameters)
-        const total = row.total
+        const total = loans.length
         const page = Math.floor(offset / limit)
+
+        loans = loans.slice(offset, offset + limit)
 
         const activeLoansRow = await db.get(`SELECT COUNT(*) as total FROM loan WHERE returned = 0`)
         const activeLoansCounter = activeLoansRow.total

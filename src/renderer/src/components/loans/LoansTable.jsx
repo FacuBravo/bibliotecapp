@@ -1,33 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useLoansStore } from '../../hooks'
 import { LoanRow } from './LoanRow'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { PartnerModal } from '../users'
 
 export const LoansTable = ({ filter = '' }) => {
-    const { loans, orderBy, sortBy } = useLoansStore()
-    const [filteredLoans, setFilteredLoans] = useState(loans)
+    const { loans, orderBy, sortBy, startLoadingLoans } = useLoansStore()
 
     useEffect(() => {
         if (filter !== '') {
-            setFilteredLoans(
-                loans.filter((loan) => {
-                    return (
-                        loan.book_id.toString().toLowerCase().includes(filter.toLowerCase()) ||
-                        loan.auto_partner_id
-                            .toString()
-                            .toLowerCase()
-                            .includes(filter.toLowerCase()) ||
-                        loan.title.toLowerCase().includes(filter.toLowerCase()) ||
-                        loan.name.toLowerCase().includes(filter.toLowerCase()) ||
-                        loan.surname.toLowerCase().includes(filter.toLowerCase())
-                    )
-                })
-            )
+            startLoadingLoans(0, orderBy, filter)
         } else {
-            setFilteredLoans(loans)
+            startLoadingLoans(0, orderBy)
         }
-    }, [filter, loans])
+    }, [filter])
 
     return (
         <>
@@ -71,7 +57,7 @@ export const LoansTable = ({ filter = '' }) => {
                 </thead>
 
                 <tbody className="flex flex-col gap-6 font-assistant text-lg">
-                    {filteredLoans.length === 0 ? (
+                    {loans.length === 0 ? (
                         filter !== '' ? (
                             <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
                                 <td className="w-full text-center">No hay resultados</td>
@@ -85,7 +71,7 @@ export const LoansTable = ({ filter = '' }) => {
                         <></>
                     )}
 
-                    {filteredLoans.map((loan, index) => (
+                    {loans.map((loan, index) => (
                         <LoanRow key={loan.id} loan={loan} index={index} />
                     ))}
                 </tbody>

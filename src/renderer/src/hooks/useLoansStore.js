@@ -44,7 +44,8 @@ export const useLoansStore = () => {
 
     const startLoadingLoans = async (
         page = 0,
-        orderBy = { field: 'date_start', order: 'desc' }
+        orderBy = { field: 'date_start', order: 'desc' },
+        query = undefined
     ) => {
         dispatch(setLoading())
 
@@ -53,7 +54,8 @@ export const useLoansStore = () => {
                 offset: page * LOANS_LIMIT,
                 limit: LOANS_LIMIT,
                 orderBy: orderBy.field,
-                order: orderBy.order
+                order: orderBy.order,
+                search: query
             })
 
             if (!response.ok) throw new Error('Failed to fetch loans')
