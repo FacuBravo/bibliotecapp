@@ -98,7 +98,7 @@ export const LoansPage = () => {
 
                 <section className="mx-auto flex w-full flex-col lg:w-4/5">
                     <section className="flex h-[82px] w-full justify-between pb-4 pt-6">
-                        <div className="flex w-fit items-center gap-1 font-supermercado text-2xl text-pink_600">
+                        <div className="flex w-64 items-center gap-1 font-supermercado text-2xl text-pink_600">
                             <h1>Préstamos</h1>
                         </div>
 
