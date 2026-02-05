@@ -12,7 +12,8 @@ export const booksSlice = createSlice({
         orderBy: {
             field: 'inventory',
             order: 'asc'
-        }
+        },
+        total: 0
     },
     reducers: {
         setLoading: (state) => {
@@ -30,11 +31,14 @@ export const booksSlice = createSlice({
             state.error = null
             state.counter = payload.total
         },
+        setBooksCount: (state, { payload }) => {
+            state.total = payload.total
+        },
         addBook: (state) => {
-            state.counter += 1
+            state.total += 1
         },
         deleteBook: (state) => {
-            state.counter -= 1
+            state.total -= 1
         },
         setOrderBy: (state, { payload }) => {
             state.orderBy.field = payload.field
@@ -43,5 +47,12 @@ export const booksSlice = createSlice({
     }
 })
 
-export const { setBooks, setLoading, setNotLoading, addBook, deleteBook, setOrderBy } =
-    booksSlice.actions
+export const {
+    setBooks,
+    setLoading,
+    setNotLoading,
+    setBooksCount,
+    addBook,
+    deleteBook,
+    setOrderBy
+} = booksSlice.actions

@@ -69,16 +69,12 @@ export const getLoans = async (db, { offset, limit, search, orderBy, order }) =>
 
         loans = loans.slice(offset, offset + limit)
 
-        const activeLoansRow = await db.get(`SELECT COUNT(*) as total FROM loan WHERE returned = 0`)
-        const activeLoansCounter = activeLoansRow.total
-
         return {
             ok: true,
             loans,
             page,
             total,
-            isLast: offset + limit >= total,
-            activeLoansCounter
+            isLast: offset + limit >= total
         }
     } catch (error) {
         return { ok: false, msg: 'Error al obtener los préstamos' }
@@ -142,5 +138,16 @@ export const deleteAllLoans = async (db) => {
         return { ok: true }
     } catch (error) {
         return { ok: false, msg: 'Error al eliminar préstamos' }
+    }
+}
+
+export const countActiveLoans = async (db) => {
+    try {
+        const row = await db.get(`SELECT COUNT(*) as total FROM loan WHERE returned = 0`)
+        const total = row.total
+
+        return { ok: true, total }
+    } catch (error) {
+        return { ok: false, msg: 'Error al contar los préstamos activos' }
     }
 }

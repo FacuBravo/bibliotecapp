@@ -7,9 +7,9 @@ import { useReportsStore } from '../hooks/useReportsStore'
 
 export const AppRouter = () => {
     const { checkAuthToken } = useAuthStore()
-    const { startLoadingBooks } = useBooksStore()
-    const { startLoadingPartners } = usePartnersStore()
-    const { startLoadingLoans } = useLoansStore()
+    const { startLoadingBooks, getBooksCount } = useBooksStore()
+    const { startLoadingPartners, getPartnersCount } = usePartnersStore()
+    const { startLoadingLoans, getActiveLoansCount } = useLoansStore()
     const {
         startLoadingAuthorsReports,
         startLoadingBooksReports,
@@ -21,8 +21,11 @@ export const AppRouter = () => {
     useEffect(() => {
         checkAuthToken()
         startLoadingBooks()
+        getBooksCount()
         startLoadingPartners()
+        getPartnersCount()
         startLoadingLoans()
+        getActiveLoansCount()
         startLoadingAuthorsReports()
         startLoadingBooksReports()
         startLoadingThemesReports()

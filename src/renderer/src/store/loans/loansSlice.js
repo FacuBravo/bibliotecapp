@@ -30,9 +30,11 @@ export const loansSlice = createSlice({
             state.page = payload.page
             state.isLast = payload.isLast
             state.counter = payload.total
-            state.activeLoansCounter = payload.activeLoansCounter
             state.isLoading = false
             state.error = null
+        },
+        setActiveLoansCount: (state, { payload }) => {
+            state.activeLoansCounter = payload.total
         },
         addLoan: (state) => {
             state.activeLoansCounter++
@@ -74,6 +76,7 @@ export const {
     setLoading,
     setNotLoading,
     setLoans,
+    setActiveLoansCount,
     addLoan,
     setPartner,
     setBook,

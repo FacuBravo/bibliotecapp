@@ -6,7 +6,8 @@ import {
     setLoading,
     setNotLoading,
     setOrderBy,
-    addPartnerNewActiveLoan
+    addPartnerNewActiveLoan,
+    setPartnersCount
 } from '../store/partners/partnersSlice'
 import { useReportsStore } from './useReportsStore'
 import { PARTNERS_LIMIT } from '../consts'
@@ -15,7 +16,7 @@ const validFields = ['id', 'surname', 'type']
 
 export const usePartnersStore = () => {
     const dispatch = useDispatch()
-    const { partners, page, isLast, isLoading, error, counter, orderBy } = useSelector(
+    const { partners, page, isLast, isLoading, error, counter, orderBy, total } = useSelector(
         (state) => state.partners
     )
     const { user } = useSelector((state) => state.auth)
@@ -194,6 +195,11 @@ export const usePartnersStore = () => {
         startLoadingPartners(page, { field, order: newOrder })
     }
 
+    const getPartnersCount = async () => {
+        const response = await window.partnersApi.getPartnersCount()
+        dispatch(setPartnersCount(response))
+    }
+
     return {
         partners,
         page,
@@ -202,6 +208,7 @@ export const usePartnersStore = () => {
         error,
         counter,
         orderBy,
+        total,
 
         startLoadingPartners,
         startAddingPartner,
@@ -209,6 +216,7 @@ export const usePartnersStore = () => {
         startDeletingPartner,
         addingNewActiveLoan,
         multipleAddPartners,
-        sortBy
+        sortBy,
+        getPartnersCount
     }
 }

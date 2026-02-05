@@ -22,6 +22,7 @@ export const booksApi = {
         }
     },
     getBooks: async (params) => ipcRenderer.invoke(IpcKeys.BOOK.GET_ALL, params),
+    getBooksCount: async () => ipcRenderer.invoke(IpcKeys.BOOK.COUNT_BOOKS),
     deleteBook: async (id, token) => {
         const { ok: isAuthenticated } = await sessionApi.checkSessionToken({ sessionToken: token })
 

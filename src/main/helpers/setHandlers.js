@@ -10,6 +10,9 @@ import {
     addMultiplePartners,
     addPartner,
     checkSessionToken,
+    countActiveLoans,
+    countBooks,
+    countPartners,
     deleteAllBooks,
     deleteAllLoans,
     deleteAllPartners,
@@ -75,6 +78,8 @@ function setBooksHandlers(db) {
     ipcMain.handle(IpcKeys.BOOK.ADD_MULTIPLE, (_, books) => addMultipleBooks(db, books))
 
     ipcMain.handle(IpcKeys.BOOK.DELETE_ALL, () => deleteAllBooks(db))
+
+    ipcMain.handle(IpcKeys.BOOK.COUNT_BOOKS, () => countBooks(db))
 }
 
 function setPartnersHandlers(db) {
@@ -90,6 +95,8 @@ function setPartnersHandlers(db) {
     ipcMain.handle(IpcKeys.PARTNER.ADD_MULTIPLE, (_, partners) => addMultiplePartners(db, partners))
 
     ipcMain.handle(IpcKeys.PARTNER.DELETE_ALL, () => deleteAllPartners(db))
+
+    ipcMain.handle(IpcKeys.PARTNER.COUNT_PARTNERS, () => countPartners(db))
 }
 
 function setLoansHandlers(db) {
@@ -110,6 +117,8 @@ function setLoansHandlers(db) {
     ipcMain.handle(IpcKeys.LOAN.ADD_MULTIPLE, (_, loans) => addMultipleLoans(db, loans))
 
     ipcMain.handle(IpcKeys.LOAN.DELETE_ALL, () => deleteAllLoans(db))
+
+    ipcMain.handle(IpcKeys.LOAN.COUNT_ACTIVE_LOANS, () => countActiveLoans(db))
 }
 
 function setReportsHandlers(db) {

@@ -12,7 +12,8 @@ export const IpcKeys = {
         GET_ALL: 'get-partners',
         DELETE: 'delete-partner',
         DELETE_ALL: 'delete-all-partners',
-        ADD_MULTIPLE: 'add-multiple-partners'
+        ADD_MULTIPLE: 'add-multiple-partners',
+        COUNT_PARTNERS: 'count-partners'
     },
     BOOK: {
         ADD: 'add-book',
@@ -22,7 +23,8 @@ export const IpcKeys = {
         GET_ALL: 'get-books',
         DELETE: 'delete-book',
         DELETE_ALL: 'delete-all-books',
-        ADD_MULTIPLE: 'add-multiple-books'
+        ADD_MULTIPLE: 'add-multiple-books',
+        COUNT_BOOKS: 'count-books'
     },
     LOAN: {
         ADD: 'add-loan',
@@ -32,7 +34,8 @@ export const IpcKeys = {
         GET_ALL: 'get-loans',
         DELETE: 'delete-loan',
         DELETE_ALL: 'delete-all-loans',
-        ADD_MULTIPLE: 'add-multiple-loans'
+        ADD_MULTIPLE: 'add-multiple-loans',
+        COUNT_ACTIVE_LOANS: 'count-active-loans'
     },
     REPORTS: {
         GET_AUTHORS_WITH_MORE_BOOKS: 'get-authors-with-more-books',

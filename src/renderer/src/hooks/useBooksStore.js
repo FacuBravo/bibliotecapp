@@ -3,6 +3,7 @@ import {
     addBook,
     deleteBook,
     setBooks,
+    setBooksCount,
     setLoading,
     setNotLoading,
     setOrderBy
@@ -14,7 +15,7 @@ const validFields = ['inventory', 'title', 'author', 'theme']
 
 export const useBooksStore = () => {
     const dispatch = useDispatch()
-    const { books, page, isLast, isLoading, error, counter, orderBy } = useSelector(
+    const { books, page, isLast, isLoading, error, counter, orderBy, total } = useSelector(
         (state) => state.books
     )
     const { user } = useSelector((state) => state.auth)
@@ -219,6 +220,11 @@ export const useBooksStore = () => {
         startLoadingBooks(page, { field, order: newOrder })
     }
 
+    const getBooksCount = async () => {
+        const response = await window.booksApi.getBooksCount()
+        dispatch(setBooksCount(response))
+    }
+
     return {
         books,
         page,
@@ -227,6 +233,7 @@ export const useBooksStore = () => {
         error,
         counter,
         orderBy,
+        total,
 
         startLoadingBooks,
         startAddingBook,
@@ -234,6 +241,7 @@ export const useBooksStore = () => {
         startUpdatingBookState,
         startDeletingBook,
         multipleAddBooks,
-        sortBy
+        sortBy,
+        getBooksCount
     }
 }

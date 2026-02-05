@@ -9,7 +9,8 @@ import {
     setPartner,
     setOrderBy,
     updateLoanState,
-    deleteLoan
+    deleteLoan,
+    setActiveLoansCount
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
@@ -273,6 +274,11 @@ export const useLoansStore = () => {
         startLoadingLoans(page, { field, order: newOrder })
     }
 
+    const getActiveLoansCount = async () => {
+        const response = await window.loansApi.getActiveLoansCount()
+        dispatch(setActiveLoansCount(response))
+    }
+
     return {
         loans,
         page,
@@ -293,6 +299,7 @@ export const useLoansStore = () => {
         checkIfIsLoansArray,
         setLoanPartner,
         setLoanBook,
-        sortBy
+        sortBy,
+        getActiveLoansCount
     }
 }

@@ -12,7 +12,8 @@ export const partnersSlice = createSlice({
         orderBy: {
             field: 'id',
             order: 'asc'
-        }
+        },
+        total: 0
     },
     reducers: {
         setLoading: (state) => {
@@ -30,8 +31,11 @@ export const partnersSlice = createSlice({
             state.error = null
             state.counter = payload.total
         },
+        setPartnersCount: (state, { payload }) => {
+            state.total = payload.total
+        },
         addPartner: (state) => {
-            state.counter += 1
+            state.total += 1
         },
         addPartnerNewActiveLoan: (state, { payload }) => {
             state.partners = state.partners.map((partner) => {
@@ -46,7 +50,7 @@ export const partnersSlice = createSlice({
             })
         },
         deletePartner: (state) => {
-            state.counter -= 1
+            state.total -= 1
         },
         setOrderBy: (state, { payload }) => {
             state.orderBy.field = payload.field
@@ -59,6 +63,7 @@ export const {
     setPartners,
     setLoading,
     setNotLoading,
+    setPartnersCount,
     addPartner,
     addPartnerNewActiveLoan,
     deletePartner,

@@ -147,3 +147,14 @@ export const deleteAllPartners = async (db) => {
         return { ok: false, msg: 'Error al eliminar usuarios' }
     }
 }
+
+export const countPartners = async (db) => {
+    try {
+        const row = await db.get('SELECT COUNT(*) as total FROM partner')
+        const total = row.total
+
+        return { ok: true, total }
+    } catch (error) {
+        return { ok: false, msg: 'Error al contar los usuarios' }
+    }
+}

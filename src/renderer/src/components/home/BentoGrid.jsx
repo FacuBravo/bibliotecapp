@@ -5,8 +5,8 @@ import reportIcon from '../../assets/images/icons/Report.svg'
 import { useBooksStore, useLoansStore, usePartnersStore } from '../../hooks'
 
 export const BentoGrid = () => {
-    const { counter: booksCount } = useBooksStore()
-    const { counter: partnersCount } = usePartnersStore()
+    const { total: booksCount } = useBooksStore()
+    const { total: partnersCount } = usePartnersStore()
     const { activeLoansCounter } = useLoansStore()
 
     return (

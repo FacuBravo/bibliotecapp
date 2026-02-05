@@ -147,3 +147,14 @@ export const deleteAllBooks = async (db) => {
         return { ok: false, msg: 'Error al eliminar libros' }
     }
 }
+
+export const countBooks = async (db) => {
+    try {
+        const row = await db.get('SELECT COUNT(*) as total FROM book')
+        const total = row.total
+
+        return { ok: true, total }
+    } catch (error) {
+        return { ok: false, msg: 'Error al contar los libros' }
+    }
+}
