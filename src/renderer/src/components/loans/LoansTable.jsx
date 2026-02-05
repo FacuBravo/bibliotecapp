@@ -3,6 +3,7 @@ import { useLoansStore } from '../../hooks'
 import { LoanRow } from './LoanRow'
 import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { PartnerModal } from '../users'
+import { BookModal } from '../books'
 
 export const LoansTable = ({ filter = '' }) => {
     const { loans, orderBy, sortBy, startLoadingLoans } = useLoansStore()
@@ -77,6 +78,7 @@ export const LoansTable = ({ filter = '' }) => {
                 </tbody>
             </table>
             <PartnerModal showEdit={false} />
+            <BookModal showActions={false} />
         </>
     )
 }

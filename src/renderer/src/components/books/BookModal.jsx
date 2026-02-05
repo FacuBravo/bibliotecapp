@@ -4,7 +4,7 @@ import { CloseButton } from '../commons'
 import pencilIcon from '../../assets/images/icons/Pencil.svg'
 import duplicateIcon from '../../assets/images/icons/Duplicate.svg'
 
-export const BookModal = () => {
+export const BookModal = ({ showActions = true }) => {
     const { user } = useAuthStore()
     const { isBookModalOpen, closeBookModal, book, openAddBookModal, openDuplicateBookModal } =
         useUiStore()
@@ -22,7 +22,7 @@ export const BookModal = () => {
         >
             <section className="flex flex-col items-end">
                 <div className="flex gap-2">
-                    {user.sessionToken && (
+                    {user.sessionToken && showActions && (
                         <>
                             <button
                                 onClick={() => {

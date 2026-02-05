@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
 import { getDateFromString } from '../../helpers'
-import { useAuthStore, useLoansStore, usePartnersStore, useUiStore } from '../../hooks'
+import { useAuthStore, useLoansStore, useUiStore } from '../../hooks'
 import { DeleteButton } from '../commons/buttons/DeleteButton'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
     const { returnLoan, startDeletingLoan } = useLoansStore()
-    const { partners, orderBy, sortBy } = usePartnersStore()
 
-    const { openConfirmModal, openPartnerModal } = useUiStore()
+    const { openConfirmModal, openPartnerModal, openBookModal } = useUiStore()
 
     const isInDebt = useMemo(
         () => getDateFromString(loan.date_end) < new Date(new Date().setHours(0, 0, 0, 0)),
@@ -43,11 +42,19 @@ export const LoanRow = ({ loan, index }) => {
         }
     }
 
+    const openBookDetails = async () => {
+        const response = await window.booksApi.getBook(loan.auto_book_id)
+
+        if (response.ok) {
+            openBookModal(response.book)
+        }
+    }
+
     return (
         <tr className={`${getRowColors()} flex items-center rounded-2xl px-6 py-4 shadow-md`}>
             <td className="w-[13%]">{loan.date_start}</td>
             <td className="w-[13%]">{loan.date_end}</td>
-            <td className="w-[33%]">
+            <td onClick={openBookDetails} className="w-[33%] cursor-pointer">
                 <h4 className="max-w-[450px] overflow-hidden text-ellipsis whitespace-nowrap">
                     #{loan.book_id} - "{loan.title}"
                 </h4>
