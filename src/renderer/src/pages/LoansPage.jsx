@@ -15,32 +15,32 @@ export const LoansPage = () => {
     const { partner, book, startLoadingLoans, counter, page, isLast, orderBy } = useLoansStore()
     const { filter, onInputChange } = useForm(searchForm)
 
-    const onNextPage = () => {
+    const onNextPage = async () => {
+        await startLoadingLoans(page + 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingLoans(page + 1, orderBy, filter ? filter : undefined)
     }
 
-    const onPreviousPage = () => {
+    const onPreviousPage = async () => {
+        await startLoadingLoans(page - 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingLoans(page - 1, orderBy, filter ? filter : undefined)
     }
 
-    const onGoToPage = (newPage) => {
+    const onGoToPage = async (newPage) => {
         if (newPage !== page) {
+            await startLoadingLoans(newPage, orderBy, filter ? filter : undefined)
+
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             })
-
-            startLoadingLoans(newPage, orderBy, filter ? filter : undefined)
         }
     }
 

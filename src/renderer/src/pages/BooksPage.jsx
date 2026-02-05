@@ -41,32 +41,32 @@ export const BooksPage = () => {
         }
     }
 
-    const onNextPage = () => {
+    const onNextPage = async () => {
+        await startLoadingBooks(page + 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingBooks(page + 1, orderBy, filter ? filter : undefined)
     }
 
-    const onPreviousPage = () => {
+    const onPreviousPage = async () => {
+        await startLoadingBooks(page - 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingBooks(page - 1, orderBy, filter ? filter : undefined)
     }
 
-    const onGoToPage = (newPage) => {
+    const onGoToPage = async (newPage) => {
         if (newPage !== page) {
+            await startLoadingBooks(newPage, orderBy, filter ? filter : undefined)
+
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             })
-
-            startLoadingBooks(newPage, orderBy, filter ? filter : undefined)
         }
     }
 

@@ -13,32 +13,32 @@ export const UsersPage = () => {
     const { filter, onInputChange } = useForm(searchForm)
     const { page, isLast, startLoadingPartners, counter, orderBy } = usePartnersStore()
 
-    const onNextPage = () => {
+    const onNextPage = async () => {
+        await startLoadingPartners(page + 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingPartners(page + 1, orderBy, filter ? filter : undefined)
     }
 
-    const onPreviousPage = () => {
+    const onPreviousPage = async () => {
+        await startLoadingPartners(page - 1, orderBy, filter ? filter : undefined)
+
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-
-        startLoadingPartners(page - 1, orderBy, filter ? filter : undefined)
     }
 
-    const onGoToPage = (newPage) => {
+    const onGoToPage = async (newPage) => {
         if (newPage !== page) {
+            await startLoadingPartners(newPage, orderBy, filter ? filter : undefined)
+
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             })
-
-            startLoadingPartners(newPage, orderBy, filter ? filter : undefined)
         }
     }
 

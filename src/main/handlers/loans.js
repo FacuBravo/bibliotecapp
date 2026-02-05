@@ -59,7 +59,9 @@ export const getLoans = async (db, { offset, limit, search, orderBy, order }) =>
                     loan.auto_partner_id.toString().toLowerCase().includes(search.toLowerCase()) ||
                     loan.title.toLowerCase().includes(search.toLowerCase()) ||
                     loan.name.toLowerCase().includes(search.toLowerCase()) ||
-                    loan.surname.toLowerCase().includes(search.toLowerCase())
+                    loan.surname.toLowerCase().includes(search.toLowerCase()) ||
+                    loan.date_start.toLowerCase().includes(search.toLowerCase()) ||
+                    loan.date_end.toLowerCase().includes(search.toLowerCase())
                 )
             })
         }

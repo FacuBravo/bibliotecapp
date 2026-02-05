@@ -53,7 +53,7 @@ export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, 
                     1
                 </button>
 
-                {pages.length && pages[0] > 2 && <div className="h-9 w-6 p-1 md:w-9">...</div>}
+                {pages.length > 1 && pages[0] > 2 && <div className="h-9 w-6 p-1 md:w-9">...</div>}
 
                 {pages.map((n) => (
                     <button
@@ -65,7 +65,7 @@ export const PageSelector = ({ onNextPage, onPreviousPage, onGoToPage, counter, 
                     </button>
                 ))}
 
-                {pages.length && pages[pages.length - 1] < totalPages - 1 && (
+                {pages.length > 1 && pages[pages.length - 1] < totalPages - 1 && (
                     <div className="h-9 w-6 p-1 md:w-9">...</div>
                 )}
 
