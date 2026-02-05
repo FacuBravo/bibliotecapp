@@ -1,7 +1,7 @@
 {
     "name": "bibliotecapp",
     "productName": "BibliotecApp",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "An app to manage your library",
     "main": "./out/main/main.js",
     "author": "facundobravo.vercel.app",

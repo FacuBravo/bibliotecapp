@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
-import { getDateFromString } from '../../helpers'
+import { getDateFromString, getDueStatus } from '../../helpers'
 import { useAuthStore, useLoansStore, useUiStore } from '../../hooks'
 import { DeleteButton } from '../commons/buttons/DeleteButton'
+import { format, isAfter, formatDistanceToNowStrict, parseISO } from 'date-fns'
+import { es } from 'date-fns/locale'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
@@ -50,10 +52,38 @@ export const LoanRow = ({ loan, index }) => {
         }
     }
 
+    const shortDistance = (date) => {
+        const distance = formatDistanceToNowStrict(parseISO(date), {
+            locale: es
+        })
+            .replace('horas', 'hs')
+            .replace('hora', 'h')
+            .replace('minutos', 'min')
+            .replace('minuto', 'min')
+            .replace('días', 'd')
+            .replace('día', 'd')
+
+        if (distance.includes('h')) {
+            return 'Hoy'
+        }
+
+        return `Hace ${distance}`
+    }
+
     return (
         <tr className={`${getRowColors()} flex items-center rounded-2xl px-6 py-4 shadow-md`}>
-            <td className="w-[13%]">{loan.date_start}</td>
-            <td className="w-[13%]">{loan.date_end}</td>
+            <td className="w-[13%]">
+                <div>
+                    <div>{format(parseISO(loan.date_start), 'dd/MM/yyyy')}</div>
+                    <div className="text-sm">{shortDistance(loan.date_start)}</div>
+                </div>
+            </td>
+            <td className="w-[13%]">
+                <div>
+                    <div>{format(parseISO(loan.date_end), 'dd/MM/yyyy')}</div>
+                    <div className="text-sm">{getDueStatus(loan.date_end)}</div>
+                </div>
+            </td>
             <td onClick={openBookDetails} className="w-[33%] cursor-pointer">
                 <h4 className="max-w-[450px] overflow-hidden text-ellipsis whitespace-nowrap">
                     #{loan.book_id} - "{loan.title}"

@@ -1,4 +1,4 @@
 export const getDateFromString = (date) => {
-    const [day, month, year] = date.split('/')
+    const [year, month, day] = date.split('-')
     return new Date(year, month - 1, day)
 }
