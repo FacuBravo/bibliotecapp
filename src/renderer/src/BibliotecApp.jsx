@@ -1,5 +1,12 @@
 import { useEffect } from 'react'
-import { Header, LoginModal, RegisterModal, Alert, ConfirmModal } from './components/commons'
+import {
+    Header,
+    LoginModal,
+    RegisterModal,
+    Alert,
+    ConfirmModal,
+    FullScreenLoader
+} from './components/commons'
 import { AppRouter } from './routers/AppRouter'
 import { useAuthStore, useBooksStore, useLoansStore, usePartnersStore, useUiStore } from './hooks'
 
@@ -34,6 +41,7 @@ export const BibliotecApp = () => {
             <RegisterModal />
             <Alert />
             <ConfirmModal />
+            <FullScreenLoader />
         </>
     )
 }

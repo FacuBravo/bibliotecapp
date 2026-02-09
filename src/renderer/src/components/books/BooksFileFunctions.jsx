@@ -18,7 +18,7 @@ export const BooksFileFunctions = () => {
     const { startImporting, file: importedBooks, resetFile } = useImports()
     const { startLoadingLoans } = useLoansStore()
     const { startLoadingPartners } = usePartnersStore()
-    const { openConfirmModal } = useUiStore()
+    const { openConfirmModal, showLoader, hideLoader } = useUiStore()
 
     useEffect(() => {
         updateStores()
@@ -29,6 +29,7 @@ export const BooksFileFunctions = () => {
             await multipleAddBooks(importedBooks)
             await startLoadingLoans()
             await startLoadingPartners()
+            hideLoader()
             resetFile()
         }
     }
@@ -36,6 +37,7 @@ export const BooksFileFunctions = () => {
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return
 
+        showLoader()
         startImporting(target.files[0])
         target.value = ''
     }

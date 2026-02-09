@@ -28,7 +28,8 @@ export const uiSlice = createSlice({
             title: null,
             message: null,
             onConfirm: null
-        }
+        },
+        isLoaderOpen: false
     },
     reducers: {
         onOpenLoginModal: (state) => {
@@ -125,6 +126,13 @@ export const uiSlice = createSlice({
             state.confirmModal.title = null
             state.confirmModal.message = null
             state.confirmModal.onConfirm = null
+        },
+
+        onShowLoader: (state) => {
+            state.isLoaderOpen = true
+        },
+        onHideLoader: (state) => {
+            state.isLoaderOpen = false
         }
     }
 })
@@ -158,5 +166,8 @@ export const {
     onHideAlert,
 
     onOpenConfirmModal,
-    onCloseConfirmModal
+    onCloseConfirmModal,
+
+    onShowLoader,
+    onHideLoader
 } = uiSlice.actions

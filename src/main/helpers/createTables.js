@@ -51,7 +51,7 @@ export const createTables = async (db) => {
     )
 
     try {
-        const loan = await db.get(`SELECT date_start, date_end FROM loan LIMIT 1`)
+        const loan = await db.get(`SELECT  date_start, date_end FROM loan ORDER BY id ASC LIMIT 1`)
 
         if (loan) {
             if (!isISO(loan.date_start) || !isISO(loan.date_end)) {
@@ -71,7 +71,7 @@ export const createTables = async (db) => {
 
                 await db.exec(
                     `CREATE INDEX IF NOT EXISTS idx_loan_date_start ON loan(date_start);
-                    CREATE INDEX IF NOT EXISTS idx_loan_date_end   ON loan(date_end);`
+                    CREATE INDEX IF NOT EXISTS idx_loan_date_end ON loan(date_end);`
                 )
             }
         }

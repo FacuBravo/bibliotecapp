@@ -10,6 +10,7 @@ import {
     onClosePartnerModal,
     onCloseRegisterModal,
     onHideAlert,
+    onHideLoader,
     onOpenAddBookModal,
     onOpenAddPartnerModal,
     onOpenBookModal,
@@ -19,7 +20,8 @@ import {
     onOpenLoginModal,
     onOpenPartnerModal,
     onOpenRegisterModal,
-    onShowAlert
+    onShowAlert,
+    onShowLoader
 } from '../store'
 
 export const useUiStore = () => {
@@ -42,7 +44,8 @@ export const useUiStore = () => {
         partner,
         editPartner,
         alert,
-        confirmModal
+        confirmModal,
+        isLoaderOpen
     } = useSelector((state) => state.ui)
 
     return {
@@ -63,6 +66,7 @@ export const useUiStore = () => {
         partner,
         editPartner,
         confirmModal,
+        isLoaderOpen,
 
         openLoginModal: () => dispatch(onOpenLoginModal()),
         closeLoginModal: () => dispatch(onCloseLoginModal()),
@@ -94,6 +98,9 @@ export const useUiStore = () => {
         onHideAlert: () => dispatch(onHideAlert()),
 
         openConfirmModal: (payload) => dispatch(onOpenConfirmModal(payload)),
-        closeConfirmModal: () => dispatch(onCloseConfirmModal())
+        closeConfirmModal: () => dispatch(onCloseConfirmModal()),
+
+        showLoader: () => dispatch(onShowLoader()),
+        hideLoader: () => dispatch(onHideLoader())
     }
 }

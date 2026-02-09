@@ -9,7 +9,7 @@ export const LoansFileFunctions = () => {
     const fileInputRef = useRef()
     const { loans, multipleAddLoans } = useLoansStore()
     const { startImporting, file: importedLoans, resetFile } = useImports()
-    const { openConfirmModal } = useUiStore()
+    const { openConfirmModal, showLoader, hideLoader } = useUiStore()
 
     useEffect(() => {
         updateStores()
@@ -18,6 +18,7 @@ export const LoansFileFunctions = () => {
     const updateStores = async () => {
         if (importedLoans) {
             await multipleAddLoans(importedLoans)
+            hideLoader()
             resetFile()
         }
     }
@@ -25,11 +26,14 @@ export const LoansFileFunctions = () => {
     const onInputFileChange = ({ target }) => {
         if (target.files.length === 0) return
 
+        showLoader()
         startImporting(target.files[0])
         target.value = ''
     }
 
-    const openLoadImportFile = () => fileInputRef.current.click()
+    const openLoadImportFile = () => {
+        fileInputRef.current.click()
+    }
 
     return (
         <div className="flex gap-4">
