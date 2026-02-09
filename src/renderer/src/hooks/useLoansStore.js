@@ -313,6 +313,14 @@ export const useLoansStore = () => {
         dispatch(setActiveLoansCount(response))
     }
 
+    const getBorrowedBooksByPartner = async (partnerId) => {
+        const response = await window.loansApi.getLoansByStudent(partnerId)
+
+        if (response.ok) return response.borrowedBooks
+
+        dispatch(setNotLoading({ error: 'Error al obtener libros prestados' }))
+    }
+
     return {
         loans,
         page,
@@ -336,6 +344,7 @@ export const useLoansStore = () => {
         setLoanBook,
         sortBy,
         getActiveLoansCount,
-        renewLoan
+        renewLoan,
+        getBorrowedBooksByPartner
     }
 }

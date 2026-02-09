@@ -24,6 +24,7 @@ import {
     getBooks,
     getLoan,
     getLoans,
+    getLoansByStudent,
     getMostBorrowedBooks,
     getMostBorrowedStudents,
     getMostPopularThemes,
@@ -110,6 +111,10 @@ function setLoansHandlers(db) {
     )
 
     ipcMain.handle(IpcKeys.LOAN.GET_ALL, (_, offset, limit) => getLoans(db, offset, limit))
+
+    ipcMain.handle(IpcKeys.LOAN.GET_BY_STUDENT, (_, { studentId }) =>
+        getLoansByStudent(db, studentId)
+    )
 
     ipcMain.handle(IpcKeys.LOAN.GET, (_, { id }) => getLoan(db, { id }))
 

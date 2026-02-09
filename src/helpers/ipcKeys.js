@@ -32,6 +32,7 @@ export const IpcKeys = {
         SET_STATE: 'set-loan-state',
         GET: 'get-loan',
         GET_ALL: 'get-loans',
+        GET_BY_STUDENT: 'get-loans-by-student',
         DELETE: 'delete-loan',
         DELETE_ALL: 'delete-all-loans',
         ADD_MULTIPLE: 'add-multiple-loans',

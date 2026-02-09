@@ -36,8 +36,6 @@ export const LoanRow = ({ loan, index }) => {
     }
 
     const openUserDetails = async () => {
-        console.log(loan)
-
         const response = await window.partnersApi.getPartner(loan.auto_partner_id)
 
         if (response.ok) {

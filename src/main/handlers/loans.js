@@ -99,6 +99,21 @@ export const getLoans = async (db, { offset, limit, search, orderBy, order, filt
     }
 }
 
+export const getLoansByStudent = async (db, studentId) => {
+    try {
+        const query = `SELECT l.id, l.book_id, b.title FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id WHERE p.id_card = ? ORDER BY l.date_start DESC`
+
+        const borrowedBooks = await db.all(query, [studentId])
+
+        return {
+            ok: true,
+            borrowedBooks
+        }
+    } catch (error) {
+        return { ok: false, msg: 'Error al obtener los libros prestados' }
+    }
+}
+
 export const getLoan = async (db, { id }) => {
     try {
         const loan = await db.get('SELECT * FROM loan WHERE id = ?', [id])

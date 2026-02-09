@@ -22,6 +22,8 @@ export const loansApi = {
         }
     },
     getLoans: async (params) => ipcRenderer.invoke(IpcKeys.LOAN.GET_ALL, params),
+    getLoansByStudent: async (studentId) =>
+        ipcRenderer.invoke(IpcKeys.LOAN.GET_BY_STUDENT, { studentId }),
     getLoan: async (id) => ipcRenderer.invoke(IpcKeys.LOAN.GET, { id }),
     getActiveLoansCount: async () => ipcRenderer.invoke(IpcKeys.LOAN.COUNT_ACTIVE_LOANS),
     deleteLoan: async (id, token) => {
