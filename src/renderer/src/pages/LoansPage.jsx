@@ -76,7 +76,7 @@ export const LoansPage = () => {
 
                     <button
                         disabled={partner === null || book === null}
-                        onClick={openLoanModal}
+                        onClick={() => openLoanModal('add')}
                         className="cursor-pointer bg-transparent transition-transform hover:scale-110 disabled:cursor-not-allowed"
                     >
                         <img src={loanBlue} draggable="false" alt="Loan icon" />

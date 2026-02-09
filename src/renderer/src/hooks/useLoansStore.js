@@ -201,6 +201,28 @@ export const useLoansStore = () => {
         }
     }
 
+    const renewLoan = async ({ id, date_end }) => {
+        if (!user || !user.sessionToken) return
+
+        dispatch(setLoading())
+
+        try {
+            const response = await window.loansApi.updateLoan({ id, date_end }, user.sessionToken)
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to renew loan')
+
+            startLoadingLoans(page, orderBy, currentFilter)
+
+            await startLoadingPartners()
+
+            return true
+        } catch (error) {
+            console.error('Error renewing loan:', error)
+            dispatch(setNotLoading({ error: 'Error al renovar el prestamo' }))
+            return false
+        }
+    }
+
     const startDeletingLoan = async ({ id }) => {
         if (!user || !user.sessionToken) return
 
@@ -309,6 +331,7 @@ export const useLoansStore = () => {
         setLoanPartner,
         setLoanBook,
         sortBy,
-        getActiveLoansCount
+        getActiveLoansCount,
+        renewLoan
     }
 }

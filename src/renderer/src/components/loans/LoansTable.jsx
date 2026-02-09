@@ -22,7 +22,7 @@ export const LoansTable = ({ query = '' }) => {
                 <thead className="font-supermercado text-xl">
                     <tr className="flex items-center rounded-2xl bg-yellow_500 px-6 py-4 text-yellow_600 shadow-md transition-all">
                         <td
-                            className="flex w-[13%] cursor-pointer items-center"
+                            className="flex w-[11%] cursor-pointer items-center"
                             onClick={() => sortBy('date_start')}
                         >
                             Inicio
@@ -37,7 +37,7 @@ export const LoansTable = ({ query = '' }) => {
                             />
                         </td>
                         <td
-                            className="flex w-[13%] cursor-pointer items-center"
+                            className="flex w-[11%] cursor-pointer items-center"
                             onClick={() => sortBy('date_end')}
                         >
                             Fin
@@ -51,9 +51,9 @@ export const LoansTable = ({ query = '' }) => {
                                 alt="Arrow Icon"
                             />
                         </td>
-                        <td className="w-[33%]">Libro</td>
-                        <td className="w-[33%]">Usuario</td>
-                        <td className="w-[8%] items-center justify-end text-end">Acciones</td>
+                        <td className="w-[30%]">Libro</td>
+                        <td className="w-[30%]">Usuario</td>
+                        <td className="w-[18%] items-center justify-end text-end">Acciones</td>
                     </tr>
                 </thead>
 

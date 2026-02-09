@@ -28,6 +28,8 @@ export const useUiStore = () => {
     const {
         isLoginModalOpen,
         isLoanModalOpen,
+        loanModalMode,
+        loanModal,
         isRegisterModalOpen,
         isAddBookModalOpen,
         isBookModalOpen,
@@ -45,6 +47,8 @@ export const useUiStore = () => {
 
     return {
         isLoanModalOpen,
+        loanModalMode,
+        loanModal,
         isLoginModalOpen,
         isRegisterModalOpen,
         isAddBookModalOpen,
@@ -66,7 +70,7 @@ export const useUiStore = () => {
         openRegisterModal: () => dispatch(onOpenRegisterModal()),
         closeRegisterModal: () => dispatch(onCloseRegisterModal()),
 
-        openLoanModal: () => dispatch(onOpenLoanModal()),
+        openLoanModal: (loan = null, mode = 'add') => dispatch(onOpenLoanModal({ loan, mode })),
         closeLoanModal: () => dispatch(onCloseLoanModal()),
 
         openAddBookModal: (editBook = null) => dispatch(onOpenAddBookModal({ editBook })),
@@ -75,7 +79,8 @@ export const useUiStore = () => {
         openBookModal: (book) => dispatch(onOpenBookModal({ book })),
         closeBookModal: () => dispatch(onCloseBookModal()),
 
-        openDuplicateBookModal: (duplicateBook) => dispatch(onOpenDuplicateBookModal({ duplicateBook })),
+        openDuplicateBookModal: (duplicateBook) =>
+            dispatch(onOpenDuplicateBookModal({ duplicateBook })),
         closeDuplicateBookModal: () => dispatch(onCloseDuplicateBookModal()),
 
         openAddPartnerModal: (editPartner = null) =>

@@ -2,14 +2,13 @@ import { useMemo } from 'react'
 import { getDateFromString, getDueStatus } from '../../helpers'
 import { useAuthStore, useLoansStore, useUiStore } from '../../hooks'
 import { DeleteButton } from '../commons/buttons/DeleteButton'
-import { format, isAfter, formatDistanceToNowStrict, parseISO } from 'date-fns'
+import { format, formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 
 export const LoanRow = ({ loan, index }) => {
     const { user } = useAuthStore()
-    const { returnLoan, startDeletingLoan } = useLoansStore()
-
-    const { openConfirmModal, openPartnerModal, openBookModal } = useUiStore()
+    const { returnLoan, startDeletingLoan, renewLoan } = useLoansStore()
+    const { openConfirmModal, openPartnerModal, openBookModal, openLoanModal } = useUiStore()
 
     const isInDebt = useMemo(
         () => getDateFromString(loan.date_end) < new Date(new Date().setHours(0, 0, 0, 0)),
@@ -37,6 +36,8 @@ export const LoanRow = ({ loan, index }) => {
     }
 
     const openUserDetails = async () => {
+        console.log(loan)
+
         const response = await window.partnersApi.getPartner(loan.auto_partner_id)
 
         if (response.ok) {
@@ -72,31 +73,57 @@ export const LoanRow = ({ loan, index }) => {
 
     return (
         <tr className={`${getRowColors()} flex items-center rounded-2xl px-6 py-4 shadow-md`}>
-            <td className="w-[13%]">
+            <td className="w-[11%]">
                 <div>
                     <div>{format(parseISO(loan.date_start), 'dd/MM/yyyy')}</div>
                     <div className="text-sm">{shortDistance(loan.date_start)}</div>
                 </div>
             </td>
-            <td className="w-[13%]">
+            <td className="w-[11%]">
                 <div>
                     <div>{format(parseISO(loan.date_end), 'dd/MM/yyyy')}</div>
                     <div className="text-sm">{getDueStatus(loan.date_end)}</div>
                 </div>
             </td>
-            <td onClick={openBookDetails} className="w-[33%] cursor-pointer">
-                <h4 className="max-w-[450px] overflow-hidden text-ellipsis whitespace-nowrap">
+            <td className="w-[30%]">
+                <h4
+                    onClick={openBookDetails}
+                    className="max-w-[410px] cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+                >
                     #{loan.book_id} - "{loan.title}"
                 </h4>
             </td>
-            <td onClick={openUserDetails} className="w-[33%] cursor-pointer">
-                <h4 className="max-w-[450px] overflow-hidden text-ellipsis whitespace-nowrap">
+            <td className="w-[30%]">
+                <h4
+                    onClick={openUserDetails}
+                    className="max-w-[410px] cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+                >
                     #{loan.auto_partner_id} - {loan.surname}, {loan.name}
                 </h4>
             </td>
-            <td className="w-[8%] items-center justify-end text-end">
+            <td className="w-[18%] items-center justify-end text-end">
                 {user.sessionToken ? (
                     <div className="flex items-center justify-end gap-2">
+                        {loan.returned === 0 ? (
+                            <>
+                                <button
+                                    onClick={() => openLoanModal(loan, 'renew')}
+                                    className="rounded-lg bg-white px-4 py-2 font-semibold text-blue_600 shadow-md"
+                                >
+                                    Renovar
+                                </button>
+
+                                <button
+                                    onClick={onReturnBook}
+                                    className="rounded-lg bg-blue_600 px-4 py-2 text-white shadow-md"
+                                >
+                                    Devolver
+                                </button>
+                            </>
+                        ) : (
+                            <span>Devuelto</span>
+                        )}
+
                         <DeleteButton
                             action={() =>
                                 openConfirmModal({
@@ -107,17 +134,6 @@ export const LoanRow = ({ loan, index }) => {
                             }
                             white={isInDebt && loan.returned === 0}
                         />
-
-                        {loan.returned === 0 ? (
-                            <button
-                                onClick={onReturnBook}
-                                className="rounded-lg bg-blue_600 p-2 text-white"
-                            >
-                                Devolver
-                            </button>
-                        ) : (
-                            <span>Devuelto</span>
-                        )}
                     </div>
                 ) : (
                     <span>---</span>

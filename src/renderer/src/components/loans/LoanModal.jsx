@@ -15,9 +15,9 @@ const formValidations = {
 }
 
 export const LoanModal = () => {
-    const { isLoanModalOpen, closeLoanModal } = useUiStore()
+    const { isLoanModalOpen, closeLoanModal, loanModalMode, loanModal } = useUiStore()
     const { date_end, onInputChange } = useForm(initialForm, formValidations)
-    const { startAddingLoan, book, partner } = useLoansStore()
+    const { startAddingLoan, renewLoan, book, partner } = useLoansStore()
     const [showAnimation, setShowAnimation] = useState(false)
 
     const onSubmit = (event) => {
@@ -29,12 +29,19 @@ export const LoanModal = () => {
 
         setShowAnimation(true)
 
-        startAddingLoan({
-            date_start: dateStart,
-            date_end: dateEnd,
-            book_id: book.inventory,
-            partner_id: partner.id_card
-        })
+        if (loanModalMode === 'add') {
+            startAddingLoan({
+                date_start: dateStart,
+                date_end: dateEnd,
+                book_id: book.inventory,
+                partner_id: partner.id_card
+            })
+        } else if (loanModalMode === 'renew') {
+            renewLoan({
+                id: loanModal.id,
+                date_end: dateEnd
+            })
+        }
     }
 
     return (

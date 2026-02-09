@@ -6,6 +6,8 @@ export const uiSlice = createSlice({
         isLoginModalOpen: false,
         isRegisterModalOpen: false,
         isLoanModalOpen: false,
+        loanModalMode: 'add',
+        loanModal: null,
         isAddBookModalOpen: false,
         editBook: null,
         isBookModalOpen: false,
@@ -43,11 +45,15 @@ export const uiSlice = createSlice({
             state.isRegisterModalOpen = false
         },
 
-        onOpenLoanModal: (state) => {
+        onOpenLoanModal: (state, { payload }) => {
             state.isLoanModalOpen = true
+            state.loanModalMode = payload?.mode || 'add'
+            state.loanModal = payload?.loan || null
         },
         onCloseLoanModal: (state) => {
             state.isLoanModalOpen = false
+            state.loanModalMode = 'add'
+            state.loanModal = null
         },
 
         onOpenAddBookModal: (state, { payload }) => {

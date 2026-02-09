@@ -36,7 +36,9 @@ export const setLoanState = async (db, { id, returned }) => {
 
 export const updateLoan = async (db, { id, date_end }) => {
     try {
-        await db.run('UPDATE loan SET date_end = ? WHERE id = ?', [date_end, id])
+        const formatedDateEnd = isISO(date_end) ? date_end : dateStringToISO(date_end)
+
+        await db.run('UPDATE loan SET date_end = ? WHERE id = ?', [formatedDateEnd, id])
 
         const loan = await db.get('SELECT * FROM loan WHERE id = ?', [id])
 
