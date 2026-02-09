@@ -20,7 +20,11 @@ export const usePartnersStore = () => {
         (state) => state.partners
     )
     const { user } = useSelector((state) => state.auth)
-    const { startLoadingMostReaderSectionReports, setNotLoadingWithoutError } = useReportsStore()
+    const {
+        startLoadingMostReaderSectionReports,
+        setNotLoadingWithoutError,
+        startLoadingStudentsReports
+    } = useReportsStore()
 
     const startLoadingPartners = async (
         page = 0,
@@ -62,6 +66,7 @@ export const usePartnersStore = () => {
             startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true
@@ -87,6 +92,7 @@ export const usePartnersStore = () => {
             startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true
@@ -112,6 +118,7 @@ export const usePartnersStore = () => {
             startLoadingPartners(page, orderBy)
 
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true
@@ -151,6 +158,7 @@ export const usePartnersStore = () => {
             startLoadingPartners(0, { field: 'id', order: 'asc' })
 
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true

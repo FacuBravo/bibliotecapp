@@ -41,7 +41,8 @@ export const IpcKeys = {
         GET_AUTHORS_WITH_MORE_BOOKS: 'get-authors-with-more-books',
         GET_MOST_BORROWED_BOOKS: 'get-most-borrowed-books',
         GET_MOST_POPULAR_THEMES: 'get-most-popular-themes',
-        GET_MOST_READER_SECTION: 'get-most-reader-section'
+        GET_MOST_READER_SECTION: 'get-most-reader-section',
+        GET_MOST_BORROWED_STUDENTS: 'get-most-borrowed-students'
     },
     EXCEL: {
         OPEN_SAVE_DIALOG: 'dialog:save-file',

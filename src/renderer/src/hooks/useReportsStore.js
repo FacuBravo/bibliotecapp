@@ -3,6 +3,7 @@ import {
     setAuthorsWithMoreBooks,
     setLoading,
     setMostBorrowedBooks,
+    setMostBorrowedStudents,
     setMostPopularThemes,
     setMostReaderSection,
     setNotLoading
@@ -10,8 +11,13 @@ import {
 
 export const useReportsStore = () => {
     const dispatch = useDispatch()
-    const { authorsWithMoreBooks, mostBorrowedBooks, mostPopularThemes, mostReaderSection } =
-        useSelector((state) => state.reports)
+    const {
+        authorsWithMoreBooks,
+        mostBorrowedBooks,
+        mostPopularThemes,
+        mostReaderSection,
+        mostBorrowedStudents
+    } = useSelector((state) => state.reports)
 
     const startLoadingAuthorsReports = async () => {
         dispatch(setLoading())
@@ -40,6 +46,21 @@ export const useReportsStore = () => {
         } catch (error) {
             console.error('Error loading books:', error)
             dispatch(setNotLoading({ error: 'Error al obtener los libros' }))
+        }
+    }
+
+    const startLoadingStudentsReports = async () => {
+        dispatch(setLoading())
+
+        try {
+            const response = await window.reportsApi.getMostBorrowedStudents()
+
+            if (!response.ok) throw new Error('Failed to fetch students')
+
+            dispatch(setMostBorrowedStudents({ mostBorrowedStudents: response.students }))
+        } catch (error) {
+            console.error('Error loading students:', error)
+            dispatch(setNotLoading({ error: 'Error al obtener los estudiantes' }))
         }
     }
 
@@ -82,11 +103,13 @@ export const useReportsStore = () => {
         mostBorrowedBooks,
         mostPopularThemes,
         mostReaderSection,
+        mostBorrowedStudents,
 
         startLoadingAuthorsReports,
         startLoadingBooksReports,
         startLoadingThemesReports,
         startLoadingMostReaderSectionReports,
-        setNotLoadingWithoutError
+        setNotLoadingWithoutError,
+        startLoadingStudentsReports
     }
 }

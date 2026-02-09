@@ -9,5 +9,7 @@ export const reportsApi = {
     getMostPopularThemes: async () =>
         await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_POPULAR_THEMES),
     getMostReaderSection: async () =>
-        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_READER_SECTION)
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_READER_SECTION),
+    getMostBorrowedStudents: async () =>
+        await ipcRenderer.invoke(IpcKeys.REPORTS.GET_MOST_BORROWED_STUDENTS)
 }

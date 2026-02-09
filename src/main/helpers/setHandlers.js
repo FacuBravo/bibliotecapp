@@ -25,6 +25,7 @@ import {
     getLoan,
     getLoans,
     getMostBorrowedBooks,
+    getMostBorrowedStudents,
     getMostPopularThemes,
     getMostReaderSection,
     getPartner,
@@ -126,6 +127,7 @@ function setReportsHandlers(db) {
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_BORROWED_BOOKS, () => getMostBorrowedBooks(db))
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_POPULAR_THEMES, () => getMostPopularThemes(db))
     ipcMain.handle(IpcKeys.REPORTS.GET_MOST_READER_SECTION, () => getMostReaderSection(db))
+    ipcMain.handle(IpcKeys.REPORTS.GET_MOST_BORROWED_STUDENTS, () => getMostBorrowedStudents(db))
 }
 
 function setExcelHandlers() {

@@ -5,19 +5,20 @@ export const ReportsPage = () => {
         authorsWithMoreBooks = [],
         mostBorrowedBooks = [],
         mostPopularThemes = [],
-        mostReaderSection = []
+        mostReaderSection = [],
+        mostBorrowedStudents = []
     } = useReportsStore()
 
     return (
         <main className="flex min-h-[calc(100vh-98px)] w-full items-center justify-center gap-5 bg-home bg-cover bg-fixed bg-center bg-no-repeat">
-            <section className="flex flex-col items-end gap-5">
+            <section className="my-12 flex flex-col items-end gap-5">
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-pink_400 p-4 text-pink_600">
                     <h2 className="font-barrio text-3xl">Libros más prestados</h2>
                     <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
                         {mostBorrowedBooks.map((book, index) => (
                             <li key={index}>
                                 <p className="font-bold">#{book.inventory}</p>
-                                <p>{book.title}</p>
+                                <p className="max-w-[400px] truncate">{book.title}</p>
                                 <p>- {book.author}</p>
                                 <p>
                                     {book.n_borrowed} {book.n_borrowed === 1 ? 'vez' : 'veces'}{' '}
@@ -44,7 +45,7 @@ export const ReportsPage = () => {
                 </article>
             </section>
 
-            <section className="flex flex-col items-start gap-5">
+            <section className="my-12 flex flex-col items-start gap-5">
                 <article className="flex w-fit flex-col gap-5 rounded-2xl bg-orange_400 p-4 text-orange_600">
                     <h2 className="font-barrio text-3xl">Cursos más lectores</h2>
                     <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
@@ -67,6 +68,22 @@ export const ReportsPage = () => {
                                 <p>{author.author}</p>
                                 <p>
                                     <span className="font-bold">{author.n_books}</span> libros
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                </article>
+
+                <article className="flex w-fit flex-col gap-5 rounded-2xl bg-green_400 p-4 text-green_600">
+                    <h2 className="font-barrio text-3xl">Alumnos con más préstamos</h2>
+                    <ul className="flex select-text list-none flex-col gap-4 font-assistant text-xl">
+                        {mostBorrowedStudents.map((student, index) => (
+                            <li key={index}>
+                                <p>
+                                    {student.surname}, {student.name}
+                                </p>
+                                <p>
+                                    <span className="font-bold">{student.n_borrowed}</span> libros
                                 </p>
                             </li>
                         ))}

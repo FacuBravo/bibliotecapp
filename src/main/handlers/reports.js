@@ -92,3 +92,27 @@ export const getMostReaderSection = async (db) => {
         }
     }
 }
+
+export const getMostBorrowedStudents = async (db) => {
+    try {
+        const students = await db.all(`
+        SELECT p.name, p.surname, COUNT(l.id) n_borrowed
+        FROM partner p
+        JOIN loan l ON l.partner_id = p.id_card
+        GROUP BY p.name, p.surname
+        ORDER BY n_borrowed DESC
+        LIMIT 3
+        `)
+
+        return {
+            ok: true,
+            students
+        }
+    } catch (error) {
+        console.error('Error al obtener los estudiantes:', error)
+        return {
+            ok: false,
+            msg: 'Error al obtener los estudiantes'
+        }
+    }
+}

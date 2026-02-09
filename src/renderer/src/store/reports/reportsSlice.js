@@ -8,6 +8,7 @@ export const reportsSlice = createSlice({
         authorsWithMoreBooks: [],
         mostReaderSection: [],
         mostPopularThemes: [],
+        mostBorrowedStudents: [],
         error: null
     },
     reducers: {
@@ -20,6 +21,9 @@ export const reportsSlice = createSlice({
         },
         setMostBorrowedBooks: (state, { payload }) => {
             state.mostBorrowedBooks = payload.mostBorrowedBooks
+        },
+        setMostBorrowedStudents: (state, { payload }) => {
+            state.mostBorrowedStudents = payload.mostBorrowedStudents
         },
         setAuthorsWithMoreBooks: (state, { payload }) => {
             state.authorsWithMoreBooks = payload.authorsWithMoreBooks
@@ -38,6 +42,7 @@ export const {
     setAuthorsWithMoreBooks,
     setMostReaderSection,
     setMostPopularThemes,
+    setMostBorrowedStudents,
     setLoading,
     setNotLoading
 } = reportsSlice.actions

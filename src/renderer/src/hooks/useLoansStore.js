@@ -42,6 +42,7 @@ export const useLoansStore = () => {
         startLoadingBooksReports,
         startLoadingThemesReports,
         startLoadingMostReaderSectionReports,
+        startLoadingStudentsReports,
         setNotLoadingWithoutError
     } = useReportsStore()
 
@@ -105,6 +106,7 @@ export const useLoansStore = () => {
             startLoadingBooksReports()
             startLoadingThemesReports()
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true
@@ -162,6 +164,7 @@ export const useLoansStore = () => {
             startLoadingBooksReports()
             startLoadingThemesReports()
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
             setNotLoadingWithoutError()
 
             return true
@@ -241,6 +244,7 @@ export const useLoansStore = () => {
             startLoadingBooksReports()
             startLoadingThemesReports()
             startLoadingMostReaderSectionReports()
+            startLoadingStudentsReports()
 
             if (loan.returned === 0) {
                 await startUpdatingBookState({

@@ -15,6 +15,7 @@ export const AppRouter = () => {
         startLoadingBooksReports,
         startLoadingThemesReports,
         startLoadingMostReaderSectionReports,
+        startLoadingStudentsReports,
         setNotLoadingWithoutError
     } = useReportsStore()
 
@@ -30,6 +31,7 @@ export const AppRouter = () => {
         startLoadingBooksReports()
         startLoadingThemesReports()
         startLoadingMostReaderSectionReports()
+        startLoadingStudentsReports()
         setNotLoadingWithoutError()
     }, [])
 
