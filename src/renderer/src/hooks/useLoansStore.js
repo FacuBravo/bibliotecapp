@@ -10,7 +10,8 @@ import {
     setOrderBy,
     updateLoanState,
     deleteLoan,
-    setActiveLoansCount
+    setActiveLoansCount,
+    setCurrentFilter
 } from '../store/loans/loansSlice'
 import { useBooksStore } from './useBooksStore'
 import { usePartnersStore } from './usePartnersStore'
@@ -32,7 +33,8 @@ export const useLoansStore = () => {
         book,
         error,
         activeLoansCounter,
-        orderBy
+        orderBy,
+        currentFilter
     } = useSelector((state) => state.loans)
     const { startUpdatingBookState } = useBooksStore()
     const { startLoadingPartners, addingNewActiveLoan } = usePartnersStore()
@@ -46,9 +48,14 @@ export const useLoansStore = () => {
     const startLoadingLoans = async (
         page = 0,
         orderBy = { field: 'date_start', order: 'desc' },
+        filter = 'all',
         query = undefined
     ) => {
         dispatch(setLoading())
+
+        if (currentFilter !== filter) {
+            dispatch(setCurrentFilter({ filter }))
+        }
 
         try {
             const response = await window.loansApi.getLoans({
@@ -56,7 +63,8 @@ export const useLoansStore = () => {
                 limit: LOANS_LIMIT,
                 orderBy: orderBy.field,
                 order: orderBy.order,
-                search: query
+                search: query,
+                filter
             })
 
             if (!response.ok) throw new Error('Failed to fetch loans')
@@ -290,6 +298,7 @@ export const useLoansStore = () => {
         error,
         activeLoansCounter,
         orderBy,
+        currentFilter,
 
         startLoadingLoans,
         startAddingLoan,

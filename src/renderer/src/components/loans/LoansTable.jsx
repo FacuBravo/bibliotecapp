@@ -5,16 +5,16 @@ import arrowIcon from '../../assets/images/icons/Arrow.svg'
 import { PartnerModal } from '../users'
 import { BookModal } from '../books'
 
-export const LoansTable = ({ filter = '' }) => {
-    const { loans, orderBy, sortBy, startLoadingLoans } = useLoansStore()
+export const LoansTable = ({ query = '' }) => {
+    const { loans, orderBy, sortBy, startLoadingLoans, currentFilter } = useLoansStore()
 
     useEffect(() => {
-        if (filter !== '') {
-            startLoadingLoans(0, orderBy, filter)
+        if (query !== '') {
+            startLoadingLoans(0, orderBy, currentFilter, query)
         } else {
             startLoadingLoans(0, orderBy)
         }
-    }, [filter])
+    }, [query])
 
     return (
         <>
@@ -59,7 +59,7 @@ export const LoansTable = ({ filter = '' }) => {
 
                 <tbody className="flex flex-col gap-6 font-assistant text-lg">
                     {loans.length === 0 ? (
-                        filter !== '' ? (
+                        query !== '' ? (
                             <tr className="flex items-center rounded-2xl bg-yellow_400 px-6 py-4 text-yellow_600 shadow-md">
                                 <td className="w-full text-center">No hay resultados</td>
                             </tr>

@@ -46,9 +46,23 @@ export const updateLoan = async (db, { id, date_end }) => {
     }
 }
 
-export const getLoans = async (db, { offset, limit, search, orderBy, order }) => {
+export const getLoans = async (db, { offset, limit, search, orderBy, order, filter }) => {
     try {
-        let query = `SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.surname, p.id as auto_partner_id, b.id as auto_book_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id ORDER BY l.${orderBy} ${order}`
+        let query = `SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.surname, p.id as auto_partner_id, b.id as auto_book_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id`
+
+        switch (filter) {
+            case 'active':
+                query += ` WHERE l.returned = 0`
+                break
+            case 'expired':
+                query += ` WHERE l.returned = 0 AND l.date_end < date('now')`
+                break
+            case 'finished':
+                query += ` WHERE l.returned = 1`
+                break
+        }
+
+        query += ` ORDER BY l.${orderBy} ${order}`
 
         let loans = await db.all(query)
 

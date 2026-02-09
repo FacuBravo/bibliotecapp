@@ -1,22 +1,23 @@
 import { PageSelector, SearchInput } from '../components/commons'
-import { LoanModal, LoansFileFunctions, LoansTable } from '../components/loans'
+import { LoanModal, LoansFileFunctions, LoansTable, FiltersMenu } from '../components/loans'
 import { useForm, useLoansStore, useUiStore } from '../hooks'
+import { Link } from 'react-router-dom'
 import bookGreen from '../assets/images/icons/Book_green.svg'
 import loanBlue from '../assets/images/icons/Loan_blue.svg'
 import userOrange from '../assets/images/icons/User_orange.svg'
-import { Link } from 'react-router-dom'
 
 const searchForm = {
-    filter: ''
+    query: ''
 }
 
 export const LoansPage = () => {
     const { openLoanModal } = useUiStore()
-    const { partner, book, startLoadingLoans, counter, page, isLast, orderBy } = useLoansStore()
-    const { filter, onInputChange } = useForm(searchForm)
+    const { partner, book, startLoadingLoans, counter, page, isLast, orderBy, currentFilter } =
+        useLoansStore()
+    const { query, onInputChange } = useForm(searchForm)
 
     const onNextPage = async () => {
-        await startLoadingLoans(page + 1, orderBy, filter ? filter : undefined)
+        await startLoadingLoans(page + 1, orderBy, currentFilter, query ? query : undefined)
 
         window.scrollTo({
             top: 0,
@@ -25,7 +26,7 @@ export const LoansPage = () => {
     }
 
     const onPreviousPage = async () => {
-        await startLoadingLoans(page - 1, orderBy, filter ? filter : undefined)
+        await startLoadingLoans(page - 1, orderBy, currentFilter, query ? query : undefined)
 
         window.scrollTo({
             top: 0,
@@ -35,13 +36,17 @@ export const LoansPage = () => {
 
     const onGoToPage = async (newPage) => {
         if (newPage !== page) {
-            await startLoadingLoans(newPage, orderBy, filter ? filter : undefined)
+            await startLoadingLoans(newPage, orderBy, currentFilter, query ? query : undefined)
 
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             })
         }
+    }
+
+    const onFilterChange = async (newFilter) => {
+        await startLoadingLoans(0, orderBy, newFilter, query ? query : undefined)
     }
 
     return (
@@ -98,16 +103,17 @@ export const LoansPage = () => {
 
                 <section className="mx-auto flex w-full flex-col lg:w-4/5">
                     <section className="flex h-[82px] w-full justify-between pb-4 pt-6">
-                        <div className="flex w-64 items-center gap-1 font-supermercado text-2xl text-pink_600">
+                        <div className="flex w-64 items-center gap-2 font-supermercado text-2xl text-pink_600">
+                            <FiltersMenu onFilterChange={onFilterChange} />
                             <h1>Préstamos</h1>
                         </div>
 
                         <LoansFileFunctions />
 
-                        <SearchInput name="filter" value={filter} onInputChange={onInputChange} />
+                        <SearchInput name="query" value={query} onInputChange={onInputChange} />
                     </section>
 
-                    <LoansTable filter={filter} />
+                    <LoansTable query={query} />
 
                     {!(page === 0 && isLast) && (
                         <div className="mt-8 w-full">

@@ -15,7 +15,8 @@ export const loansSlice = createSlice({
         orderBy: {
             field: 'date_start',
             order: 'desc'
-        }
+        },
+        currentFilter: 'all'
     },
     reducers: {
         setLoading: (state) => {
@@ -35,6 +36,9 @@ export const loansSlice = createSlice({
         },
         setActiveLoansCount: (state, { payload }) => {
             state.activeLoansCounter = payload.total
+        },
+        setCurrentFilter: (state, { payload }) => {
+            state.currentFilter = payload.filter
         },
         addLoan: (state) => {
             state.activeLoansCounter++
@@ -83,5 +87,6 @@ export const {
     deleteLoan,
     cleanLoanBookAndPartner,
     updateLoanState,
-    setOrderBy
+    setOrderBy,
+    setCurrentFilter
 } = loansSlice.actions
