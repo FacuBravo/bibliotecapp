@@ -89,7 +89,7 @@ export const useLoansStore = () => {
 
             dispatch(addLoan())
 
-            startLoadingLoans(page, orderBy)
+            startLoadingLoans(page, orderBy, currentFilter)
 
             await startUpdatingBookState({
                 id: book.id,
@@ -142,7 +142,7 @@ export const useLoansStore = () => {
             if (!response.ok) throw new Error(response.msg || 'Failed to add loans')
 
             dispatch(setOrderBy({ field: 'date_start', order: 'desc' }))
-            startLoadingLoans(0, { field: 'date_start', order: 'desc' })
+            startLoadingLoans(0, { field: 'date_start', order: 'desc' }, 'all')
 
             const updateBookStatePromises = []
 
@@ -187,7 +187,7 @@ export const useLoansStore = () => {
 
             dispatch(updateLoanState({ returned: 1 }))
 
-            startLoadingLoans(page, orderBy)
+            startLoadingLoans(page, orderBy, currentFilter)
 
             await startUpdatingBookState({
                 id: book_id,
@@ -239,7 +239,7 @@ export const useLoansStore = () => {
 
             dispatch(deleteLoan(loan))
 
-            startLoadingLoans(page, orderBy)
+            startLoadingLoans(page, orderBy, currentFilter)
 
             startLoadingBooksReports()
             startLoadingThemesReports()
@@ -305,7 +305,7 @@ export const useLoansStore = () => {
             })
         )
 
-        startLoadingLoans(page, { field, order: newOrder })
+        startLoadingLoans(page, { field, order: newOrder }, currentFilter)
     }
 
     const getActiveLoansCount = async () => {
