@@ -208,6 +208,22 @@ export const usePartnersStore = () => {
         dispatch(setPartnersCount(response))
     }
 
+    const getAllPartners = async () => {
+        try {
+            dispatch(setLoading())
+            const response = await window.partnersApi.getAllPartners()
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to get partners')
+
+            dispatch(setNotLoading())
+
+            return response
+        } catch (error) {
+            dispatch(setNotLoading({ error: 'Error al obtener los usuarios' }))
+            return null
+        }
+    }
+
     return {
         partners,
         page,
@@ -225,6 +241,7 @@ export const usePartnersStore = () => {
         addingNewActiveLoan,
         multipleAddPartners,
         sortBy,
-        getPartnersCount
+        getPartnersCount,
+        getAllPartners
     }
 }

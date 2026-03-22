@@ -44,7 +44,6 @@ appImage:
     artifactName: ${name}-installer-${arch}.${ext}
 deb:
     compression: gz
-npmRebuild: false
 publish:
     provider: generic
     url: https://example.com/auto-updates

@@ -321,6 +321,22 @@ export const useLoansStore = () => {
         dispatch(setNotLoading({ error: 'Error al obtener libros prestados' }))
     }
 
+    const getAllLoans = async () => {
+        try {
+            dispatch(setLoading())
+            const response = await window.loansApi.getAllLoans()
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to get loans')
+
+            dispatch(setNotLoading())
+
+            return response
+        } catch (error) {
+            dispatch(setNotLoading({ error: 'Error al obtener los préstamos' }))
+            return null
+        }
+    }
+
     return {
         loans,
         page,
@@ -345,6 +361,7 @@ export const useLoansStore = () => {
         sortBy,
         getActiveLoansCount,
         renewLoan,
-        getBorrowedBooksByPartner
+        getBorrowedBooksByPartner,
+        getAllLoans
     }
 }

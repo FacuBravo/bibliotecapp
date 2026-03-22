@@ -14,10 +14,10 @@ import {
 export const BooksFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
-    const { books, multipleAddBooks } = useBooksStore()
+    const { multipleAddBooks, getAllBooks, getBooksCount } = useBooksStore()
     const { startImporting, file: importedBooks, resetFile } = useImports()
-    const { startLoadingLoans } = useLoansStore()
-    const { startLoadingPartners } = usePartnersStore()
+    const { startLoadingLoans, getActiveLoansCount } = useLoansStore()
+    const { startLoadingPartners, getPartnersCount } = usePartnersStore()
     const { openConfirmModal, showLoader, hideLoader } = useUiStore()
 
     useEffect(() => {
@@ -29,6 +29,9 @@ export const BooksFileFunctions = () => {
             await multipleAddBooks(importedBooks)
             await startLoadingLoans()
             await startLoadingPartners()
+            await getBooksCount()
+            await getActiveLoansCount()
+            await getPartnersCount()
             hideLoader()
             resetFile()
         }
@@ -44,10 +47,18 @@ export const BooksFileFunctions = () => {
 
     const openLoadImportFile = () => fileInputRef.current.click()
 
+    const toJson = async () => {
+        const res = await getAllBooks()
+
+        if (res) {
+            exportToJSON(res.books, 'catalogo.json')
+        }
+    }
+
     return (
         <div className="flex gap-4">
             <button
-                onClick={() => exportToJSON(books, 'catalogo.json')}
+                onClick={toJson}
                 className="flex cursor-pointer items-center gap-2 bg-transparent font-supermercado text-2xl text-pink_600 transition-transform hover:scale-95"
             >
                 <img className="h-6 w-6" src={exportIcon} alt="Export JSON Icon" />

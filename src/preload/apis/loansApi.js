@@ -61,5 +61,6 @@ export const loansApi = {
         }
 
         return null
-    }
+    },
+    getAllLoans: async () => ipcRenderer.invoke(IpcKeys.LOAN.GET_ALL_TO_EXPORT),
 }

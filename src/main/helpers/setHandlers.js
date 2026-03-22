@@ -19,6 +19,9 @@ import {
     deleteBook,
     deleteLoan,
     deletePartner,
+    getAllBooks,
+    getAllLoans,
+    getAllPartners,
     getAuthorsWithMoreBooks,
     getBook,
     getBooks,
@@ -82,6 +85,8 @@ function setBooksHandlers(db) {
     ipcMain.handle(IpcKeys.BOOK.DELETE_ALL, () => deleteAllBooks(db))
 
     ipcMain.handle(IpcKeys.BOOK.COUNT_BOOKS, () => countBooks(db))
+
+    ipcMain.handle(IpcKeys.BOOK.GET_ALL_TO_EXPORT, () => getAllBooks(db))
 }
 
 function setPartnersHandlers(db) {
@@ -99,6 +104,8 @@ function setPartnersHandlers(db) {
     ipcMain.handle(IpcKeys.PARTNER.DELETE_ALL, () => deleteAllPartners(db))
 
     ipcMain.handle(IpcKeys.PARTNER.COUNT_PARTNERS, () => countPartners(db))
+    
+    ipcMain.handle(IpcKeys.PARTNER.GET_ALL_TO_EXPORT, () => getAllPartners(db))
 }
 
 function setLoansHandlers(db) {
@@ -125,6 +132,8 @@ function setLoansHandlers(db) {
     ipcMain.handle(IpcKeys.LOAN.DELETE_ALL, () => deleteAllLoans(db))
 
     ipcMain.handle(IpcKeys.LOAN.COUNT_ACTIVE_LOANS, () => countActiveLoans(db))
+    
+    ipcMain.handle(IpcKeys.LOAN.GET_ALL_TO_EXPORT, () => getAllLoans(db))
 }
 
 function setReportsHandlers(db) {

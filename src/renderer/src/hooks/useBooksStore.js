@@ -225,6 +225,22 @@ export const useBooksStore = () => {
         dispatch(setBooksCount(response))
     }
 
+    const getAllBooks = async () => {
+        try {
+            dispatch(setLoading())
+            const response = await window.booksApi.getAllBooks()
+
+            if (!response.ok) throw new Error(response.msg || 'Failed to get books')
+
+            dispatch(setNotLoading())
+
+            return response
+        } catch (error) {
+            dispatch(setNotLoading({ error: 'Error al obtener los libros' }))
+            return null
+        }
+    }
+
     return {
         books,
         page,
@@ -242,6 +258,7 @@ export const useBooksStore = () => {
         startDeletingBook,
         multipleAddBooks,
         sortBy,
-        getBooksCount
+        getBooksCount,
+        getAllBooks
     }
 }

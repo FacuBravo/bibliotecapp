@@ -158,3 +158,13 @@ export const countBooks = async (db) => {
         return { ok: false, msg: 'Error al contar los libros' }
     }
 }
+
+export const getAllBooks = async (db) => {
+    try {
+        const books = await db.all('SELECT * FROM book')
+
+        return { ok: true, books }
+    } catch (error) {
+        return { ok: false, msg: 'Error al obtener los libros' }
+    }
+}

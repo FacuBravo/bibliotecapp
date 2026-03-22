@@ -24,7 +24,7 @@ export const loansSlice = createSlice({
         },
         setNotLoading: (state, { payload }) => {
             state.isLoading = false
-            state.error = payload.error || null
+            state.error = payload?.error || null
         },
         setLoans: (state, { payload }) => {
             state.loans = payload.loans

@@ -158,3 +158,20 @@ export const countPartners = async (db) => {
         return { ok: false, msg: 'Error al contar los usuarios' }
     }
 }
+
+export const getAllPartners = async (db) => {
+    try {
+        let query = `
+        SELECT p.*, 
+        (SELECT GROUP_CONCAT(l.date_end) 
+        FROM loan l 
+        WHERE l.partner_id = p.id_card AND l.returned = 0) as active_loans
+        FROM partner p`
+
+        const partners = await db.all(query)
+
+        return { ok: true, partners }
+    } catch (error) {
+        return { ok: false, msg: 'Error al obtener los préstamos' }
+    }
+}

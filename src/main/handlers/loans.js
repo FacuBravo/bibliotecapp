@@ -184,3 +184,13 @@ export const countActiveLoans = async (db) => {
         return { ok: false, msg: 'Error al contar los préstamos activos' }
     }
 }
+
+export const getAllLoans = async (db) => {
+    try {
+        const loans = await db.all('SELECT l.id, l.date_start, l.date_end, l.book_id, l.partner_id, l.returned, p.name, p.surname, p.id as auto_partner_id, b.id as auto_book_id, b.title, b.borrowed FROM loan l JOIN partner p ON l.partner_id = p.id_card JOIN book b ON b.inventory = l.book_id')
+
+        return { ok: true, loans }
+    } catch (error) {
+        return { ok: false, msg: 'Error al obtener los préstamos' }
+    }
+}

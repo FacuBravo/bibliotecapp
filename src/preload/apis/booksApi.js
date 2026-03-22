@@ -59,5 +59,6 @@ export const booksApi = {
         }
 
         return null
-    }
+    },
+    getAllBooks: async () => ipcRenderer.invoke(IpcKeys.BOOK.GET_ALL_TO_EXPORT),
 }

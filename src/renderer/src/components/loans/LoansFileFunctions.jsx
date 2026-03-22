@@ -2,14 +2,23 @@ import { useEffect, useRef } from 'react'
 import exportIcon from '../../assets/images/icons/Export.svg'
 import importIcon from '../../assets/images/icons/Import.svg'
 import { exportToJSON } from '../../helpers'
-import { useAuthStore, useImports, useLoansStore, useUiStore } from '../../hooks'
+import {
+    useAuthStore,
+    useBooksStore,
+    useImports,
+    useLoansStore,
+    usePartnersStore,
+    useUiStore
+} from '../../hooks'
 
 export const LoansFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
-    const { loans, multipleAddLoans } = useLoansStore()
+    const { multipleAddLoans, getActiveLoansCount, getAllLoans } = useLoansStore()
     const { startImporting, file: importedLoans, resetFile } = useImports()
     const { openConfirmModal, showLoader, hideLoader } = useUiStore()
+    const { startLoadingBooks, getBooksCount } = useBooksStore()
+    const { startLoadingPartners, getPartnersCount } = usePartnersStore()
 
     useEffect(() => {
         updateStores()
@@ -18,6 +27,11 @@ export const LoansFileFunctions = () => {
     const updateStores = async () => {
         if (importedLoans) {
             await multipleAddLoans(importedLoans)
+            await startLoadingBooks()
+            await startLoadingPartners()
+            await getActiveLoansCount()
+            await getBooksCount()
+            await getPartnersCount()
             hideLoader()
             resetFile()
         }
@@ -35,10 +49,18 @@ export const LoansFileFunctions = () => {
         fileInputRef.current.click()
     }
 
+    const toJson = async () => {
+        const res = await getAllLoans()
+
+        if (res) {
+            exportToJSON(res.loans, 'prestamos.json')
+        }
+    }
+
     return (
         <div className="flex gap-4">
             <button
-                onClick={() => exportToJSON(loans, 'prestamos.json')}
+                onClick={toJson}
                 className="flex cursor-pointer items-center gap-2 bg-transparent font-supermercado text-2xl text-pink_600 transition-transform hover:scale-95"
             >
                 <img className="h-6 w-6" src={exportIcon} alt="Export JSON Icon" />

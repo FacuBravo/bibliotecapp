@@ -50,5 +50,6 @@ export const partnersApi = {
         }
 
         return null
-    }
+    },
+    getAllPartners: async () => ipcRenderer.invoke(IpcKeys.PARTNER.GET_ALL_TO_EXPORT),
 }

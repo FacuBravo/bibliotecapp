@@ -14,11 +14,11 @@ import {
 export const PartnersFileFunctions = () => {
     const { user } = useAuthStore()
     const fileInputRef = useRef()
-    const { partners, multipleAddPartners } = usePartnersStore()
+    const { multipleAddPartners, getPartnersCount, getAllPartners } = usePartnersStore()
     const { startImporting, file: importedPartners, resetFile } = useImports()
     const { openConfirmModal, showLoader, hideLoader } = useUiStore()
-    const { startLoadingLoans } = useLoansStore()
-    const { startLoadingBooks } = useBooksStore()
+    const { startLoadingLoans, getActiveLoansCount } = useLoansStore()
+    const { startLoadingBooks, getBooksCount } = useBooksStore()
 
     useEffect(() => {
         updateStores()
@@ -29,6 +29,9 @@ export const PartnersFileFunctions = () => {
             await multipleAddPartners(importedPartners)
             await startLoadingLoans()
             await startLoadingBooks()
+            await getPartnersCount()
+            await getActiveLoansCount()
+            await getBooksCount()
             hideLoader()
             resetFile()
         }
@@ -44,10 +47,18 @@ export const PartnersFileFunctions = () => {
 
     const openLoadImportFile = () => fileInputRef.current.click()
 
+    const toJson = async () => {
+        const res = await getAllPartners()
+
+        if (res) {
+            exportToJSON(res.partners, 'usuarios.json')
+        }
+    }
+
     return (
         <div className="flex gap-4">
             <button
-                onClick={() => exportToJSON(partners, 'usuarios.json')}
+                onClick={toJson}
                 className="flex cursor-pointer items-center gap-2 bg-transparent font-supermercado text-2xl text-pink_600 transition-transform hover:scale-95"
             >
                 <img className="h-6 w-6" src={exportIcon} alt="Export JSON Icon" />
